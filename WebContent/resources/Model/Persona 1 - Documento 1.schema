@@ -1,0 +1,122 @@
+//Sirve siempre y cuando el arreglo no crezca infinitamente
+
+
+var UserSchema = new Schema({
+	firstName: {
+		type: String,
+		trim: true,
+		default: '',
+		validate: [validateLocalStrategyProperty, 'Please fill in your first name']
+	},
+	lastName: {
+		type: String,
+		trim: true,
+		default: '',
+		validate: [validateLocalStrategyProperty, 'Please fill in your last name']
+	},
+	displayName: {
+		type: String,
+		trim: true
+	},
+	email: {
+		type: String,
+		trim: true,
+		default: '',
+		validate: [validateLocalStrategyProperty, 'Please fill in your email'],
+		match: [/.+\@.+\..+/, 'Please fill a valid email address']
+	},
+	username: {
+		type: String,
+		unique: 'testing error message',
+		required: 'Please fill in a username',
+		trim: true
+	},
+	password: {
+		type: String,
+		default: '',
+		validate: [validateLocalStrategyPassword, 'Password should be longer']
+	},
+	salt: {
+		type: String
+	},
+	provider: {
+		type: String,
+		required: 'Provider is required'
+	},
+	providerData: {},
+	additionalProvidersData: {},
+	roles: {
+		type: [{
+			type: String,
+			enum: ['user', 'admin']
+		}],
+		default: ['user']
+	},
+	updated: {
+		type: Date
+	},
+	created: {
+		type: Date,
+		default: Date.now
+	},
+	/* For reset password */
+	resetPasswordToken: {
+		type: String
+	},
+	resetPasswordExpires: {
+		type: Date
+	}
+});
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "Persona": {
+      "id": "http://jsonschema.net/Persona",
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "id": "http://jsonschema.net/Persona/nombre",
+          "type": "string"
+        },
+        "apellido": {
+          "id": "http://jsonschema.net/Persona/apellido",
+          "type": "string"
+        },
+        "genero": {
+          "id": "http://jsonschema.net/Persona/genero",
+          "type": "string"
+        },
+        "documentos": {
+          "id": "http://jsonschema.net/Persona/documentos",
+          "type": "object",
+          "properties": {
+            "pasaporte": {
+              "id": "http://jsonschema.net/Persona/documentos/pasaporte",
+              "type": "string"
+            },
+            "licencia": {
+              "id": "http://jsonschema.net/Persona/documentos/licencia",
+              "type": "string"
+            },
+            "seguro_social": {
+              "id": "http://jsonschema.net/Persona/documentos/seguro_social",
+              "type": "string"
+            }
+          }
+        }
+      },
+      "required": [
+        "nombre",
+        "apellido",
+        "genero",
+        "documentos"
+      ]
+    }
+  },
+  "required": [
+    "Persona"
+  ]
+}

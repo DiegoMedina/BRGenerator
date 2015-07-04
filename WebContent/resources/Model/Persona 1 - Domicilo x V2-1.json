@@ -1,0 +1,34 @@
+//Sirve cuando el arreglo podria crecer infinitamente 
+//y la relacion es 1 persona --> * direcciones y no * Direcciones --> * Personas 
+//al mismo tiempo
+
+//Json Direccion Ejemplo 1
+
+{
+  "Direccion": {
+    "id": "1",
+    "calle": "Ejemplo1"
+  }
+}
+
+//Json Direccion Ejemplo 2
+
+{
+  "Direccion": {
+    "id": "2",
+    "calle": "Ejemplo2"
+  }
+}
+
+//Json Persona Ejemplo 1
+
+{
+  "Persona": {
+    "id": "3",
+    "nombre": "Diego",
+    "direcciones": [
+      1,
+      2
+    ]
+  }
+}

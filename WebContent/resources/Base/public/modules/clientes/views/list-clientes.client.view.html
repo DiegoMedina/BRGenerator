@@ -1,0 +1,45 @@
+<section data-ng-controller="ClientesController as clientesCtrl">
+    <div class="page-header">
+        <h1>Clientes</h1>
+    </div>
+    <div class="row">
+        <div class="col-xs-12 col-sm-8">
+            <div class="input-group input-group-lg">
+                <input type="text" class="form-control" ng-model="searchText" placeholder="Buscar...">
+                <span class="input-group-btn">
+                    <button class="btn btn-default" type="button">Ir!</button>
+                </span>
+            </div>
+        </div>
+        <div class="col-xs-12 col-sm-4 text-center">
+            <button class="btn btn-success text-center" type="button">
+                <i class="glyphicon glyphicon-user"></i><br>
+                Nuevo Cliente
+            </button>
+        </div>
+    </div>
+    <br>
+    <br>
+    <div class="list-group">
+        <div class="col-xs-6 col-sm-4" data-ng-repeat="cliente in clientesCtrl.clientes | filter:searchText">
+            <a ng-click="clientesCtrl.modalUpdate('lg',cliente)" class="list-group-item">
+                <h4 class="cust-list text-center">
+                    <i class="glyphicon glyphicon-user">
+                    </i>
+                </h4>
+                <div class="row">
+                    <div class="col-xs-10 col-xs-offset-1">
+                        <h4>{{cliente.nombre}} {{cliente.apellido}}</h4>
+                        <small class="list-group-item-text text-muted">
+                            <span data-ng-bind="cliente.created | date:'medium'"></span>
+                        </small>
+                    </div>
+                </div>
+
+            </a>
+        </div>
+    </div>
+    <div class="alert alert-warning text-center" data-ng-hide="!clientes.$resolved || clientes.length">
+    	No Clientes yet, why don't you <a href="/#!/clientes/create">create one</a>?
+    </div>
+</section>

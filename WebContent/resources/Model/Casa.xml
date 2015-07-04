@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model name="Casa">
+	<Atributes>
+		<Atribute>
+			<Name>Metros</Name>
+			<Type>Int</Type>
+			<Required><![CDATA['Please fill in a Metros']]></Required>
+		</Atribute>
+		<Atribute>
+			<Name>Color</Name>
+			<Type>String</Type>
+		</Atribute>
+		<Atribute>
+			<Name>Direcciones</Name>
+			<Type>Direccion</Type>
+			<Relation>OneToMany</Relation>
+		</Atribute>
+	</Atributes>
+</Model>

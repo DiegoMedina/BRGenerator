@@ -1,0 +1,78 @@
+//Sirve siempre y cuando el arreglo no crezca infinitamente
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "Persona": {
+      "id": "http://jsonschema.net/Persona",
+      "type": "object",
+      "properties": {
+        "nombre": {
+          "id": "http://jsonschema.net/Persona/nombre",
+          "type": "string"
+        },
+        "apellido": {
+          "id": "http://jsonschema.net/Persona/apellido",
+          "type": "string"
+        },
+        "genero": {
+          "id": "http://jsonschema.net/Persona/genero",
+          "type": "string"
+        },
+        "direcciones": {
+          "id": "http://jsonschema.net/Persona/direcciones",
+          "type": "array",
+          "items": [
+            {
+              "id": "http://jsonschema.net/Persona/direcciones/0",
+              "type": "object",
+              "properties": {
+                "pais": {
+                  "id": "http://jsonschema.net/Persona/direcciones/0/pais",
+                  "type": "string"
+                },
+                "estado": {
+                  "id": "http://jsonschema.net/Persona/direcciones/0/estado",
+                  "type": "string"
+                },
+                "ciudad": {
+                  "id": "http://jsonschema.net/Persona/direcciones/0/ciudad",
+                  "type": "string"
+                }
+              }
+            },
+            {
+              "id": "http://jsonschema.net/Persona/direcciones/1",
+              "type": "object",
+              "properties": {
+                "pais": {
+                  "id": "http://jsonschema.net/Persona/direcciones/1/pais",
+                  "type": "string"
+                },
+                "estado": {
+                  "id": "http://jsonschema.net/Persona/direcciones/1/estado",
+                  "type": "string"
+                },
+                "ciudad": {
+                  "id": "http://jsonschema.net/Persona/direcciones/1/ciudad",
+                  "type": "string"
+                }
+              }
+            }
+          ]
+        }
+      },
+      "required": [
+        "nombre",
+        "apellido",
+        "genero",
+        "direcciones"
+      ]
+    }
+  },
+  "required": [
+    "Persona"
+  ]
+}

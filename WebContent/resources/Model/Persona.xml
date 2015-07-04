@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model name="Persona">
+	<Atributes>
+		<Atribute>
+			<Name>Name</Name>
+			<Type>String</Type>
+			<Enum>Golf</Enum>
+			<Trim>true</Trim>
+			<Default>Diego</Default>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
+			<Unique><![CDATA['testing error message']]></Unique>
+			<Required><![CDATA['Please fill in a username']]></Required>
+		</Atribute>
+		<Atribute>
+			<Name>Surname</Name>
+			<Type>String</Type>
+			<Trim>true</Trim>
+			<Default>Apellido</Default>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your surname']]]></Validate>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid surname']]]></Match>
+			<Unique><![CDATA['testing error message 2']]></Unique>
+			<Required><![CDATA['Please fill in a surname']]></Required>
+		</Atribute>
+		<Atribute>
+			<Name>BirthDay</Name>
+			<Type>Date</Type>
+			<Trim>false</Trim>
+			<Default>01/01/2000</Default>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
+			<Unique><![CDATA['testing error message 3']]></Unique>
+			<Required><![CDATA['Please fill in a username']]></Required>
+		</Atribute>
+		<Atribute>
+			<Name>Age</Name>
+			<Type>Integer</Type>
+			<Default>-1</Default>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
+			<Unique><![CDATA['testing error message 3']]></Unique>
+			<Required><![CDATA['Please fill in a username']]></Required>
+		</Atribute>
+		<Atribute>
+			<Name>BirthDay</Name>
+			<Type>Date</Type>
+			<Trim>false</Trim>
+			<Default>01/01/2000</Default>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
+			<Unique><![CDATA['testing error message 3']]></Unique>
+			<Required><![CDATA['Please fill in a username']]></Required>
+		</Atribute>
+		<Atribute>
+			<Name>Direcciones</Name>
+			<Type>Direccion</Type>
+			<Relation>
+				ManyToMany
+			</Relation>
+		</Atribute>
+	</Atributes>
+</Model>

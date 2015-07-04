@@ -1,0 +1,90 @@
+//Sirve cuando la relacion es * <--> *
+
+//Esquema de de direccion
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "Direccion": {
+      "id": "http://jsonschema.net/Direccion",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http://jsonschema.net/Direccion/id",
+          "type": "string"
+        },
+        "calle": {
+          "id": "http://jsonschema.net/Direccion/calle",
+          "type": "string"
+        },
+        "personas": {
+          "id": "http://jsonschema.net/Direccion/personas",
+          "type": "array",
+          "items": [
+            {
+              "id": "http://jsonschema.net/Direccion/personas/0",
+              "type": "integer"
+            },
+            {
+              "id": "http://jsonschema.net/Direccion/personas/1",
+              "type": "integer"
+            },
+            {
+              "id": "http://jsonschema.net/Direccion/personas/2",
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "calle",
+        "personas"
+      ]
+    }
+  },
+  "required": [
+    "Direccion"
+  ]
+}
+
+
+// Esquema Persona
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "Persona": {
+      "id": "http://jsonschema.net/Persona",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http://jsonschema.net/Persona/id",
+          "type": "string"
+        },
+        "nombre": {
+          "id": "http://jsonschema.net/Persona/nombre",
+          "type": "string"
+        },
+        "apellido": {
+          "id": "http://jsonschema.net/Persona/nombre",
+          "type": "string"
+        }
+        
+      },
+      "required": [
+        "id",
+        "nombre"
+      ]
+    }
+  },
+  "required": [
+    "Persona"
+  ]
+}
+
+

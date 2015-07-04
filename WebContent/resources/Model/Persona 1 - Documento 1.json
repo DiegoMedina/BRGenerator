@@ -1,0 +1,13 @@
+
+{
+  "Persona": {
+    "nombre": "Diego",
+    "apellido": "Medina",
+    "genero": "M",
+    "documentos": {
+      "pasaporte": "D123456V7",
+      "licencia": "34567651-2342",
+      "seguro_social": "V-543523452"
+    }
+  }
+}

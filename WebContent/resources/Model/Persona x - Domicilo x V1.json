@@ -1,0 +1,51 @@
+//Sirve para una relacion * --> *
+
+//Json Direccion Ejemplo 1
+
+{
+  "Direccion": {
+    "id": "1",
+    "calle": "Ejemplo1",
+    "personas": [
+      3
+    ]
+  }
+}
+
+//Json Direccion Ejemplo 2
+
+{
+  "Direccion": {
+    "id": "2",
+    "calle": "Ejemplo2",
+    "personas": [
+      3,
+      4
+    ]
+  }
+}
+
+//Json Persona Ejemplo 1
+
+{
+  "Persona": {
+    "id": "3",
+    "nombre": "Diego",
+    "direcciones": [
+      1,
+      2
+    ]
+  }
+}
+
+//Json Persona Ejemplo 2
+
+{
+  "Persona": {
+    "id": "4",
+    "nombre": "Pepe",
+    "direcciones": [
+      2
+    ]
+  }
+}

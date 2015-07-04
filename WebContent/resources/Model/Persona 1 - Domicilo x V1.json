@@ -1,0 +1,21 @@
+//Sirve siempre y cuando el arreglo no crezca infinitamente
+
+{
+  "Persona": {
+    "nombre": "Diego",
+    "apellido": "Medina",
+    "genero": "M",
+    "direcciones": [
+      {
+        "pais": "Venezuela",
+        "estado": "Distrito capital",
+        "ciudad": "Caracas"
+      },
+      {
+        "pais": "Argentina",
+        "estado": "Capital Federal",
+        "ciudad": "Que?"
+      }
+    ]
+  }
+}

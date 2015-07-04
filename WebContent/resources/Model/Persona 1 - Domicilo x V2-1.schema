@@ -1,0 +1,83 @@
+//Sirve cuando el arreglo podria crecer infinitamente 
+//y la relacion es 1 persona --> * direcciones y no * Direcciones --> * Personas 
+//al mismo tiempl
+
+//Esquema de de direccion
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "Direccion": {
+      "id": "http://jsonschema.net/Direccion",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http://jsonschema.net/Direccion/id",
+          "type": "string"
+        },
+        "calle": {
+          "id": "http://jsonschema.net/Direccion/calle",
+          "type": "string"
+        }
+      },
+      "required": [
+        "id",
+        "calle"
+      ]
+    }
+  },
+  "required": [
+    "Direccion"
+  ]
+}
+
+
+// Esquema Persona
+
+{
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "http://jsonschema.net",
+  "type": "object",
+  "properties": {
+    "Persona": {
+      "id": "http://jsonschema.net/Persona",
+      "type": "object",
+      "properties": {
+        "id": {
+          "id": "http://jsonschema.net/Persona/id",
+          "type": "string"
+        },
+        "nombre": {
+          "id": "http://jsonschema.net/Persona/nombre",
+          "type": "string"
+        },
+        "direcciones": {
+          "id": "http://jsonschema.net/Persona/direcciones",
+          "type": "array",
+          "items": [
+            {
+              "id": "http://jsonschema.net/Persona/direcciones/0",
+              "type": "integer"
+            },
+            {
+              "id": "http://jsonschema.net/Persona/direcciones/1",
+              "type": "integer"
+            }
+          ]
+        }
+      },
+      "required": [
+        "id",
+        "nombre",
+        "direcciones"
+      ]
+    }
+  },
+  "required": [
+    "Persona"
+  ]
+}
+
+
