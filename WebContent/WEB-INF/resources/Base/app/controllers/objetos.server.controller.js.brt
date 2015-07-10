@@ -1,0 +1,107 @@
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+var mongoose = require('mongoose'),
+	errorHandler = require('./errors.server.controller'),
+	<objectName/> = mongoose.model('<objectName/>'),
+	_ = require('lodash');
+
+/**
+ * Create a Objeto
+ */
+exports.create = function(req, res) {
+	var <objectLowerName/> = new <objectName/>(req.body);
+	<objectLowerName/>.user = req.user;
+
+	<objectLowerName/>.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(<objectLowerName/>);
+		}
+	});
+};
+
+/**
+ * Show the current <objectName/>
+ */
+exports.read = function(req, res) {
+	res.jsonp(req.<objectLowerName/>);
+};
+
+/**
+ * Update a Objeto
+ */
+exports.update = function(req, res) {
+	var <objectLowerName/> = req.<objectLowerName/> ;
+
+	<objectLowerName/> = _.extend(<objectLowerName/> , req.body);
+
+	<objectLowerName/>.save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(<objectLowerName/>);
+		}
+	});
+};
+
+/**
+ * Delete an <objectName/>
+ */
+exports.delete = function(req, res) {
+	var <objectLowerName/> = req.<objectLowerName/> ;
+
+	<objectLowerName/>.remove(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(<objectLowerName/>);
+		}
+	});
+};
+
+/**
+ * List of <objectName/>
+ */
+exports.list = function(req, res) { 
+	<objectName/>.find().sort('-created').populate('user', 'displayName').exec(function(err, <objectPluralName/>) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp(<objectPluralName/>);
+		}
+	});
+};
+
+/**
+ * <objectName/> middleware
+ */
+exports.<objectLowerName/>ByID = function(req, res, next, id) { 
+	<objectName/>.findById(id).populate('user', 'displayName').exec(function(err, <objectLowerName/>) {
+		if (err) return next(err);
+		if (! <objectLowerName/>) return next(new Error('Failed to load <objectName/> ' + id));
+		req.<objectLowerName/> = <objectLowerName/> ;
+		next();
+	});
+};
+
+/**
+ * <objectName/> authorization middleware
+ */
+exports.hasAuthorization = function(req, res, next) {
+	if (req.<objectLowerName/>.user.id !== req.user.id) {
+		return res.status(403).send('User is not authorized');
+	}
+	next();
+};
