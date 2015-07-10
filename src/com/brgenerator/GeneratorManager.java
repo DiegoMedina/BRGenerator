@@ -17,11 +17,6 @@ import com.brgenerator.entities.Model;
 
 import javax.servlet.ServletContext;
 
-import org.jsoup.Jsoup;
-import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.select.Elements;
-
 
 public class GeneratorManager
 {
@@ -118,15 +113,15 @@ public class GeneratorManager
 	{
     	if(src.isDirectory())
     	{
-    		//if directory not exists, create it
+    		//Si la carpeta no existe, se crea
+    		
     		if(!dest.exists())
     		{
     		   dest.mkdir();
-    		   System.out.println("Directory copied from "
-                              + src + "  to " + dest);
+    		   System.out.println("Carpeta copiada de " + src + " a " + dest);
     		}
  
-    		//list all the directory contents
+    		//Se obtiene todo el contenido de el directorio
     		String files[] = src.list();
  
     		for (String file : files)
@@ -145,44 +140,27 @@ public class GeneratorManager
     		{
     			for (Model model : modelos) 
     			{
-    				System.out.println("Se encontro template " + src.getName() + " para modelo " + model.getName());
-    				Document doc = Jsoup.parse(src, "UTF-8");
-    				Elements links = doc.getAllElements();
-    				for (Element link : links) {
-    					
-    				  System.out.println("Data nodo link.text(): " + link.text() + "\n" +
-    						  "link.className(): " + link.className() + "\n" +
-    						  "link.cssSelector(): " + link.cssSelector() + "\n" +
-    						  "link.data(): " + link.data() + "\n" +
-    						  "link.html(): " + link.html() + "\n" +
-    						  "link.id(): " + link.id() + "\n" +
-    						  "link.nodeName(): " + link.nodeName() + "\n" +
-    						  "link.outerHtml(): " + link.outerHtml() + "\n" +
-    						  "link.ownText(): " + link.ownText() + "\n" +
-    						  "link.tagName(): " + link.tagName() + "\n" +
-    						  "link.toString(): " + link.toString() + "\n" +
-    						  "link.val(): " + link.val() + "\n\n" );
-    				}
+    				TemplateManager.build(model, src, dest);
 				}
     		}
     		else
     		{
 	    		//if file, then copy it
 	    		//Use bytes stream to support all file types
-	    		InputStream in = new FileInputStream(src);
-    	        OutputStream out = new FileOutputStream(dest); 
+    			InputStream in = new FileInputStream(src);
+	    		OutputStream out = new FileOutputStream(dest); 
+    	        
+	    		 byte[] buffer = new byte[1024];
  
-    	        byte[] buffer = new byte[1024];
- 
-    	        int length;
+	    		 int length;
     	        //copy the file content in bytes 
     	        while ((length = in.read(buffer)) > 0){
-    	    	   out.write(buffer, 0, length);
-    	        }
- 
-    	        in.close();
-    	        out.close();
-    	        System.out.println("File copied from " + src + " to " + dest);
+     	    	   out.write(buffer, 0, length);
+     	        }
+  
+     	        in.close();
+     	        out.close();
+     	       System.out.println("File copied from " + src + " to " + dest);
     		}
     	}
     }
