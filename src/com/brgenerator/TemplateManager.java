@@ -16,8 +16,6 @@ import org.jsoup.select.Elements;
 import com.brgenerator.TemplateManager;
 import com.brgenerator.entities.Model;
 
-import org.atteo.*;;
-
 public class TemplateManager {
 	
 	static File[] files;
@@ -92,12 +90,22 @@ public class TemplateManager {
 					  text = new TextNode(inf.pluralize(modelo.getName()), "");
 					  link.replaceWith(text);
 				  break;
+				  case "foreach":
+					  if(link.attr("loop")=="fieldinobject")
+					  {
+						  forEachFieldInModel(modelo);
+					  }
+					  text = new TextNode(inf.pluralize(modelo.getName()), "");
+					  link.replaceWith(text);
+				  break;
 				  default:
 				  break;
 			  }
 			  
 			  
 		}
+		
+		
 
 		
 		System.out.println("Data nodo link.text(): " + doc.getElementsByTag("body").text() + "\n" +
@@ -121,6 +129,12 @@ public class TemplateManager {
 		System.out.println("Archivo creado de " + fuente + " a " + destino);
 	}
 	
+	public static String forEachFieldInModel(Model modelo)
+	{
+		
+		return "";
+		
+	}
 	
 
 }

@@ -1,0 +1,19 @@
+'use strict';
+
+module.exports = function(app) {
+	var users = require('../../app/controllers/users.server.controller');
+	var <objectpluralname/> = require('../../app/controllers/<objectpluralname/>.server.controller');
+
+	// Inmuebles Routes
+	app.route('/<objectpluralname/>')
+		.get(<objectpluralname/>.list)
+		.post(users.requiresLogin, <objectpluralname/>.create);
+
+	app.route('/<objectpluralname/>/:<objectlowername/>Id')
+		.get(<objectpluralname/>.read)
+		.put(users.requiresLogin, <objectpluralname/>.hasAuthorization, <objectpluralname/>.update)
+		.delete(users.requiresLogin, <objectpluralname/>.hasAuthorization, <objectpluralname/>.delete);
+
+	// Finish by binding the <objectname/> middleware
+	app.param('<objectlowername/>Id', <objectpluralname/>.<objectlowername/>ByID);
+};

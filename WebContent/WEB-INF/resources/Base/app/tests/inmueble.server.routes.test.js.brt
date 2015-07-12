@@ -1,0 +1,268 @@
+'use strict';
+
+var should = require('should'),
+	request = require('supertest'),
+	app = require('../../server'),
+	mongoose = require('mongoose'),
+	User = mongoose.model('User'),
+	<objectname/> = mongoose.model('<objectname/>'),
+	agent = request.agent(app);
+
+/**
+ * Globals
+ */
+var credentials, user, <objectlowername/>;
+
+/**
+ * <objectname/> routes tests
+ */
+describe('<objectname/> CRUD tests', function() {
+	beforeEach(function(done) {
+		// Create user credentials
+		credentials = {
+			username: 'username',
+			password: 'password'
+		};
+
+		// Create a new user
+		user = new User({
+			firstName: 'Full',
+			lastName: 'Name',
+			displayName: 'Full Name',
+			email: 'test@test.com',
+			username: credentials.username,
+			password: credentials.password,
+			provider: 'local'
+		});
+
+		// Save a user to the test db and create new <objectname/>
+		user.save(function() {
+			<objectlowername/> = {
+				name: '<objectname/> Name'
+			};
+
+			done();
+		});
+	});
+
+	it('should be able to save <objectname/> instance if logged in', function(done) {
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new <objectname/>
+				agent.post('/<objectlowername/>s')
+					.send(<objectlowername/>)
+					.expect(200)
+					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+						// Handle <objectname/> save error
+						if (<objectlowername/>SaveErr) done(<objectlowername/>SaveErr);
+
+						// Get a list of <objectname/>s
+						agent.get('/<objectlowername/>s')
+							.end(function(<objectlowername/>sGetErr, <objectlowername/>sGetRes) {
+								// Handle <objectname/> save error
+								if (<objectlowername/>sGetErr) done(<objectlowername/>sGetErr);
+
+								// Get <objectname/>s list
+								var <objectlowername/>s = <objectlowername/>sGetRes.body;
+
+								// Set assertions
+								(<objectlowername/>s[0].user._id).should.equal(userId);
+								(<objectlowername/>s[0].name).should.match('<objectname/> Name');
+
+								// Call the assertion callback
+								done();
+							});
+					});
+			});
+	});
+
+	it('should not be able to save <objectname/> instance if not logged in', function(done) {
+		agent.post('/<objectlowername/>s')
+			.send(<objectlowername/>)
+			.expect(401)
+			.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+				// Call the assertion callback
+				done(<objectlowername/>SaveErr);
+			});
+	});
+
+	it('should not be able to save <objectname/> instance if no name is provided', function(done) {
+		// Invalidate name field
+		<objectlowername/>.name = '';
+
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new <objectname/>
+				agent.post('/<objectlowername/>s')
+					.send(<objectlowername/>)
+					.expect(400)
+					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+						// Set message assertion
+						(<objectlowername/>SaveRes.body.message).should.match('Please fill <objectname/> name');
+						
+						// Handle <objectname/> save error
+						done(<objectlowername/>SaveErr);
+					});
+			});
+	});
+
+	it('should be able to update <objectname/> instance if signed in', function(done) {
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new <objectname/>
+				agent.post('/<objectlowername/>s')
+					.send(<objectlowername/>)
+					.expect(200)
+					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+						// Handle <objectname/> save error
+						if (<objectlowername/>SaveErr) done(<objectlowername/>SaveErr);
+
+						// Update <objectname/> name
+						<objectlowername/>.name = 'WHY YOU GOTTA BE SO MEAN?';
+
+						// Update existing <objectname/>
+						agent.put('/<objectlowername/>s/' + <objectlowername/>SaveRes.body._id)
+							.send(<objectlowername/>)
+							.expect(200)
+							.end(function(<objectlowername/>UpdateErr, <objectlowername/>UpdateRes) {
+								// Handle <objectname/> update error
+								if (<objectlowername/>UpdateErr) done(<objectlowername/>UpdateErr);
+
+								// Set assertions
+								(<objectlowername/>UpdateRes.body._id).should.equal(<objectlowername/>SaveRes.body._id);
+								(<objectlowername/>UpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
+
+								// Call the assertion callback
+								done();
+							});
+					});
+			});
+	});
+
+	it('should be able to get a list of <objectname/>s if not signed in', function(done) {
+		// Create new <objectname/> model instance
+		var <objectlowername/>Obj = new <objectname/>(<objectlowername/>);
+
+		// Save the <objectname/>
+		<objectlowername/>Obj.save(function() {
+			// Request <objectname/>s
+			request(app).get('/<objectlowername/>s')
+				.end(function(req, res) {
+					// Set assertion
+					res.body.should.be.an.Array.with.lengthOf(1);
+
+					// Call the assertion callback
+					done();
+				});
+
+		});
+	});
+
+
+	it('should be able to get a single <objectname/> if not signed in', function(done) {
+		// Create new <objectname/> model instance
+		var <objectlowername/>Obj = new <objectname/>(<objectlowername/>);
+
+		// Save the <objectname/>
+		<objectlowername/>Obj.save(function() {
+			request(app).get('/<objectlowername/>s/' + <objectlowername/>Obj._id)
+				.end(function(req, res) {
+					// Set assertion
+					res.body.should.be.an.Object.with.property('name', <objectlowername/>.name);
+
+					// Call the assertion callback
+					done();
+				});
+		});
+	});
+
+	it('should be able to delete <objectname/> instance if signed in', function(done) {
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new <objectname/>
+				agent.post('/<objectlowername/>s')
+					.send(<objectlowername/>)
+					.expect(200)
+					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+						// Handle <objectname/> save error
+						if (<objectlowername/>SaveErr) done(<objectlowername/>SaveErr);
+
+						// Delete existing <objectname/>
+						agent.delete('/<objectlowername/>s/' + <objectlowername/>SaveRes.body._id)
+							.send(<objectlowername/>)
+							.expect(200)
+							.end(function(<objectlowername/>DeleteErr, <objectlowername/>DeleteRes) {
+								// Handle <objectname/> error error
+								if (<objectlowername/>DeleteErr) done(<objectlowername/>DeleteErr);
+
+								// Set assertions
+								(<objectlowername/>DeleteRes.body._id).should.equal(<objectlowername/>SaveRes.body._id);
+
+								// Call the assertion callback
+								done();
+							});
+					});
+			});
+	});
+
+	it('should not be able to delete <objectname/> instance if not signed in', function(done) {
+		// Set <objectname/> user 
+		<objectlowername/>.user = user;
+
+		// Create new <objectname/> model instance
+		var <objectlowername/>Obj = new <objectname/>(<objectlowername/>);
+
+		// Save the <objectname/>
+		<objectlowername/>Obj.save(function() {
+			// Try deleting <objectname/>
+			request(app).delete('/<objectlowername/>s/' + <objectlowername/>Obj._id)
+			.expect(401)
+			.end(function(<objectlowername/>DeleteErr, <objectlowername/>DeleteRes) {
+				// Set message assertion
+				(<objectlowername/>DeleteRes.body.message).should.match('User is not logged in');
+
+				// Handle <objectname/> error error
+				done(<objectlowername/>DeleteErr);
+			});
+
+		});
+	});
+
+	afterEach(function(done) {
+		User.remove().exec();
+		<objectname/>.remove().exec();
+		done();
+	});
+});
