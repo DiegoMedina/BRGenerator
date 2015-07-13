@@ -3,10 +3,10 @@
   <xs:element name="Model">
     <xs:complexType>
       <xs:sequence>
-        <xs:element name="Atributes">
+        <xs:element name="Properties">
           <xs:complexType>
             <xs:sequence>
-              <xs:element name="Atribute" maxOccurs="unbounded" minOccurs="0">
+              <xs:element name="Property" maxOccurs="unbounded" minOccurs="0">
                 <xs:complexType>
                   <xs:sequence>
                     <xs:element type="xs:string" name="Name"/>

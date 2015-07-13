@@ -14,6 +14,7 @@ import javax.xml.bind.JAXBException;
 import javax.xml.bind.Unmarshaller;
 
 import com.brgenerator.entities.Model;
+import com.brgenerator.entities.Model.Properties;
 
 import javax.servlet.ServletContext;
 
@@ -21,24 +22,25 @@ import javax.servlet.ServletContext;
 public class GeneratorManager
 {
 	
-	static String pathRoot = "";
-	static String pathDest = "/Base\\Generated\\";
-	static List<Model> modelos = new ArrayList<Model>();
-	private ServletContext servletContext;
+	private List<Model> modelos = new ArrayList<Model>();
+	private File forigen;
+	private File fdestino;
+	private File fmodelos;
 	
-	public GeneratorManager(ServletContext sc)
+	public GeneratorManager(File f_origen, File f_destino, File f_modelos)
 	{
-		servletContext = sc;
+	    forigen = f_origen;
+	    fdestino = f_destino;
+	    fmodelos = f_modelos;
 	}
 	
 	public void loadModels()
 	{
 		modelos.clear();
-		System.out.println("Carpeta con recursos: " + servletContext.getRealPath("/WEB-INF/resources/Model/"));
-		File srcFolder = new File( servletContext.getRealPath("/WEB-INF/resources/Model/"));
+		System.out.println("Carpeta con modelos: " + fmodelos);
 		
 		//make sure source exists
-    	if(!srcFolder.exists())
+    	if(!fmodelos.exists())
     	{
     		System.out.println("Directory Model does not exist.");
            //just exit
@@ -46,11 +48,11 @@ public class GeneratorManager
         }
     	else
     	{
-    	    String files[] = srcFolder.list();
+    	    String files[] = fmodelos.list();
     	    
        		for (String file : files) 
        		{
-       			File srcFile = new File(srcFolder, file);
+       			File srcFile = new File(fmodelos, file);
        			if(srcFile.getName().endsWith(TemplateManager.XML_EXTENSION))
         		{
        				try
@@ -58,6 +60,7 @@ public class GeneratorManager
 	       				JAXBContext jaxbContext = JAXBContext.newInstance(Model.class);
 	       				Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
 	       				Model modelo = (Model) jaxbUnmarshaller.unmarshal(srcFile);
+	       				
 	       				System.out.println(modelo);
 	       				modelos.add(modelo);
 	        		} 
@@ -78,13 +81,11 @@ public class GeneratorManager
 	
 	public void run()
 	{
-		System.out.println("Carpeta con recursos: " + servletContext.getRealPath("/WEB-INF/resources/Model/"));
-		File srcFolder = new File(servletContext.getRealPath("/WEB-INF/resources/Base/"));
-//		File srcFolder = new File(pathRoot);
-    	File destFolder = new File(servletContext.getRealPath("/WEB-INF/resources/Destino/"));
+		System.out.println("Carpeta con recursos: " + forigen);
+		
 
     	//make sure source exists
-    	if(!srcFolder.exists())
+    	if(!forigen.exists())
     	{
            System.out.println("Directory does not exist.");
            //just exit
@@ -96,7 +97,7 @@ public class GeneratorManager
            try
            {
         	   loadModels();
-        	   generate(srcFolder,destFolder);
+        	   generate(forigen,fdestino);
            }
            catch(IOException e)
            {
@@ -111,6 +112,9 @@ public class GeneratorManager
 	
 	public void generate(File src, File dest) throws IOException
 	{
+		
+		TemplateManager tm = new TemplateManager(this.modelos);
+		
     	if(src.isDirectory())
     	{
     		//Si la carpeta no existe, se crea
@@ -136,12 +140,9 @@ public class GeneratorManager
     	}
     	else
     	{
-    		if(src.getName().endsWith(TemplateManager.TEMPLATE_EXTENSION))
+    		if(src.getName().endsWith(TemplateManager.TEMPLATE_MODEL_EXTENSION))
     		{
-    			for (Model model : modelos) 
-    			{
-    				TemplateManager.build(model, src, dest);
-				}
+    			tm.build(src, dest);
     		}
     		else
     		{
@@ -164,17 +165,5 @@ public class GeneratorManager
     		}
     	}
     }
-	
-	
-	public static void showFiles(File[] files) {
-		for (File file : files) {
-	        if (file.isDirectory()) {
-	            System.out.println("Directory: " + file.getName());
-	            showFiles(file.listFiles()); // Calls same method again.
-	        } else {
-	            System.out.println("File: " + file.getName());
-	        }
-	    }
-	}
 
 }

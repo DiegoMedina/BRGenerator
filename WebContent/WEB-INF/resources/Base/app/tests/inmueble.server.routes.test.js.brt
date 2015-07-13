@@ -5,18 +5,18 @@ var should = require('should'),
 	app = require('../../server'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	<objectname/> = mongoose.model('<objectname/>'),
+	<modelname/> = mongoose.model('<modelname/>'),
 	agent = request.agent(app);
 
 /**
  * Globals
  */
-var credentials, user, <objectlowername/>;
+var credentials, user, <modelnamelower/>;
 
 /**
- * <objectname/> routes tests
+ * <modelname/> routes tests
  */
-describe('<objectname/> CRUD tests', function() {
+describe('<modelname/> CRUD tests', function() {
 	beforeEach(function(done) {
 		// Create user credentials
 		credentials = {
@@ -35,17 +35,17 @@ describe('<objectname/> CRUD tests', function() {
 			provider: 'local'
 		});
 
-		// Save a user to the test db and create new <objectname/>
+		// Save a user to the test db and create new <modelname/>
 		user.save(function() {
-			<objectlowername/> = {
-				name: '<objectname/> Name'
+			<modelnamelower/> = {
+				name: '<modelname/> Name'
 			};
 
 			done();
 		});
 	});
 
-	it('should be able to save <objectname/> instance if logged in', function(done) {
+	it('should be able to save <modelname/> instance if logged in', function(done) {
 		agent.post('/auth/signin')
 			.send(credentials)
 			.expect(200)
@@ -56,26 +56,26 @@ describe('<objectname/> CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new <objectname/>
-				agent.post('/<objectlowername/>s')
-					.send(<objectlowername/>)
+				// Save a new <modelname/>
+				agent.post('/<modelnamelower/>s')
+					.send(<modelnamelower/>)
 					.expect(200)
-					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
-						// Handle <objectname/> save error
-						if (<objectlowername/>SaveErr) done(<objectlowername/>SaveErr);
+					.end(function(<modelnamelower/>SaveErr, <modelnamelower/>SaveRes) {
+						// Handle <modelname/> save error
+						if (<modelnamelower/>SaveErr) done(<modelnamelower/>SaveErr);
 
-						// Get a list of <objectname/>s
-						agent.get('/<objectlowername/>s')
-							.end(function(<objectlowername/>sGetErr, <objectlowername/>sGetRes) {
-								// Handle <objectname/> save error
-								if (<objectlowername/>sGetErr) done(<objectlowername/>sGetErr);
+						// Get a list of <modelname/>s
+						agent.get('/<modelnamelower/>s')
+							.end(function(<modelnamelower/>sGetErr, <modelnamelower/>sGetRes) {
+								// Handle <modelname/> save error
+								if (<modelnamelower/>sGetErr) done(<modelnamelower/>sGetErr);
 
-								// Get <objectname/>s list
-								var <objectlowername/>s = <objectlowername/>sGetRes.body;
+								// Get <modelname/>s list
+								var <modelnamelower/>s = <modelnamelower/>sGetRes.body;
 
 								// Set assertions
-								(<objectlowername/>s[0].user._id).should.equal(userId);
-								(<objectlowername/>s[0].name).should.match('<objectname/> Name');
+								(<modelnamelower/>s[0].user._id).should.equal(userId);
+								(<modelnamelower/>s[0].name).should.match('<modelname/> Name');
 
 								// Call the assertion callback
 								done();
@@ -84,19 +84,19 @@ describe('<objectname/> CRUD tests', function() {
 			});
 	});
 
-	it('should not be able to save <objectname/> instance if not logged in', function(done) {
-		agent.post('/<objectlowername/>s')
-			.send(<objectlowername/>)
+	it('should not be able to save <modelname/> instance if not logged in', function(done) {
+		agent.post('/<modelnamelower/>s')
+			.send(<modelnamelower/>)
 			.expect(401)
-			.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+			.end(function(<modelnamelower/>SaveErr, <modelnamelower/>SaveRes) {
 				// Call the assertion callback
-				done(<objectlowername/>SaveErr);
+				done(<modelnamelower/>SaveErr);
 			});
 	});
 
-	it('should not be able to save <objectname/> instance if no name is provided', function(done) {
+	it('should not be able to save <modelname/> instance if no name is provided', function(done) {
 		// Invalidate name field
-		<objectlowername/>.name = '';
+		<modelnamelower/>.name = '';
 
 		agent.post('/auth/signin')
 			.send(credentials)
@@ -108,21 +108,21 @@ describe('<objectname/> CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new <objectname/>
-				agent.post('/<objectlowername/>s')
-					.send(<objectlowername/>)
+				// Save a new <modelname/>
+				agent.post('/<modelnamelower/>s')
+					.send(<modelnamelower/>)
 					.expect(400)
-					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
+					.end(function(<modelnamelower/>SaveErr, <modelnamelower/>SaveRes) {
 						// Set message assertion
-						(<objectlowername/>SaveRes.body.message).should.match('Please fill <objectname/> name');
+						(<modelnamelower/>SaveRes.body.message).should.match('Please fill <modelname/> name');
 						
-						// Handle <objectname/> save error
-						done(<objectlowername/>SaveErr);
+						// Handle <modelname/> save error
+						done(<modelnamelower/>SaveErr);
 					});
 			});
 	});
 
-	it('should be able to update <objectname/> instance if signed in', function(done) {
+	it('should be able to update <modelname/> instance if signed in', function(done) {
 		agent.post('/auth/signin')
 			.send(credentials)
 			.expect(200)
@@ -133,28 +133,28 @@ describe('<objectname/> CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new <objectname/>
-				agent.post('/<objectlowername/>s')
-					.send(<objectlowername/>)
+				// Save a new <modelname/>
+				agent.post('/<modelnamelower/>s')
+					.send(<modelnamelower/>)
 					.expect(200)
-					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
-						// Handle <objectname/> save error
-						if (<objectlowername/>SaveErr) done(<objectlowername/>SaveErr);
+					.end(function(<modelnamelower/>SaveErr, <modelnamelower/>SaveRes) {
+						// Handle <modelname/> save error
+						if (<modelnamelower/>SaveErr) done(<modelnamelower/>SaveErr);
 
-						// Update <objectname/> name
-						<objectlowername/>.name = 'WHY YOU GOTTA BE SO MEAN?';
+						// Update <modelname/> name
+						<modelnamelower/>.name = 'WHY YOU GOTTA BE SO MEAN?';
 
-						// Update existing <objectname/>
-						agent.put('/<objectlowername/>s/' + <objectlowername/>SaveRes.body._id)
-							.send(<objectlowername/>)
+						// Update existing <modelname/>
+						agent.put('/<modelnamelower/>s/' + <modelnamelower/>SaveRes.body._id)
+							.send(<modelnamelower/>)
 							.expect(200)
-							.end(function(<objectlowername/>UpdateErr, <objectlowername/>UpdateRes) {
-								// Handle <objectname/> update error
-								if (<objectlowername/>UpdateErr) done(<objectlowername/>UpdateErr);
+							.end(function(<modelnamelower/>UpdateErr, <modelnamelower/>UpdateRes) {
+								// Handle <modelname/> update error
+								if (<modelnamelower/>UpdateErr) done(<modelnamelower/>UpdateErr);
 
 								// Set assertions
-								(<objectlowername/>UpdateRes.body._id).should.equal(<objectlowername/>SaveRes.body._id);
-								(<objectlowername/>UpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
+								(<modelnamelower/>UpdateRes.body._id).should.equal(<modelnamelower/>SaveRes.body._id);
+								(<modelnamelower/>UpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
 
 								// Call the assertion callback
 								done();
@@ -163,14 +163,14 @@ describe('<objectname/> CRUD tests', function() {
 			});
 	});
 
-	it('should be able to get a list of <objectname/>s if not signed in', function(done) {
-		// Create new <objectname/> model instance
-		var <objectlowername/>Obj = new <objectname/>(<objectlowername/>);
+	it('should be able to get a list of <modelname/>s if not signed in', function(done) {
+		// Create new <modelname/> model instance
+		var <modelnamelower/>Obj = new <modelname/>(<modelnamelower/>);
 
-		// Save the <objectname/>
-		<objectlowername/>Obj.save(function() {
-			// Request <objectname/>s
-			request(app).get('/<objectlowername/>s')
+		// Save the <modelname/>
+		<modelnamelower/>Obj.save(function() {
+			// Request <modelname/>s
+			request(app).get('/<modelnamelower/>s')
 				.end(function(req, res) {
 					// Set assertion
 					res.body.should.be.an.Array.with.lengthOf(1);
@@ -183,16 +183,16 @@ describe('<objectname/> CRUD tests', function() {
 	});
 
 
-	it('should be able to get a single <objectname/> if not signed in', function(done) {
-		// Create new <objectname/> model instance
-		var <objectlowername/>Obj = new <objectname/>(<objectlowername/>);
+	it('should be able to get a single <modelname/> if not signed in', function(done) {
+		// Create new <modelname/> model instance
+		var <modelnamelower/>Obj = new <modelname/>(<modelnamelower/>);
 
-		// Save the <objectname/>
-		<objectlowername/>Obj.save(function() {
-			request(app).get('/<objectlowername/>s/' + <objectlowername/>Obj._id)
+		// Save the <modelname/>
+		<modelnamelower/>Obj.save(function() {
+			request(app).get('/<modelnamelower/>s/' + <modelnamelower/>Obj._id)
 				.end(function(req, res) {
 					// Set assertion
-					res.body.should.be.an.Object.with.property('name', <objectlowername/>.name);
+					res.body.should.be.an.Object.with.property('name', <modelnamelower/>.name);
 
 					// Call the assertion callback
 					done();
@@ -200,7 +200,7 @@ describe('<objectname/> CRUD tests', function() {
 		});
 	});
 
-	it('should be able to delete <objectname/> instance if signed in', function(done) {
+	it('should be able to delete <modelname/> instance if signed in', function(done) {
 		agent.post('/auth/signin')
 			.send(credentials)
 			.expect(200)
@@ -211,24 +211,24 @@ describe('<objectname/> CRUD tests', function() {
 				// Get the userId
 				var userId = user.id;
 
-				// Save a new <objectname/>
-				agent.post('/<objectlowername/>s')
-					.send(<objectlowername/>)
+				// Save a new <modelname/>
+				agent.post('/<modelnamelower/>s')
+					.send(<modelnamelower/>)
 					.expect(200)
-					.end(function(<objectlowername/>SaveErr, <objectlowername/>SaveRes) {
-						// Handle <objectname/> save error
-						if (<objectlowername/>SaveErr) done(<objectlowername/>SaveErr);
+					.end(function(<modelnamelower/>SaveErr, <modelnamelower/>SaveRes) {
+						// Handle <modelname/> save error
+						if (<modelnamelower/>SaveErr) done(<modelnamelower/>SaveErr);
 
-						// Delete existing <objectname/>
-						agent.delete('/<objectlowername/>s/' + <objectlowername/>SaveRes.body._id)
-							.send(<objectlowername/>)
+						// Delete existing <modelname/>
+						agent.delete('/<modelnamelower/>s/' + <modelnamelower/>SaveRes.body._id)
+							.send(<modelnamelower/>)
 							.expect(200)
-							.end(function(<objectlowername/>DeleteErr, <objectlowername/>DeleteRes) {
-								// Handle <objectname/> error error
-								if (<objectlowername/>DeleteErr) done(<objectlowername/>DeleteErr);
+							.end(function(<modelnamelower/>DeleteErr, <modelnamelower/>DeleteRes) {
+								// Handle <modelname/> error error
+								if (<modelnamelower/>DeleteErr) done(<modelnamelower/>DeleteErr);
 
 								// Set assertions
-								(<objectlowername/>DeleteRes.body._id).should.equal(<objectlowername/>SaveRes.body._id);
+								(<modelnamelower/>DeleteRes.body._id).should.equal(<modelnamelower/>SaveRes.body._id);
 
 								// Call the assertion callback
 								done();
@@ -237,24 +237,24 @@ describe('<objectname/> CRUD tests', function() {
 			});
 	});
 
-	it('should not be able to delete <objectname/> instance if not signed in', function(done) {
-		// Set <objectname/> user 
-		<objectlowername/>.user = user;
+	it('should not be able to delete <modelname/> instance if not signed in', function(done) {
+		// Set <modelname/> user 
+		<modelnamelower/>.user = user;
 
-		// Create new <objectname/> model instance
-		var <objectlowername/>Obj = new <objectname/>(<objectlowername/>);
+		// Create new <modelname/> model instance
+		var <modelnamelower/>Obj = new <modelname/>(<modelnamelower/>);
 
-		// Save the <objectname/>
-		<objectlowername/>Obj.save(function() {
-			// Try deleting <objectname/>
-			request(app).delete('/<objectlowername/>s/' + <objectlowername/>Obj._id)
+		// Save the <modelname/>
+		<modelnamelower/>Obj.save(function() {
+			// Try deleting <modelname/>
+			request(app).delete('/<modelnamelower/>s/' + <modelnamelower/>Obj._id)
 			.expect(401)
-			.end(function(<objectlowername/>DeleteErr, <objectlowername/>DeleteRes) {
+			.end(function(<modelnamelower/>DeleteErr, <modelnamelower/>DeleteRes) {
 				// Set message assertion
-				(<objectlowername/>DeleteRes.body.message).should.match('User is not logged in');
+				(<modelnamelower/>DeleteRes.body.message).should.match('User is not logged in');
 
-				// Handle <objectname/> error error
-				done(<objectlowername/>DeleteErr);
+				// Handle <modelname/> error error
+				done(<modelnamelower/>DeleteErr);
 			});
 
 		});
@@ -262,7 +262,7 @@ describe('<objectname/> CRUD tests', function() {
 
 	afterEach(function(done) {
 		User.remove().exec();
-		<objectname/>.remove().exec();
+		<modelname/>.remove().exec();
 		done();
 	});
 });

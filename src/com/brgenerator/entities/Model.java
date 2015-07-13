@@ -2,7 +2,7 @@
 // Este archivo ha sido generado por la arquitectura JavaTM para la implantación de la referencia de enlace (JAXB) XML v2.2.11 
 // Visite <a href="http://java.sun.com/xml/jaxb">http://java.sun.com/xml/jaxb</a> 
 // Todas las modificaciones realizadas en este archivo se perderán si se vuelve a compilar el esquema de origen. 
-// Generado el: 2015.07.02 a las 03:52:36 PM GMT-03:00 
+// Generado el: 2015.07.12 a las 05:59:49 PM ART 
 //
 
 
@@ -10,10 +10,12 @@ package com.brgenerator.entities;
 
 import java.util.ArrayList;
 import java.util.List;
+import javax.xml.bind.JAXBElement;
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlAttribute;
 import javax.xml.bind.annotation.XmlElement;
+import javax.xml.bind.annotation.XmlElementRef;
 import javax.xml.bind.annotation.XmlRootElement;
 import javax.xml.bind.annotation.XmlType;
 
@@ -28,12 +30,12 @@ import javax.xml.bind.annotation.XmlType;
  *   &lt;complexContent&gt;
  *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *       &lt;sequence&gt;
- *         &lt;element name="Atributes"&gt;
+ *         &lt;element name="Properties"&gt;
  *           &lt;complexType&gt;
  *             &lt;complexContent&gt;
  *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
  *                 &lt;sequence&gt;
- *                   &lt;element name="Atribute" maxOccurs="unbounded" minOccurs="0"&gt;
+ *                   &lt;element name="Property" maxOccurs="unbounded" minOccurs="0"&gt;
  *                     &lt;complexType&gt;
  *                       &lt;complexContent&gt;
  *                         &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
@@ -86,38 +88,38 @@ import javax.xml.bind.annotation.XmlType;
  */
 @XmlAccessorType(XmlAccessType.FIELD)
 @XmlType(name = "", propOrder = {
-    "atributes"
+    "properties"
 })
 @XmlRootElement(name = "Model")
 public class Model {
 
-    @XmlElement(name = "Atributes", required = true)
-    protected Model.Atributes atributes;
+    @XmlElement(name = "Properties", required = true)
+    protected Model.Properties properties;
     @XmlAttribute(name = "name")
     protected String name;
 
     /**
-     * Obtiene el valor de la propiedad atributes.
+     * Obtiene el valor de la propiedad properties.
      * 
      * @return
      *     possible object is
-     *     {@link Model.Atributes }
+     *     {@link Model.Properties }
      *     
      */
-    public Model.Atributes getAtributes() {
-        return atributes;
+    public Model.Properties getProperties() {
+        return properties;
     }
 
     /**
-     * Define el valor de la propiedad atributes.
+     * Define el valor de la propiedad properties.
      * 
      * @param value
      *     allowed object is
-     *     {@link Model.Atributes }
+     *     {@link Model.Properties }
      *     
      */
-    public void setAtributes(Model.Atributes value) {
-        this.atributes = value;
+    public void setProperties(Model.Properties value) {
+        this.properties = value;
     }
 
     /**
@@ -155,7 +157,7 @@ public class Model {
      *   &lt;complexContent&gt;
      *     &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
      *       &lt;sequence&gt;
-     *         &lt;element name="Atribute" maxOccurs="unbounded" minOccurs="0"&gt;
+     *         &lt;element name="Property" maxOccurs="unbounded" minOccurs="0"&gt;
      *           &lt;complexType&gt;
      *             &lt;complexContent&gt;
      *               &lt;restriction base="{http://www.w3.org/2001/XMLSchema}anyType"&gt;
@@ -202,40 +204,40 @@ public class Model {
      */
     @XmlAccessorType(XmlAccessType.FIELD)
     @XmlType(name = "", propOrder = {
-        "atribute"
+        "property"
     })
-    public static class Atributes {
+    public static class Properties {
 
-        @XmlElement(name = "Atribute")
-        protected List<Model.Atributes.Atribute> atribute;
+        @XmlElement(name = "Property")
+        protected List<Model.Properties.Property> property;
 
         /**
-         * Gets the value of the atribute property.
+         * Gets the value of the property property.
          * 
          * <p>
          * This accessor method returns a reference to the live list,
          * not a snapshot. Therefore any modification you make to the
          * returned list will be present inside the JAXB object.
-         * This is why there is not a <CODE>set</CODE> method for the atribute property.
+         * This is why there is not a <CODE>set</CODE> method for the property property.
          * 
          * <p>
          * For example, to add a new item, do as follows:
          * <pre>
-         *    getAtribute().add(newItem);
+         *    getProperty().add(newItem);
          * </pre>
          * 
          * 
          * <p>
          * Objects of the following type(s) are allowed in the list
-         * {@link Model.Atributes.Atribute }
+         * {@link Model.Properties.Property }
          * 
          * 
          */
-        public List<Model.Atributes.Atribute> getAtribute() {
-            if (atribute == null) {
-                atribute = new ArrayList<Model.Atributes.Atribute>();
+        public List<Model.Properties.Property> getProperty() {
+            if (property == null) {
+                property = new ArrayList<Model.Properties.Property>();
             }
-            return this.atribute;
+            return this.property;
         }
 
 
@@ -297,28 +299,28 @@ public class Model {
             "required",
             "relation"
         })
-        public static class Atribute {
+        public static class Property {
 
             @XmlElement(name = "Name", required = true)
             protected String name;
             @XmlElement(name = "Type", required = true)
             protected String type;
-            @XmlElement(name = "Enum", required = false)
-            protected String _enum;
-            @XmlElement(name = "Trim" , required = false)
-            protected Boolean trim;
-            @XmlElement(name = "Default" , required = false)
-            protected String _default;
-            @XmlElement(name = "Validate", required = false)
-            protected String validate;
-            @XmlElement(name = "Match", required = false)
-            protected String match;
-            @XmlElement(name = "Unique", required = false)
-            protected String unique;
-            @XmlElement(name = "Required", required = false)
-            protected String required;
-            @XmlElement(name = "Relation", required = false)
-            protected String relation;
+            @XmlElementRef(name = "Enum", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> _enum;
+            @XmlElementRef(name = "Trim", type = JAXBElement.class, required = false)
+            protected JAXBElement<Boolean> trim;
+            @XmlElementRef(name = "Default", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> _default;
+            @XmlElementRef(name = "Validate", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> validate;
+            @XmlElementRef(name = "Match", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> match;
+            @XmlElementRef(name = "Unique", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> unique;
+            @XmlElementRef(name = "Required", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> required;
+            @XmlElementRef(name = "Relation", type = JAXBElement.class, required = false)
+            protected JAXBElement<String> relation;
 
             /**
              * Obtiene el valor de la propiedad name.
@@ -373,10 +375,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getEnum() {
+            public JAXBElement<String> getEnum() {
                 return _enum;
             }
 
@@ -385,10 +387,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setEnum(String value) {
+            public void setEnum(JAXBElement<String> value) {
                 this._enum = value;
             }
 
@@ -397,10 +399,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link Boolean }
+             *     {@link JAXBElement }{@code <}{@link Boolean }{@code >}
              *     
              */
-            public Boolean isTrim() {
+            public JAXBElement<Boolean> getTrim() {
                 return trim;
             }
 
@@ -409,10 +411,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link Boolean }
+             *     {@link JAXBElement }{@code <}{@link Boolean }{@code >}
              *     
              */
-            public void setTrim(Boolean value) {
+            public void setTrim(JAXBElement<Boolean> value) {
                 this.trim = value;
             }
 
@@ -421,10 +423,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getDefault() {
+            public JAXBElement<String> getDefault() {
                 return _default;
             }
 
@@ -433,10 +435,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setDefault(String value) {
+            public void setDefault(JAXBElement<String> value) {
                 this._default = value;
             }
 
@@ -445,10 +447,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getValidate() {
+            public JAXBElement<String> getValidate() {
                 return validate;
             }
 
@@ -457,10 +459,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setValidate(String value) {
+            public void setValidate(JAXBElement<String> value) {
                 this.validate = value;
             }
 
@@ -469,10 +471,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getMatch() {
+            public JAXBElement<String> getMatch() {
                 return match;
             }
 
@@ -481,10 +483,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setMatch(String value) {
+            public void setMatch(JAXBElement<String> value) {
                 this.match = value;
             }
 
@@ -493,10 +495,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getUnique() {
+            public JAXBElement<String> getUnique() {
                 return unique;
             }
 
@@ -505,10 +507,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setUnique(String value) {
+            public void setUnique(JAXBElement<String> value) {
                 this.unique = value;
             }
 
@@ -517,10 +519,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getRequired() {
+            public JAXBElement<String> getRequired() {
                 return required;
             }
 
@@ -529,10 +531,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setRequired(String value) {
+            public void setRequired(JAXBElement<String> value) {
                 this.required = value;
             }
 
@@ -541,10 +543,10 @@ public class Model {
              * 
              * @return
              *     possible object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public String getRelation() {
+            public JAXBElement<String> getRelation() {
                 return relation;
             }
 
@@ -553,10 +555,10 @@ public class Model {
              * 
              * @param value
              *     allowed object is
-             *     {@link String }
+             *     {@link JAXBElement }{@code <}{@link String }{@code >}
              *     
              */
-            public void setRelation(String value) {
+            public void setRelation(JAXBElement<String> value) {
                 this.relation = value;
             }
 

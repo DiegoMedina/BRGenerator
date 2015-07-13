@@ -1,8 +1,8 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model name="Persona">
-	<Atributes>
-		<Atribute>
-			<Name>Name</Name>
+	<Properties>
+		<Property>
+			<Name>Diego</Name>
 			<Type>String</Type>
 			<Enum>Golf</Enum>
 			<Trim>true</Trim>
@@ -11,8 +11,8 @@
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message']]></Unique>
 			<Required><![CDATA['Please fill in a username']]></Required>
-		</Atribute>
-		<Atribute>
+		</Property>
+		<Property>
 			<Name>Surname</Name>
 			<Type>String</Type>
 			<Trim>true</Trim>
@@ -21,8 +21,8 @@
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid surname']]]></Match>
 			<Unique><![CDATA['testing error message 2']]></Unique>
 			<Required><![CDATA['Please fill in a surname']]></Required>
-		</Atribute>
-		<Atribute>
+		</Property>
+		<Property>
 			<Name>BirthDay</Name>
 			<Type>Date</Type>
 			<Trim>false</Trim>
@@ -31,8 +31,8 @@
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message 3']]></Unique>
 			<Required><![CDATA['Please fill in a username']]></Required>
-		</Atribute>
-		<Atribute>
+		</Property>
+		<Property>
 			<Name>Age</Name>
 			<Type>Integer</Type>
 			<Default>-1</Default>
@@ -40,8 +40,8 @@
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message 3']]></Unique>
 			<Required><![CDATA['Please fill in a username']]></Required>
-		</Atribute>
-		<Atribute>
+		</Property>
+		<Property>
 			<Name>BirthDay</Name>
 			<Type>Date</Type>
 			<Trim>false</Trim>
@@ -50,13 +50,13 @@
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message 3']]></Unique>
 			<Required><![CDATA['Please fill in a username']]></Required>
-		</Atribute>
-		<Atribute>
+		</Property>
+		<Property>
 			<Name>Direcciones</Name>
 			<Type>Direccion</Type>
 			<Relation>
 				ManyToMany
 			</Relation>
-		</Atribute>
-	</Atributes>
+		</Property>
+	</Properties>
 </Model>
