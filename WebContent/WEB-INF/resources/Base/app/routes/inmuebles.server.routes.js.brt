@@ -2,18 +2,18 @@
 
 module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
-	var <objectpluralname/> = require('../../app/controllers/<objectpluralname/>.server.controller');
+	var <modelnameplural/> = require('../../app/controllers/<modelnameplural/>.server.controller');
 
-	// Inmuebles Routes
-	app.route('/<objectpluralname/>')
-		.get(<objectpluralname/>.list)
-		.post(users.requiresLogin, <objectpluralname/>.create);
+	// <modelname/> Routes
+	app.route('/<modelnameplural/>')
+		.get(<modelnameplural/>.list)
+		.post(users.requiresLogin, <modelnameplural/>.create);
 
-	app.route('/<objectpluralname/>/:<objectlowername/>Id')
-		.get(<objectpluralname/>.read)
-		.put(users.requiresLogin, <objectpluralname/>.hasAuthorization, <objectpluralname/>.update)
-		.delete(users.requiresLogin, <objectpluralname/>.hasAuthorization, <objectpluralname/>.delete);
+	app.route('/<modelnameplural/>/:<modelnamelower/>Id')
+		.get(<modelnameplural/>.read)
+		.put(users.requiresLogin, <modelnameplural/>.hasAuthorization, <modelnameplural/>.update)
+		.delete(users.requiresLogin, <modelnameplural/>.hasAuthorization, <modelnameplural/>.delete);
 
 	// Finish by binding the <objectname/> middleware
-	app.param('<objectlowername/>Id', <objectpluralname/>.<objectlowername/>ByID);
+	app.param('<modelnamelower/>Id', <modelnameplural/>.<modelnamelower/>ByID);
 };

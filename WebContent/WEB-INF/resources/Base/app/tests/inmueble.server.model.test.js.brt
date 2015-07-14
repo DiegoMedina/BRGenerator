@@ -6,17 +6,17 @@
 var should = require('should'),
 	mongoose = require('mongoose'),
 	User = mongoose.model('User'),
-	<objectname/> = mongoose.model('<objectname/>');
+	<modelname/> = mongoose.model('<modelname/>');
 
 /**
  * Globals
  */
-var user, <objectlowername/>;
+var user, <modelnamelower/>;
 
 /**
  * Unit tests
  */
-describe('<objectname/> Model Unit Tests:', function() {
+describe('<modelname/> Model Unit Tests:', function() {
 	beforeEach(function(done) {
 		user = new User({
 			firstName: 'Full',
@@ -28,8 +28,8 @@ describe('<objectname/> Model Unit Tests:', function() {
 		});
 
 		user.save(function() { 
-			<objectlowername/> = new <objectname/>({
-				name: '<objectname/> Name',
+			<modelnamelower/> = new <modelname/>({
+				name: '<modelname/> Name',
 				user: user
 			});
 
@@ -39,16 +39,16 @@ describe('<objectname/> Model Unit Tests:', function() {
 
 	describe('Method Save', function() {
 		it('should be able to save without problems', function(done) {
-			return <objectlowername/>.save(function(err) {
+			return <modelnamelower/>.save(function(err) {
 				should.not.exist(err);
 				done();
 			});
 		});
 
 		it('should be able to show an error when try to save without name', function(done) { 
-			<objectlowername/>.name = '';
+			<modelnamelower/>.name = '';
 
-			return <objectlowername/>.save(function(err) {
+			return <modelnamelower/>.save(function(err) {
 				should.exist(err);
 				done();
 			});
@@ -56,7 +56,7 @@ describe('<objectname/> Model Unit Tests:', function() {
 	});
 
 	afterEach(function(done) { 
-		<objectname/>.remove().exec();
+		<modelname/>.remove().exec();
 		User.remove().exec();
 
 		done();

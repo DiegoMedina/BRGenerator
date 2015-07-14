@@ -1,5 +1,7 @@
 package com.brgenerator.controller;
 
+import java.io.File;
+
 import javax.servlet.ServletContext;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -23,8 +25,10 @@ public class BRGeneratorHelloWorld {
 	@RequestMapping("/welcome")
 	public ModelAndView helloWorld() 
 	{
-		
-		GeneratorManager gm = new GeneratorManager(servletContext);
+		File origen = new File(servletContext.getRealPath("/WEB-INF/resources/Base/"));
+    	File destino = new File(servletContext.getRealPath("/WEB-INF/resources/Destino/"));
+    	File modelos = new File( servletContext.getRealPath("/WEB-INF/resources/Model/"));
+		GeneratorManager gm = new GeneratorManager(origen, destino, modelos);
 		gm.run();
 		
 		String message = "<br><div style='text-align:center;'>"
