@@ -161,6 +161,7 @@ public class TemplateManager {
 				  
 				  for (com.brgenerator.entities.Model.Properties.Property propiedad : modelo.getProperties().getProperty()) 
 				  {
+					  
 					  Element nodoCopia = nodo.clone();
 					  
 						for (int i = 0; i < nodoCopia.getAllElements().size(); i++) 
@@ -170,132 +171,168 @@ public class TemplateManager {
 							
 							switch (nodoCopia.getAllElements().get(i).nodeName()) 
 							{
-							case "name":
-								if(propiedad.getName() != null)
-								{
-									if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+								case "name":
+									if(propiedad.getName() != null)
 									{
-										text = new TextNode(propiedad.getName(), "");
-										nodoCopia.getAllElements().get(i).replaceWith(text);
+										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+										{
+											text = new TextNode(propiedad.getName(), "");
+											nodoCopia.getAllElements().get(i).replaceWith(text);
+											i--;
+										}
+										else
+										{
+											text = new TextNode(propiedad.getName(), "");
+											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
+	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
+											String textAux = nodoCopia.getAllElements().get(i).text();
+	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
+											TextNode textNodeAux = new TextNode(textAux, "");
+											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
+											i--;
+										}
 									}
 									else
 									{
-										text = new TextNode(propiedad.getName(), "");
-										nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
+										nodoCopia.getAllElements().get(i).remove();
+										i--;
 									}
-								}
-								else
-								{
-									nodoCopia.getAllElements().get(i).remove();
-									i--;
-								}
+									
+								break;
+								case "default":
+									if(propiedad.getDefault() != null)
+									{
+										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+										{
+											text = new TextNode(propiedad.getDefault().getValue(), "");
+											nodoCopia.getAllElements().get(i).replaceWith(text);
+											i--;
+										}
+										else
+										{
+											text = new TextNode(propiedad.getDefault().getValue(), "");
+											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
+	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
+											String textAux = nodoCopia.getAllElements().get(i).text();
+	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
+											TextNode textNodeAux = new TextNode(textAux, "");
+											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
+											i--;
+										}
+									}
+									else
+									{
+										nodoCopia.getAllElements().get(i).remove();
+										i--;
+									}
+								break;
+								case "type":
+									if(propiedad.getType() != null)
+									{
+										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+										{
+											text = new TextNode(propiedad.getType(), "");
+											nodoCopia.getAllElements().get(i).replaceWith(text);
+											i--;
+										}
+										else
+										{
+											text = new TextNode(propiedad.getType(), "");
+											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
+	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
+											String textAux = nodoCopia.getAllElements().get(i).text();
+	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
+											TextNode textNodeAux = new TextNode(textAux, "");
+											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
+											i--;
+										}
+									}
+									else
+									{
+										nodoCopia.getAllElements().get(i).remove();
+										i--;
+									}
+								break;
+								case "required":
+									if(propiedad.getRequired() != null)
+									{
+										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+										{
+											text = new TextNode(propiedad.getRequired().getValue(), "");
+											nodoCopia.getAllElements().get(i).replaceWith(text);
+											i--;
+										}
+										else
+										{
+											text = new TextNode(propiedad.getRequired().getValue(), "");
+											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
+	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
+											String textAux = nodoCopia.getAllElements().get(i).text();
+	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
+											TextNode textNodeAux = new TextNode(textAux, "");
+											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
+											i--;
+										}
+									}
+									else
+									{
+										nodoCopia.getAllElements().get(i).remove();
+										i--;
+									}
+								break;
+								case "ref":
+//									if(propiedad.getRelation() != null)
+//									{
+//										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+//										{
+//											System.out.println("Test1");
+//										}
+//										else
+//										{
+//											System.out.println("Test2");
+//										}
+//									}
+//									else
+//									{
+//										nodoCopia.getAllElements().get(i).remove();
+//										i--;
+//									}
+								break;
+								case "trim":
+									if(propiedad.getTrim() != null)
+									{
+										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
+										{
+											text = new TextNode(propiedad.getTrim().getValue().toString(), "");
+											nodoCopia.getAllElements().get(i).replaceWith(text);
+											i--;
+										}
+										else
+										{
+											text = new TextNode(propiedad.getTrim().getValue().toString(), "");
+											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
+	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
+											String textAux = nodoCopia.getAllElements().get(i).text();
+	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
+											TextNode textNodeAux = new TextNode(textAux, "");
+											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
+											i--;
+										}
+									}
+									else
+									{
+										nodoCopia.getAllElements().get(i).remove();
+										i--;
+									}
+								break;
+								default:
+								break;
 								
-							break;
-							case "type":
-								if(propiedad.getType() != null)
-								{
-									if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-									{
-										text = new TextNode(propiedad.getType(), "");
-										nodoCopia.getAllElements().get(i).replaceWith(text);
-									}
-									else
-									{
-										text = new TextNode(propiedad.getType(), "");
-										nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-									}
-								}
-								else
-								{
-									nodoCopia.getAllElements().get(i).remove();
-									i--;
-								}
-							break;
-							case "default":
-							
-								if(propiedad.getDefault() != null)
-								{
-									if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-									{
-										text = new TextNode(propiedad.getDefault().getValue(), "");
-										nodoCopia.getAllElements().get(i).replaceWith(text);
-									}
-									else
-									{
-										text = new TextNode(propiedad.getDefault().getValue(), "");
-										nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-									}
-								}
-								else
-								{
-									nodoCopia.getAllElements().get(i).remove();
-									i--;
-								}
-								
-							break;
-							case "required":
-								if(propiedad.getRequired() != null)
-								{
-									if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-									{
-										text = new TextNode(propiedad.getRequired().getValue(), "");
-										nodoCopia.getAllElements().get(i).replaceWith(text);
-									}
-									else
-									{
-										text = new TextNode(propiedad.getRequired().getValue(), "");
-										nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-									}
-								}
-								else
-								{
-									nodoCopia.getAllElements().get(i).remove();
-									i--;
-								}
-							
-							break;
-							case "ref":
-								if(propiedad.getRelation() != null)
-								{
-									if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-									{
-										System.out.println("Test1");
-									}
-									else
-									{
-										System.out.println("Test2");
-									}
-								}
-								else
-								{
-									nodoCopia.getAllElements().get(i).remove();
-									i--;
-								}
-								break;
-							case "trim":
-								if(propiedad.getTrim() != null)
-								{
-									if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-									{
-										text = new TextNode(propiedad.getTrim().getValue().toString(), "");
-										nodoCopia.getAllElements().get(i).replaceWith(text);
-									}
-									else
-									{
-										text = new TextNode(propiedad.getTrim().getValue().toString(), "");
-										nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-									}
-								}
-								else
-								{
-									nodoCopia.getAllElements().get(i).remove();
-									i--;
-								}
-								break;
-							default:
-								break;
 							}
 						}
+						
+//						System.out.println("nodoCopia.getAllElements().html(): " + nodoCopia.getAllElements().html() +"\n\n");
+//						System.out.println("nodoCopia.html(): " + nodoCopia.html() +"\n\n");
 						
 						propiedades.add(nodoCopia);
 					  

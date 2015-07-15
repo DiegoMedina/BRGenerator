@@ -13,12 +13,12 @@ var <modelname/>Schema = new Schema({
 
 	<properties>
 	
-	<name/><type>type: <value/></type>
+	<name/>: {	
+		<type>type: <value/></type>
 		<default>default: <value/></default>
 		<required>required: <value/></required>
 		<trim>trim: <value/></trim>
 		<ref>ref: <value/></ref>
-		<trim>trim: <value/></trim>
 	}
 	
 	</properties>
