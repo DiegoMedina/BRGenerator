@@ -6,7 +6,7 @@
 			<Type>String</Type>
 			<Enum>Golf</Enum>
 			<Trim>true</Trim>
-			<Default>'Diego'</Default>
+			<Default>Diego</Default>
 			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message']]></Unique>
@@ -16,7 +16,7 @@
 			<Name>Surname</Name>
 			<Type>String</Type>
 			<Trim>true</Trim>
-			<Default>'Apellido'</Default>
+			<Default>Apellido</Default>
 			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your surname']]]></Validate>
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid surname']]]></Match>
 			<Unique><![CDATA['testing error message 2']]></Unique>
@@ -26,7 +26,7 @@
 			<Name>BirthDay</Name>
 			<Type>Date</Type>
 			<Trim>false</Trim>
-			<Default>'01/01/2000'</Default>
+			<Default>01/01/2000</Default>
 			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message 3']]></Unique>
@@ -45,7 +45,7 @@
 			<Name>BirthDay</Name>
 			<Type>Date</Type>
 			<Trim>false</Trim>
-			<Default>'01/01/2000'</Default>
+			<Default>01/01/2000</Default>
 			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
 			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
 			<Unique><![CDATA['testing error message 3']]></Unique>
