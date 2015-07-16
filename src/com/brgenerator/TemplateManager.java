@@ -6,13 +6,13 @@ import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.io.StringReader;
 import java.util.ArrayList;
-import java.util.Collection;
-import java.util.Iterator;
 import java.util.List;
-import java.util.ListIterator;
 
+import org.apache.catalina.util.StringParser;
 import org.jsoup.Jsoup;
+import org.jsoup.helper.StringUtil;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.nodes.Node;
@@ -156,202 +156,55 @@ public class TemplateManager {
 				  nodo.replaceWith(text);
 			  break;
 			  case "properties":
+				 
 				  
-				  Elements propiedades = new Elements();
+//				  for (com.brgenerator.entities.Model.Properties.Property propiedad : modelo.getProperties().getProperty()) 
+//				  {
+//					  
+//					  // Creo una copia de properties
+//					  Element copia = nodo.clone();
+//					  
+//					  // itero por todos los nodos names que existan
+//					  
+//					  for (int i = 0; i < copia.getElementsByTag("name").size(); i++) 
+//					  {
+//						  if(copia.getElementsByTag("name").get(i).childNodes().isEmpty())
+//						  {
+//							  TextNode texto = new TextNode(propiedad.getName(), "");
+//							  copia.getElementsByTag("name").get(i).replaceWith(texto);
+//							  i--;
+//						  }
+//					  }
+//					  
+//					  nodo.after(copia);
+//					  copia.unwrap();
+//					  
+//				  }
+//				  
+//				  Element copiaPadre = nodo.parent().clone();
+//				  copiaPadre.getElementsByTag("properties").first().remove();
+//				  nodo = copiaPadre;
 				  
-				  for (com.brgenerator.entities.Model.Properties.Property propiedad : modelo.getProperties().getProperty()) 
-				  {
-					  
-					  Element nodoCopia = nodo.clone();
-					  
-						for (int i = 0; i < nodoCopia.getAllElements().size(); i++) 
-						{
-							
-							System.out.println("nodoCopia.getAllElements().get(i).nodeName(): " + nodoCopia.getAllElements().get(i).nodeName() );
-							
-							switch (nodoCopia.getAllElements().get(i).nodeName()) 
-							{
-								case "name":
-									if(propiedad.getName() != null)
-									{
-										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-										{
-											text = new TextNode(propiedad.getName(), "");
-											nodoCopia.getAllElements().get(i).replaceWith(text);
-											i--;
-										}
-										else
-										{
-											text = new TextNode(propiedad.getName(), "");
-											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
-											String textAux = nodoCopia.getAllElements().get(i).text();
-	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
-											TextNode textNodeAux = new TextNode(textAux, "");
-											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
-											i--;
-										}
-									}
-									else
-									{
-										nodoCopia.getAllElements().get(i).remove();
-										i--;
-									}
-									
-								break;
-								case "default":
-									if(propiedad.getDefault() != null)
-									{
-										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-										{
-											text = new TextNode(propiedad.getDefault().getValue(), "");
-											nodoCopia.getAllElements().get(i).replaceWith(text);
-											i--;
-										}
-										else
-										{
-											text = new TextNode(propiedad.getDefault().getValue(), "");
-											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
-											String textAux = nodoCopia.getAllElements().get(i).text();
-	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
-											TextNode textNodeAux = new TextNode(textAux, "");
-											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
-											i--;
-										}
-									}
-									else
-									{
-										nodoCopia.getAllElements().get(i).remove();
-										i--;
-									}
-								break;
-								case "type":
-									if(propiedad.getType() != null)
-									{
-										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-										{
-											text = new TextNode(propiedad.getType(), "");
-											nodoCopia.getAllElements().get(i).replaceWith(text);
-											i--;
-										}
-										else
-										{
-											text = new TextNode(propiedad.getType(), "");
-											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
-											String textAux = nodoCopia.getAllElements().get(i).text();
-	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
-											TextNode textNodeAux = new TextNode(textAux, "");
-											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
-											i--;
-										}
-									}
-									else
-									{
-										nodoCopia.getAllElements().get(i).remove();
-										i--;
-									}
-								break;
-								case "required":
-									if(propiedad.getRequired() != null)
-									{
-										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-										{
-											text = new TextNode(propiedad.getRequired().getValue(), "");
-											nodoCopia.getAllElements().get(i).replaceWith(text);
-											i--;
-										}
-										else
-										{
-											text = new TextNode(propiedad.getRequired().getValue(), "");
-											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
-											String textAux = nodoCopia.getAllElements().get(i).text();
-	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
-											TextNode textNodeAux = new TextNode(textAux, "");
-											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
-											i--;
-										}
-									}
-									else
-									{
-										nodoCopia.getAllElements().get(i).remove();
-										i--;
-									}
-								break;
-								case "ref":
-//									if(propiedad.getRelation() != null)
-//									{
-//										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-//										{
-//											System.out.println("Test1");
-//										}
-//										else
-//										{
-//											System.out.println("Test2");
-//										}
-//									}
-//									else
-//									{
-//										nodoCopia.getAllElements().get(i).remove();
-//										i--;
-//									}
-								break;
-								case "trim":
-									if(propiedad.getTrim() != null)
-									{
-										if(nodoCopia.getAllElements().get(i).childNodes().isEmpty())
-										{
-											text = new TextNode(propiedad.getTrim().getValue().toString(), "");
-											nodoCopia.getAllElements().get(i).replaceWith(text);
-											i--;
-										}
-										else
-										{
-											text = new TextNode(propiedad.getTrim().getValue().toString(), "");
-											nodoCopia.getAllElements().get(i).getElementsByTag("value").get(0).replaceWith(text);
-	//										System.out.println("nodoCopia.getAllElements().get(i).text(): " + nodoCopia.getAllElements().get(i).text() + "\n\n");
-											String textAux = nodoCopia.getAllElements().get(i).text();
-	//										System.out.println("textoNuevo: " + textoNuevo + "\n\n" );
-											TextNode textNodeAux = new TextNode(textAux, "");
-											nodoCopia.getAllElements().get(i).replaceWith(textNodeAux);
-											i--;
-										}
-									}
-									else
-									{
-										nodoCopia.getAllElements().get(i).remove();
-										i--;
-									}
-								break;
-								default:
-								break;
-								
-							}
-						}
-						
-//						System.out.println("nodoCopia.getAllElements().html(): " + nodoCopia.getAllElements().html() +"\n\n");
-//						System.out.println("nodoCopia.html(): " + nodoCopia.html() +"\n\n");
-						
-						propiedades.add(nodoCopia);
-					  
-				  	}
-				  	
-				  for (Element element : propiedades) 
-				  {
-					    nodo.parent().appendChild(element);
-				  }
+				  TextNode n = new TextNode("daatoss","");
+				  nodo.replaceWith(n); 
 				  
-				  nodo.remove();
-					
-				  break;
-				  default:
-				  {
-					}
-					  
-				  break;
-			  }
+				  
+				  
+				  System.out.println("Data nodo.parent().text(): " + nodo + "\n" +
+						  "Data nodo.text(): " + nodo.text() + "\n\n" );
+				  
+//				  for (int i = 0; i < nodo.parent().getElementsByTag("properties").size(); i++) {
+//					  nodo.parent().getElementsByTag("properties").get(i).unwrap();
+//					  i--;
+//				}
+				  
+			  break;
+			  default:
+			  {
+				}
+				  
+			  break;
+		  }
 
 		System.out.println("Data nodo nodo.text(): " + nodo.text() + "\n" +
 				  "nodo.html(): " + nodo.html() + "\n" +
