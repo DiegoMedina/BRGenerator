@@ -1,0 +1,107 @@
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+var mongoose = require('mongoose'),
+	errorHandler = require('./errors.server.controller'),
+	[model:name] = mongoose.model('[model:name]'),
+	_ = require('lodash');
+
+/**
+ * Create a [model:name]
+ */
+exports.create = function(req, res) {
+	var [model:name:lower] = new [model:name](req.body);
+	[model:name:lower].user = req.user;
+
+	[model:name:lower].save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp([model:name:lower]);
+		}
+	});
+};
+
+/**
+ * Show the current [model:name]
+ */
+exports.read = function(req, res) {
+	res.jsonp(req.[model:name:lower]);
+};
+
+/**
+ * Update a [model:name]
+ */
+exports.update = function(req, res) {
+	var [model:name:lower] = req.[model:name:lower] ;
+
+	[model:name:lower] = _.extend([model:name:lower] , req.body);
+
+	[model:name:lower].save(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp([model:name:lower]);
+		}
+	});
+};
+
+/**
+ * Delete an [model:name]
+ */
+exports.delete = function(req, res) {
+	var [model:name:lower] = req.[model:name:lower] ;
+
+	[model:name:lower].remove(function(err) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp([model:name:lower]);
+		}
+	});
+};
+
+/**
+ * List of [model:name]
+ */
+exports.list = function(req, res) { 
+	[model:name].find().sort('-created').populate('user', 'displayName').exec(function(err, [model:name:plural]) {
+		if (err) {
+			return res.status(400).send({
+				message: errorHandler.getErrorMessage(err)
+			});
+		} else {
+			res.jsonp([model:name:plural]);
+		}
+	});
+};
+
+/**
+ * [model:name] middleware
+ */
+exports.[model:name:lower]ByID = function(req, res, next, id) { 
+	[model:name].findById(id).populate('user', 'displayName').exec(function(err, [model:name:lower]) {
+		if (err) return next(err);
+		if (! [model:name:lower]) return next(new Error('Failed to load [model:name] ' + id));
+		req.[model:name:lower] = [model:name:lower] ;
+		next();
+	});
+};
+
+/**
+ * [model:name] authorization middleware
+ */
+exports.hasAuthorization = function(req, res, next) {
+	if (req.[model:name:lower].user.id !== req.user.id) {
+		return res.status(403).send('User is not authorized');
+	}
+	next();
+};

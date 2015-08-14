@@ -1,0 +1,19 @@
+'use strict';
+
+module.exports = function(app) {
+	var users = require('../../app/controllers/users.server.controller');
+	var [model:name:lower:plural] = require('../../app/controllers/[model:name:lower:plural].server.controller');
+
+	// [model:name] Routes
+	app.route('/[model:name:lower:plural]')
+		.get([model:name:lower:plural].list)
+		.post(users.requiresLogin, [model:name:plural].create);
+
+	app.route('/[model:name:plural]/:[model:name:lower:plural]Id')
+		.get([model:name:lower:plural].read)
+		.put(users.requiresLogin, [model:name:lower:plural].hasAuthorization, [model:name:lower:plural].update)
+		.delete(users.requiresLogin, [model:name:lower:plural].hasAuthorization, [model:name:lower:plural].delete);
+
+	// Finish by binding the [model:name] middleware
+	app.param('[model:name:lower]Id', [model:name:lower:plural].[model:name:lower]ByID);
+};

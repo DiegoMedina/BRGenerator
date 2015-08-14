@@ -1,0 +1,13 @@
+'use strict';
+
+//[model:name:plural] service used to communicate [model:name:plural] REST endpoints
+angular.module('[model:name:lower:plural]').factory('[model:name:plural]', ['$resource',
+	function($resource) {
+		return $resource('[model:name:lower:plural]/:[model:name:lower]Id', { [model:name:lower]Id: '@_id'
+		}, {
+			update: {
+				method: 'PUT'
+			}
+		});
+	}
+]);

@@ -1,0 +1,268 @@
+'use strict';
+
+var should = require('should'),
+	request = require('supertest'),
+	app = require('../../server'),
+	mongoose = require('mongoose'),
+	User = mongoose.model('User'),
+	[model:name] = mongoose.model('[model:name]'),
+	agent = request.agent(app);
+
+/**
+ * Globals
+ */
+var credentials, user, [model:name:lower];
+
+/**
+ * [model:name] routes tests
+ */
+describe('[model:name] CRUD tests', function() {
+	beforeEach(function(done) {
+		// Create user credentials
+		credentials = {
+			username: 'username',
+			password: 'password'
+		};
+
+		// Create a new user
+		user = new User({
+			firstName: 'Full',
+			lastName: 'Name',
+			displayName: 'Full Name',
+			email: 'test@test.com',
+			username: credentials.username,
+			password: credentials.password,
+			provider: 'local'
+		});
+
+		// Save a user to the test db and create new [model:name]
+		user.save(function() {
+			[model:name:lower] = {
+				name: '[model:name] Name'
+			};
+
+			done();
+		});
+	});
+
+	it('should be able to save [model:name] instance if logged in', function(done) {
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new [model:name]
+				agent.post('/[model:name:lower:plural]')
+					.send([model:name:lower])
+					.expect(200)
+					.end(function([model:name:lower]SaveErr, [model:name:lower]SaveRes) {
+						// Handle [model:name] save error
+						if ([model:name:lower]SaveErr) done([model:name:lower]SaveErr);
+
+						// Get a list of [model:name:plural]
+						agent.get('/[model:name:lower:plural]')
+							.end(function([model:name:lower:plural]GetErr, [model:name:lower:plural]GetRes) {
+								// Handle [model:name] save error
+								if ([model:name:lower:plural]GetErr) done([model:name:lower:plural]GetErr);
+
+								// Get [model:name:plural] list
+								var [model:name:lower:plural] = [model:name:lower:plural]GetRes.body;
+
+								// Set assertions
+								([model:name:lower:plural][0].user._id).should.equal(userId);
+								([model:name:lower:plural][0].name).should.match('[model:name] Name');
+
+								// Call the assertion callback
+								done();
+							});
+					});
+			});
+	});
+
+	it('should not be able to save [model:name] instance if not logged in', function(done) {
+		agent.post('/[model:name:lower:plural]')
+			.send([model:name:lower])
+			.expect(401)
+			.end(function([model:name:lower]SaveErr, [model:name:lower]SaveRes) {
+				// Call the assertion callback
+				done([model:name:lower]SaveErr);
+			});
+	});
+
+	it('should not be able to save [model:name] instance if no name is provided', function(done) {
+		// Invalidate name field
+		[model:name:lower].name = '';
+
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new [model:name]
+				agent.post('/[model:name:lower:plural]')
+					.send([model:name:lower])
+					.expect(400)
+					.end(function([model:name:lower]SaveErr, [model:name:lower]SaveRes) {
+						// Set message assertion
+						([model:name:lower]SaveRes.body.message).should.match('Please fill [model:name] name');
+						
+						// Handle [model:name] save error
+						done([model:name:lower]SaveErr);
+					});
+			});
+	});
+
+	it('should be able to update [model:name] instance if signed in', function(done) {
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new [model:name]
+				agent.post('/[model:name:lower:plural]')
+					.send([model:name:lower])
+					.expect(200)
+					.end(function([model:name:lower]SaveErr, [model:name:lower]SaveRes) {
+						// Handle [model:name] save error
+						if ([model:name:lower]SaveErr) done([model:name:lower]SaveErr);
+
+						// Update [model:name] name
+						[model:name:lower].name = 'WHY YOU GOTTA BE SO MEAN?';
+
+						// Update existing [model:name]
+						agent.put('/[model:name:lower:plural]/' + [model:name:lower]SaveRes.body._id)
+							.send([model:name:lower])
+							.expect(200)
+							.end(function([model:name:lower]UpdateErr, [model:name:lower]UpdateRes) {
+								// Handle [model:name] update error
+								if ([model:name:lower]UpdateErr) done([model:name:lower]UpdateErr);
+
+								// Set assertions
+								([model:name:lower]UpdateRes.body._id).should.equal([model:name:lower]SaveRes.body._id);
+								([model:name:lower]UpdateRes.body.name).should.match('WHY YOU GOTTA BE SO MEAN?');
+
+								// Call the assertion callback
+								done();
+							});
+					});
+			});
+	});
+
+	it('should be able to get a list of [model:name:plural] if not signed in', function(done) {
+		// Create new [model:name] model instance
+		var [model:name:lower]Obj = new [model:name]([model:name:lower]);
+
+		// Save the [model:name]
+		[model:name:lower]Obj.save(function() {
+			// Request [model:name:plural]
+			request(app).get('/[model:name:lower:plural]')
+				.end(function(req, res) {
+					// Set assertion
+					res.body.should.be.an.Array.with.lengthOf(1);
+
+					// Call the assertion callback
+					done();
+				});
+
+		});
+	});
+
+
+	it('should be able to get a single [model:name] if not signed in', function(done) {
+		// Create new [model:name] model instance
+		var [model:name:lower]Obj = new [model:name]([model:name:lower]);
+
+		// Save the [model:name]
+		[model:name:lower]Obj.save(function() {
+			request(app).get('/[model:name:lower:plural]/' + [model:name:lower]Obj._id)
+				.end(function(req, res) {
+					// Set assertion
+					res.body.should.be.an.Object.with.property('name', [model:name:lower].name);
+
+					// Call the assertion callback
+					done();
+				});
+		});
+	});
+
+	it('should be able to delete [model:name] instance if signed in', function(done) {
+		agent.post('/auth/signin')
+			.send(credentials)
+			.expect(200)
+			.end(function(signinErr, signinRes) {
+				// Handle signin error
+				if (signinErr) done(signinErr);
+
+				// Get the userId
+				var userId = user.id;
+
+				// Save a new [model:name]
+				agent.post('/[model:name:lower:plural]')
+					.send([model:name:lower])
+					.expect(200)
+					.end(function([model:name:lower]SaveErr, [model:name:lower]SaveRes) {
+						// Handle [model:name] save error
+						if ([model:name:lower]SaveErr) done([model:name:lower]SaveErr);
+
+						// Delete existing [model:name]
+						agent.delete('/[model:name:lower:plural]/' + [model:name:lower]SaveRes.body._id)
+							.send([model:name:lower])
+							.expect(200)
+							.end(function([model:name:lower]DeleteErr, [model:name:lower]DeleteRes) {
+								// Handle [model:name] error error
+								if ([model:name:lower]DeleteErr) done([model:name:lower]DeleteErr);
+
+								// Set assertions
+								([model:name:lower]DeleteRes.body._id).should.equal([model:name:lower]SaveRes.body._id);
+
+								// Call the assertion callback
+								done();
+							});
+					});
+			});
+	});
+
+	it('should not be able to delete [model:name] instance if not signed in', function(done) {
+		// Set [model:name] user 
+		[model:name:lower].user = user;
+
+		// Create new [model:name] model instance
+		var [model:name:lower]Obj = new [model:name]([model:name:lower]);
+
+		// Save the [model:name]
+		[model:name:lower]Obj.save(function() {
+			// Try deleting [model:name]
+			request(app).delete('/[model:name:lower:plural]/' + [model:name:lower]Obj._id)
+			.expect(401)
+			.end(function([model:name:lower]DeleteErr, [model:name:lower]DeleteRes) {
+				// Set message assertion
+				([model:name:lower]DeleteRes.body.message).should.match('User is not logged in');
+
+				// Handle [model:name] error error
+				done([model:name:lower]DeleteErr);
+			});
+
+		});
+	});
+
+	afterEach(function(done) {
+		User.remove().exec();
+		[model:name].remove().exec();
+		done();
+	});
+});

@@ -1,0 +1,68 @@
+'use strict';
+
+// [model:name:plural] controller
+angular.module('[model:name:lower:plural]').controller('[model:name:plural]Controller', ['$scope', '$stateParams', '$location', 'Authentication', '[model:name:plural]',
+	function($scope, $stateParams, $location, Authentication, [model:name:plural]) {
+		$scope.authentication = Authentication;
+
+		// Create new [model:name]
+		$scope.create = function() {
+			// Create new [model:name] object
+			var [model:name:lower] = new [model:name:plural] ({
+			    <properties>
+			    <name/>:this.<name/><cuote/>
+			    <properties/>
+			});
+
+			// Redirect after save
+			[model:name:lower].$save(function(response) {
+				$location.path('[model:name:lower:plural]/' + response._id);
+
+				// Clear form fields
+				$scope.name = '';
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing [model:name]
+		$scope.remove = function([model:name:lower]) {
+			if ( [model:name:lower] ) { 
+				[model:name:lower].$remove();
+
+				for (var i in $scope.[model:name:lower:plural]) {
+					if ($scope.[model:name:lower:plural] [i] === [model:name:lower]) {
+						$scope.[model:name:lower:plural].splice(i, 1);
+					}
+				}
+			} else {
+				$scope.[model:name:lower].$remove(function() {
+					$location.path('[model:name:lower:plural]');
+				});
+			}
+		};
+
+		// Update existing [model:name]
+		$scope.update = function() {
+			var [model:name:lower] = $scope.[model:name:lower];
+
+			[model:name:lower].$update(function() {
+				$location.path('[model:name:lower:plural]/' + [model:name:lower]._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Find a list of [model:name:plural]
+		$scope.find = function() {
+			$scope.[model:name:lower:plural] = [model:name:plural].query();
+		};
+
+		// Find existing [model:name]
+		$scope.findOne = function() {
+			$scope.[model:name:lower] = [model:name:plural].get({ 
+				[model:name:lower]Id: $stateParams.[model:name:lower]Id
+			});
+		};
+	}
+]);

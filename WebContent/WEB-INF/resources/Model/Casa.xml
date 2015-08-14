@@ -2,18 +2,37 @@
 <Model name="Casa">
 	<Properties>
 		<Property>
-			<Name>Metros</Name>
-			<Type>Int</Type>
+			<Name>metros</Name>
+			
 			<Required><![CDATA['Please fill in a Metros']]></Required>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
+			<Enum><![CDATA[['user', 'admin']]]></Enum>
+			<Trim>true</Trim>
+			
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
+			<Unique><![CDATA['testing error message']]></Unique>
 		</Property>
 		<Property>
-			<Name>Color</Name>
+			<Name>color</Name>
 			<Type>String</Type>
+			<Required><![CDATA['Please fill in a color']]></Required>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your color']]]></Validate>
+			<Enum><![CDATA[['user', 'admin']]]></Enum>
+			
+			<Default>'Valor por default'</Default>
+			
+			<Unique><![CDATA['testing error message']]></Unique>
 		</Property>
 		<Property>
-			<Name>Direcciones</Name>
-			<Type>Direccion</Type>
-			<Relation>OneToMany</Relation>
+			<Name>direccion</Name>
+			<Type>String</Type>
+			<Required><![CDATA['Please fill in a direccion']]></Required>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your direccion']]]></Validate>
+			<Enum><![CDATA[['user', 'admin']]]></Enum>
+			<Trim>true</Trim>
+			<Default>'Valor por default'</Default>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid direccion']]]></Match>
+			
 		</Property>
 	</Properties>
 </Model>

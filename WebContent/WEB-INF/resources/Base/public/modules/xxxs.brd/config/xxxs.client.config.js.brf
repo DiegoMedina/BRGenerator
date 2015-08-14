@@ -1,0 +1,11 @@
+'use strict';
+
+// Configuring the [model:name:plural] module
+angular.module('[model:name:lower:plural]').run(['Menus',
+	function(Menus) {
+		// Set top bar menu items
+		Menus.addMenuItem('topbar', '[model:name:plural]', '[model:name:lower:plural]', 'dropdown', '/[model:name:lower:plural](/create)?');
+		Menus.addSubMenuItem('topbar', '[model:name:lower:plural]', 'List [model:name:plural]', '[model:name:lower:plural]');
+		Menus.addSubMenuItem('topbar', '[model:name:lower:plural]', 'New [model:name]', '[model:name:lower:plural]/create');
+	}
+]);

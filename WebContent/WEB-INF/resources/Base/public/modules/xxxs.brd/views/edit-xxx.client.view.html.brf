@@ -1,0 +1,25 @@
+<section data-ng-controller="InmueblesController" data-ng-init="findOne()">
+    <div class="page-header">
+        <h1>Edit [model:name]</h1>
+    </div>
+    <div class="col-md-12">
+        <form class="form-horizontal" data-ng-submit="update()" novalidate>
+            <fieldset>
+            	<properties>
+            	<div class="form-group">
+                    <label class="control-label" for="name"><name/></label>
+                    <div class="controls">
+                        <input type="text" data-ng-model="[model:name:lower].<name/>" id="<name/>" class="form-control" placeholder="<name/>" required>
+                    </div>
+                </div>
+            	<properties/>
+                <div class="form-group">
+                    <input type="submit" value="Update" class="btn btn-default">
+                </div>
+				<div data-ng-show="error" class="text-danger">
+					<strong data-ng-bind="error"></strong>
+				</div>
+            </fieldset>
+        </form>
+    </div>
+</section>
