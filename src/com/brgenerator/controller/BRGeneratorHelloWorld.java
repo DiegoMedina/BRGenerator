@@ -32,7 +32,10 @@ public class BRGeneratorHelloWorld {
 		gm.run();
 		
 		String message = "<br><div style='text-align:center;'>"
-				+ "<h3>********** Hello World, Spring MVC Tutorial</h3>This message is coming from CrunchifyHelloWorld.java *****pepe*****</div><br><br>";
+				+ "<h3><div>Templates generados con exito!</div></h3><br>"
+				+ "<div><b>Origen de los recursos:</b> " + origen.getAbsolutePath() + "</div>"
+				+ "<div><b>Destino de los recursos:</b> " + destino.getAbsolutePath() + "</div>"
+				+ "<div><b>Modelos:</b> " + modelos.getAbsolutePath() + "</div>";
 		return new ModelAndView("welcome", "message", message);
 	}
 }
