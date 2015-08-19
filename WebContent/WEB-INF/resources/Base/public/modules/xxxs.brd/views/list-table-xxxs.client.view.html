@@ -1,0 +1,36 @@
+<section data-ng-controller="[model:name:plural]Controller">
+    <div class="page-header">
+        <h1>[model:name:plural]</h1>
+    </div>
+
+    <div class="pull-right">
+      <a type="button" class="btn btn-success" href="/#!/[model:name:lower:plural]/create">
+        <i class="glyphicon glyphicon-open"></i> New [model:name:plural]
+      </a>
+    </div>
+
+    <div>
+        <table ng-table="tableParams" show-filter="true">
+            <tr ng-repeat="[model:name:lower] in $data">
+            	[properties]
+                <td data-title="'[property:name:value]'" sortable="'[property:name:value:lower]'" filter="{ '[property:name:value:lower]': 'text' }">{{[model:name:lower].[property:name:value:lower]}}</td>
+                [/properties]
+                <td>
+                    <div class="table-actions">
+                <td>
+                   <div class="table-actions">
+                        <a class="btn btn-default" title="View" href="/#!/[model:name:lower:plural]/{{[model:name:lower]._id}}">
+                            <span class="glyphicon glyphicon-eye-open"></span>
+                        </a>
+                        <a class="btn btn-default" title="Edit" href="/#!/[model:name:lower:plural]/{{[model:name:lower]._id}}/edit">
+                            <span class="glyphicon glyphicon-edit"></span>
+                        </a>
+                        <a class="btn btn-danger" title="Remove" ng-really-message="Are you sure ?" ng-really-click="remove([model:name:lower])" item="[model:name:lower]">
+                  				<span class="glyphicon glyphicon-remove-circle"></span>
+                  			</a>
+                    </div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</section>

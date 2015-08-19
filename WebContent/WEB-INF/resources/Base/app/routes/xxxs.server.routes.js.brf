@@ -4,12 +4,12 @@ module.exports = function(app) {
 	var users = require('../../app/controllers/users.server.controller');
 	var [model:name:lower:plural] = require('../../app/controllers/[model:name:lower:plural].server.controller');
 
-	// [model:name] Routes
+	// [model:name:plural] Routes
 	app.route('/[model:name:lower:plural]')
 		.get([model:name:lower:plural].list)
-		.post(users.requiresLogin, [model:name:plural].create);
+		.post(users.requiresLogin, [model:name:lower:plural].create);
 
-	app.route('/[model:name:plural]/:[model:name:lower:plural]Id')
+	app.route('/[model:name:lower:plural]/:[model:name:lower]Id')
 		.get([model:name:lower:plural].read)
 		.put(users.requiresLogin, [model:name:lower:plural].hasAuthorization, [model:name:lower:plural].update)
 		.delete(users.requiresLogin, [model:name:lower:plural].hasAuthorization, [model:name:lower:plural].delete);

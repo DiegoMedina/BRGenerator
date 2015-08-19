@@ -1,0 +1,24 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<Model name="Casa">
+	<Properties>
+		<Property>
+			<Name>Altura</Name>
+			<Type>String</Type>
+			<Required><![CDATA['Please fill in a Metros']]></Required>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
+			<Enum><![CDATA[['user', 'admin']]]></Enum>
+			<Trim>true</Trim>
+			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
+			<Unique><![CDATA['testing error message']]></Unique>
+		</Property>
+		<Property>
+			<Name>Edad</Name>
+			<Type>Int</Type>
+			<Required><![CDATA['Please fill in a color']]></Required>
+			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your color']]]></Validate>
+			<Enum><![CDATA[['user', 'admin']]]></Enum>
+			<Default>'Valor por default'</Default>
+			<Unique><![CDATA['testing error message']]></Unique>
+		</Property>
+	</Properties>
+</Model>

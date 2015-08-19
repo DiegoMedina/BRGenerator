@@ -52,12 +52,12 @@
 
 		it('$scope.find() should create an array with at least one [model:name] object fetched from XHR', inject(function([model:name:plural]) {
 			// Create sample [model:name] using the [model:name:plural] service
-			var sample[model:name] = new [model:name:plural]({
+			var sample[model:name:lower:plural] = new [model:name:plural]({
 				name: 'New [model:name]'
 			});
 
 			// Create a sample [model:name:plural] array that includes the new [model:name]
-			var sample[model:name:plural] = [sample[model:name]];
+			var sample[model:name:plural] = [sample[model:name:lower:plural]];
 
 			// Set GET response
 			$httpBackend.expectGET('[model:name:lower:plural]').respond(sample[model:name:plural]);
@@ -72,7 +72,7 @@
 
 		it('$scope.findOne() should create an array with one [model:name] object fetched from XHR using a [model:name:lower]Id URL parameter', inject(function([model:name:plural]) {
 			// Define a sample [model:name] object
-			var sample[model:name] = new [model:name:plural]({
+			var sample[model:name:lower:plural] = new [model:name:plural]({
 				name: 'New [model:name]'
 			});
 
@@ -80,24 +80,24 @@
 			$stateParams.[model:name:lower]Id = '525a8422f6d0f87f0e407a33';
 
 			// Set GET response
-			$httpBackend.expectGET(/[model:name:lower:plural]\/([0-9a-fA-F]{24})$/).respond(sample[model:name]);
+			$httpBackend.expectGET(/[model:name:lower:plural]\/([0-9a-fA-F]{24})$/).respond(sample[model:name:lower:plural]);
 
 			// Run controller functionality
 			scope.findOne();
 			$httpBackend.flush();
 
 			// Test scope value
-			expect(scope.[model:name:lower]).toEqualData(sample[model:name]);
+			expect(scope.[model:name:lower]).toEqualData(sample[model:name:lower:plural]);
 		}));
 
 		it('$scope.create() with valid form data should send a POST request with the form input values and then locate to new object URL', inject(function([model:name:plural]) {
 			// Create a sample [model:name] object
-			var sample[model:name]PostData = new [model:name:plural]({
+			var sample[model:name:lower:plural]PostData = new [model:name:plural]({
 				name: 'New [model:name]'
 			});
 
 			// Create a sample [model:name] response
-			var sample[model:name]Response = new [model:name:plural]({
+			var sample[model:name:lower:plural]Response = new [model:name:plural]({
 				_id: '525cf20451979dea2c000001',
 				name: 'New [model:name]'
 			});
@@ -106,7 +106,7 @@
 			scope.name = 'New [model:name]';
 
 			// Set POST response
-			$httpBackend.expectPOST('[model:name:lower:plural]', sample[model:name]PostData).respond(sample[model:name]Response);
+			$httpBackend.expectPOST('[model:name:lower:plural]', sample[model:name:lower:plural]PostData).respond(sample[model:name:lower:plural]Response);
 
 			// Run controller functionality
 			scope.create();
@@ -116,18 +116,18 @@
 			expect(scope.name).toEqual('');
 
 			// Test URL redirection after the [model:name] was created
-			expect($location.path()).toBe('/[model:name:lower:plural]/' + sample[model:name]Response._id);
+			expect($location.path()).toBe('/[model:name:lower:plural]/' + sample[model:name:lower:plural]Response._id);
 		}));
 
 		it('$scope.update() should update a valid [model:name]', inject(function([model:name:plural]) {
 			// Define a sample [model:name] put data
-			var sample[model:name]PutData = new [model:name:plural]({
+			var sample[model:name:lower:plural]PutData = new [model:name:plural]({
 				_id: '525cf20451979dea2c000001',
 				name: 'New [model:name]'
 			});
 
 			// Mock [model:name] in scope
-			scope.[model:name:lower] = sample[model:name]PutData;
+			scope.[model:name:lower] = sample[model:name:lower:plural]PutData;
 
 			// Set PUT response
 			$httpBackend.expectPUT(/[model:name:lower:plural]\/([0-9a-fA-F]{24})$/).respond();
@@ -137,23 +137,23 @@
 			$httpBackend.flush();
 
 			// Test URL location to new object
-			expect($location.path()).toBe('/[model:name:lower:plural]/' + sample[model:name]PutData._id);
+			expect($location.path()).toBe('/[model:name:lower:plural]/' + sample[model:name:lower:plural]PutData._id);
 		}));
 
 		it('$scope.remove() should send a DELETE request with a valid [model:name:lower]Id and remove the [model:name] from the scope', inject(function([model:name:plural]) {
 			// Create new [model:name] object
-			var sample[model:name] = new [model:name:plural]({
+			var sample[model:name:lower:plural] = new [model:name:plural]({
 				_id: '525a8422f6d0f87f0e407a33'
 			});
 
 			// Create new [model:name:plural] array and include the [model:name]
-			scope.[model:name:lower:plural] = [sample[model:name]];
+			scope.[model:name:lower:plural] = [sample[model:name:lower:plural]];
 
 			// Set expected DELETE response
 			$httpBackend.expectDELETE(/[model:name:lower:plural]\/([0-9a-fA-F]{24})$/).respond(204);
 
 			// Run controller functionality
-			scope.remove(sample[model:name]);
+			scope.remove(sample[model:name:lower:plural]);
 			$httpBackend.flush();
 
 			// Test array after successful delete

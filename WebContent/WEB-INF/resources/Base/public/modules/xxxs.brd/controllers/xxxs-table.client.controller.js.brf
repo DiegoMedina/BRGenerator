@@ -1,0 +1,69 @@
+'use strict';
+
+// [model:name:plural] controller
+angular.module('[model:name:lower:plural]').controller('[model:name:plural]Controller', ['$scope', '$stateParams', '$location', 'Authentication', '[model:name:plural]', 'TableSettings', '[model:name:plural]Form',
+	function($scope, $stateParams, $location, Authentication, [model:name:plural], TableSettings, [model:name:plural]Form ) {
+		$scope.authentication = Authentication;
+		$scope.tableParams = TableSettings.getParams([model:name:plural]);
+		$scope.[model:name:lower] = {};
+
+		$scope.setFormFields = function(disabled) {
+			$scope.formFields = [model:name:plural]Form.getFormFields(disabled);
+		};
+
+
+		// Create new [model:name]
+		$scope.create = function() {
+			var [model:name:lower] = new [model:name:plural]($scope.[model:name:lower]);
+
+			// Redirect after save
+			[model:name:lower].$save(function(response) {
+				$location.path('[model:name:lower:plural]/' + response._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+		// Remove existing [model:name]
+		$scope.remove = function([model:name:lower]) {
+
+			if ( [model:name:lower] ) {
+				[model:name:lower] = [model:name:plural].get({[model:name:lower]Id:[model:name:lower]._id}, function() {
+					[model:name:lower].$remove();
+					$scope.tableParams.reload();
+				});
+
+			} else {
+				$scope.[model:name:lower].$remove(function() {
+					$location.path('[model:name:lower:plural]');
+				});
+			}
+
+		};
+
+		// Update existing [model:name]
+		$scope.update = function() {
+			var [model:name:lower] = $scope.[model:name:lower];
+
+			[model:name:lower].$update(function() {
+				$location.path('[model:name:lower:plural]/' + [model:name:lower]._id);
+			}, function(errorResponse) {
+				$scope.error = errorResponse.data.message;
+			});
+		};
+
+
+
+		$scope.toView[model:name:lower:plural] = function() {
+			$scope.[model:name:lower] = [model:name:plural].get( {[model:name:lower]Id: $stateParams.[model:name:lower]Id} );
+			$scope.setFormFields(true);
+		};
+
+		$scope.toEdit[model:name:lower:plural] = function() {
+			$scope.[model:name:lower] = [model:name:plural].get( {[model:name:lower]Id: $stateParams.[model:name:lower]Id} );
+			$scope.setFormFields(false);
+		};
+
+	}
+
+]);

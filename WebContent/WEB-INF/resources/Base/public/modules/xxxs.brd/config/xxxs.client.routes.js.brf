@@ -9,15 +9,15 @@ angular.module('[model:name:lower:plural]').config(['$stateProvider',
 			url: '/[model:name:lower:plural]',
 			templateUrl: 'modules/[model:name:lower:plural]/views/list-[model:name:lower:plural].client.view.html'
 		}).
-		state('create[model:name]', {
+		state('create[model:name:lower:plural]', {
 			url: '/[model:name:lower:plural]/create',
 			templateUrl: 'modules/[model:name:lower:plural]/views/create-[model:name:lower].client.view.html'
 		}).
-		state('view[model:name]', {
+		state('view[model:name:lower:plural]', {
 			url: '/[model:name:lower:plural]/:[model:name:lower]Id',
 			templateUrl: 'modules/[model:name:lower:plural]/views/view-[model:name:lower].client.view.html'
 		}).
-		state('edit[model:name]', {
+		state('edit[model:name:lower:plural]', {
 			url: '/[model:name:lower:plural]/:[model:name:lower]Id/edit',
 			templateUrl: 'modules/[model:name:lower:plural]/views/edit-[model:name:lower].client.view.html'
 		});
