@@ -14,36 +14,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="col-sm-6 text-center">
-                        <i class="glyphicon glyphicon-user cust-profile"
+					<div class="col-sm-6 text-center">
+                        <i class="glyphicon glyphicon-user [model:name:lower]-profile"
                            ng-class="{'text-primary': ccCtrl.referred, 'text-pink': !ccCtrl.referred}"></i>
                     </div>
-                    <div class="col-sm-6">
-                        <div class="form-group">
-                            <label class="control-label" for="firstname">First Name</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="ccCtrl.firstName" id="firstname" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="surname">Surname</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="ccCtrl.surname" id="surname" class="form-control" required>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="suburb">Suburb</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="ccCtrl.suburb" id="suburb" class="form-control">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="control-label" for="country">Country</label>
-                            <div class="controls">
-                                <input type="text" data-ng-model="ccCtrl.country" id="country" class="form-control">
-                            </div>
-                        </div>
-                    </div>
+					<div class="col-sm-6">
+						[properties]
+						<div class="form-group">
+							<label class="control-label" for="[property:name:value]">[property:label:value]</label>
+							<div class="controls">
+								<input type="[property:input:value]" data-ng-model="ccCtrl.[property:name:value]" id="[property:name:value]" class="form-control">
+							</div>
+						</div>
+						[/properties]
+						
+						<!--VER COMO HACER POR QUE PARTE LA TABLE EN TRES FILAS-->
+					</div>
                 </div>
                 <div class="row">
                     <div class="col-sm-6 col-sm-push-6">

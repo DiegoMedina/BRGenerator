@@ -14,15 +14,9 @@ angular.module('[model:name:lower:plural]').controller('[model:name:plural]Creat
         this.create = function() {
             // Create new [model:name] object
             var [model:name:lower] = new [model:name:plural] ({
-                firstName: this.firstName,
-                surname: this.surname,
-                suburb: this.suburb,
-                country: this.country,
-                industry: this.industry,
-                email: this.email,
-                phone: this.phone,
-                referred: this.referred,
-                channel: this.channel
+			[properties]
+			[property:name][property:name:value]: this.[property:name:value][cuote:0][/property:name]
+			[/properties]
             });
 
             // Redirect after save

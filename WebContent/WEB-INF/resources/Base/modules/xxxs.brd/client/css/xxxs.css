@@ -13,11 +13,11 @@ input[type="radio"], input[type="checkbox"] {
     }
 
 @media (max-width: 479px) {
-    .cust-profile {
+    .[model:name:lower]-profile {
         font-size: 80px;
         }
 
-    .cust-list {
+    .[model:name:lower]-list {
         font-size: 30px;
         }
 
@@ -32,11 +32,11 @@ input[type="radio"], input[type="checkbox"] {
     }
 
 @media (min-width: 480px) and (max-width:767px) {
-    .cust-profile {
+    .[model:name:lower]-profile {
         font-size: 100px;
         }
 
-    .cust-list {
+    .[model:name:lower]-list {
         font-size: 60px;
         }
 
@@ -51,11 +51,11 @@ input[type="radio"], input[type="checkbox"] {
     }
 
 @media (min-width:768px) and (max-width: 991px) {
-    .cust-profile {
+    .[model:name:lower]-profile {
         font-size: 158px;
         }
 
-    .cust-list {
+    .[model:name:lower]-list {
         font-size: 95px;
         }
 
@@ -66,11 +66,11 @@ input[type="radio"], input[type="checkbox"] {
     }
 
 @media (min-width: 992px) and (max-width: 1199px) {
-    .cust-profile {
+    .[model:name:lower]-profile {
         font-size: 205px;
         }
 
-    .cust-list {
+    .[model:name:lower]-list {
         font-size: 123px;
         }
 
@@ -82,11 +82,11 @@ input[type="radio"], input[type="checkbox"] {
 
 @media (min-width: 1200px) {
 
-    .cust-profile {
+    .[model:name:lower]-profile {
         font-size: 250px;
         }
 
-    .cust-list {
+    .[model:name:lower]-list {
         font-size: 150px;
         }
 
