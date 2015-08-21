@@ -22,6 +22,7 @@ public class TemplateManager {
 	public static final String BIGRUNTS_DIRECTORY_TEMPLATE = ".brd";
 	public static final String BIGRUNTS_FILE_TEMPLATE = ".brf";
 	public static final String XML_EXTENSION= ".xml";
+	public static final String DEPRECATED = ".deprec";
 	private List<Model> modelos;
 	
 	public TemplateManager(List<Model> modelos)
@@ -45,6 +46,11 @@ public class TemplateManager {
 		return fileName.endsWith(TemplateManager.BIGRUNTS_FILE_TEMPLATE);
 	}
 	
+	public Boolean isDeprecated(String fileName)
+	{
+		return fileName.endsWith(TemplateManager.DEPRECATED);
+	}
+	
 	public String getFinalPath(String path, Model modelo)
 	{
 		String aux = "";
@@ -63,21 +69,44 @@ public class TemplateManager {
 	
 	public void manageTemplate(File origen, File destino, Model belonModel) throws IOException
 	{
-		
-		if(origen.isDirectory())
-    	{
-    		//Si la carpeta no existe, se crea
-			
-			if(this.isDirectoryTemplate(origen.getName()))
-			{
-				for (int i = 0; i < modelos.size(); i++) 
+		if(!this.isDeprecated(origen.getName()))
+		{
+			if(origen.isDirectory())
+	    	{
+	    		//Si la carpeta no existe, se crea
+				
+				if(this.isDirectoryTemplate(origen.getName()))
 				{
-					File destTemp = new File(this.getFinalPath(destino.getAbsolutePath(), modelos.get(i)));
-					
-					if(!destTemp.exists())
+					for (int i = 0; i < modelos.size(); i++) 
+					{
+						File destTemp = new File(this.getFinalPath(destino.getAbsolutePath(), modelos.get(i)));
+						
+						if(!destTemp.exists())
+			    		{
+							destTemp.mkdir();
+			    			System.out.println("Method manageTemplate: " + "destTemp " + destTemp);
+			    		}
+						
+						//Se obtiene todo el contenido de el directorio
+			    		String files[] = origen.list();
+			 
+			    		for (String file : files)
+			    		{
+			    		   //construct the src and dest file structure
+			    		   File srcFile = new File(origen, file);
+			    		   File destFile = new File(destTemp, file);
+			    		   //recursive copy
+			    		   manageTemplate(srcFile,destFile, modelos.get(i));
+			    		}
+						
+					}
+				}
+				else
+				{
+					if(!destino.exists())
 		    		{
-						destTemp.mkdir();
-		    			System.out.println("Method manageTemplate: " + "destTemp " + destTemp);
+		    		   destino.mkdir();
+		    		   System.out.println("Method manageTemplate: " + "aux " + destino);
 		    		}
 					
 					//Se obtiene todo el contenido de el directorio
@@ -87,72 +116,51 @@ public class TemplateManager {
 		    		{
 		    		   //construct the src and dest file structure
 		    		   File srcFile = new File(origen, file);
-		    		   File destFile = new File(destTemp, file);
+		    		   File destFile = new File(destino, file);
 		    		   //recursive copy
-		    		   manageTemplate(srcFile,destFile, modelos.get(i));
+		    		   manageTemplate(srcFile,destFile, belonModel);
 		    		}
-					
 				}
-			}
-			else
-			{
-				if(!destino.exists())
-	    		{
-	    		   destino.mkdir();
-	    		   System.out.println("Method manageTemplate: " + "aux " + destino);
-	    		}
 				
-				//Se obtiene todo el contenido de el directorio
-	    		String files[] = origen.list();
-	 
-	    		for (String file : files)
+	    	}
+	    	else
+	    	{
+	    		
+	    		if(this.isFileTemplate(origen.getName()))
 	    		{
-	    		   //construct the src and dest file structure
-	    		   File srcFile = new File(origen, file);
-	    		   File destFile = new File(destino, file);
-	    		   //recursive copy
-	    		   manageTemplate(srcFile,destFile, belonModel);
-	    		}
-			}
-    	}
-    	else
-    	{
-    		
-    		if(this.isFileTemplate(origen.getName()))
-    		{
-    			
-    			if(belonModel == null)
-    			{
-	    			for (int i = 0; i < modelos.size(); i++) 
-					{
-	    				String path = getFinalPath(destino.getPath(), modelos.get(i));	
+	    			
+	    			if(belonModel == null)
+	    			{
+		    			for (int i = 0; i < modelos.size(); i++) 
+						{
+		    				String path = getFinalPath(destino.getPath(), modelos.get(i));	
+		    				File btm = new File(path);
+		    				BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(btm), "UTF-8"));
+		    				fileWriter.write(this.build(origen, modelos.get(i)));
+		    				fileWriter.flush();
+		    				fileWriter.close();
+		    				
+		         	        System.out.println("Method manageTemplate loop ("+i+")" + modelos.get(i).getName() + ": " + " origen " + origen + " destino " + destino);
+		    				
+						}
+	    			}
+	    			else
+	    			{
+				
+	    				String path = getFinalPath(destino.getPath(), belonModel);	
 	    				File btm = new File(path);
 	    				BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(btm), "UTF-8"));
-	    				fileWriter.write(this.build(origen, modelos.get(i)));
+	    				fileWriter.write(this.build(origen, belonModel));
 	    				fileWriter.flush();
 	    				fileWriter.close();
 	    				
-	         	        System.out.println("Method manageTemplate loop ("+i+")" + modelos.get(i).getName() + ": " + " origen " + origen + " destino " + destino);
-	    				
-					}
-    			}
-    			else
-    			{
-			
-    				String path = getFinalPath(destino.getPath(), belonModel);	
-    				File btm = new File(path);
-    				BufferedWriter fileWriter = new BufferedWriter(new OutputStreamWriter(new FileOutputStream(btm), "UTF-8"));
-    				fileWriter.write(this.build(origen, belonModel));
-    				fileWriter.flush();
-    				fileWriter.close();
-    				
-    				System.out.println("Method manageTemplate model ("+belonModel.getName()+") : " + " origen " + origen + " destino " + destino);
-    			}
-    			
-			}
-
-    	}
-		
+	    				System.out.println("Method manageTemplate model ("+belonModel.getName()+") : " + " origen " + origen + " destino " + destino);
+	    			}
+	    			
+				}
+	
+	    	}
+		}
 	}
 	
 	public String build(File origen, Model modelo ) throws IOException
