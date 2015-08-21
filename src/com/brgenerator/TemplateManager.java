@@ -168,7 +168,6 @@ public class TemplateManager {
 		TextAnalizer ta = new TextAnalizer(origen);
 		
 		//Obtengo los tipos de tag model en el archivo
-		
 		List<String> tagModels = ta.getDistinctTagModels();
 		
 		for (int i = 0; i < tagModels.size(); i++) 
@@ -177,20 +176,19 @@ public class TemplateManager {
 			ta.findAndReplace(tagModels.get(i), value);
 		}
 		
-		//Obtengo los tipos de tag model en el archivo
 		
+		
+		//Obtengo los tipos de tag model en el archivo
 		List<TemplateObject> tagProperties = ta.getElementsProperties();
 		
 		// por cada bloque de properties
 		for (int i = 0; i < tagProperties.size(); i++) 
 		{
-			
 			TemplateObject tagPropertyFinal = new TemplateObject("",tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
 			
 			// Por cada prodiedad del modelo (Ej: Nombre y apellido, Altura, Edad)
 			for (int j = 0; j < modelo.getProperties().getProperty().size(); j++) 
 			{
-				
 				//TemplateObject tagPropertyResult = new TemplateObject(tagProperties.get(i).getContent(),tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
 				TemplateObject tagPropertyResult = TextAnalizer.getContentTagsProperties(tagProperties.get(i)).get(0);
 				
