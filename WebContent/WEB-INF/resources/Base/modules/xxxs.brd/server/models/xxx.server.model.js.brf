@@ -1,0 +1,27 @@
+'use strict';
+
+/**
+ * Module dependencies.
+ */
+var mongoose = require('mongoose'),
+	Schema = mongoose.Schema;
+
+/**
+ * [model:name] Schema
+ */
+var [model:name]Schema = new Schema({
+	[properties]
+	[property:name:value]: {
+		[property:type]type: [property:type:value][cuote:0][/property:type]
+		[property:default]default: [property:default:value][cuote:0][/property:default]
+		[property:required]required: [property:required:value][cuote:0][/property:required]
+		[property:trim]trim: [property:trim:value][cuote:0][/property:trim]
+		[property:match]match: [property:match:value][cuote:0][/property:match]
+		[property:type]type: [property:type:value][cuote:0][/property:type]
+		[property:unique]unique: [property:unique:value][cuote:0][/property:unique]
+		[property:type]type: [property:type:value][cuote:0][/property:type]
+		}[cuote:1]
+	[/properties]
+});
+
+mongoose.model('[model:name]', [model:name]Schema);
