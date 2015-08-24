@@ -20,25 +20,35 @@
                     </div>
                     <div class="col-sm-6">
                     [properties begin="0" end="4"]
+                    [property]
                 	<div class="form-group">
-                        <label class="control-label" for="[property:name:value:lower]">[property:label:value]</label>
+                        <label class="control-label" for="[att:name:value:lower]">[att:label:value]</label>
                         <div class="controls">
-                            <input type="[property:input:value]" data-ng-model="ccCtrl.[property:name:value:lower]" id="[property:name:value:lower]" class="form-control">
+                            <input type="[att:input:value]" data-ng-model="ccCtrl.[att:name:value:lower]" id="[att:name:value:lower]" class="form-control">
                         </div>
                     </div>
+                    [/property]
                 	[/properties]
                     </div>
                 </div>
                 [properties begin="5" loops="4"]
                 <div class="row">
-                	[properties loops="2"]
-                	<div class="form-group">
-	                    <label class="control-label" for="[property:name:value:lower]">[property:name:value]</label>
+	                [property pos="0"]
+	            	<div class="form-group">
+	                    <label class="control-label" for="[att:name:value:lower]">[att:name:value]</label>
 	                    <div class="controls">
-	                        <input type="text" data-ng-model="ccCtrl.[property:name:value:lower]" id="[property:name:value:lower]" class="form-control">
+	                        <input type="text" data-ng-model="ccCtrl.[att:name:value:lower]" id="[att:name:value:lower]" class="form-control">
 	                    </div>
 	                </div>
-                	[/properties]
+	                [/property]
+	                [property pos="1"]
+                	<div class="form-group">
+	                    <label class="control-label" for="[att:name:value:lower]">[att:name:value]</label>
+	                    <div class="controls">
+	                        <input type="text" data-ng-model="ccCtrl.[att:name:value:lower]" id="[att:name:value:lower]" class="form-control">
+	                    </div>
+	                </div>
+	                [/property]
                 </div>
                 [/properties]
             </fieldset>

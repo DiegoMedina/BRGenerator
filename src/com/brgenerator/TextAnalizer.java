@@ -52,7 +52,20 @@ public class TextAnalizer
 	//  \[property:(.*?)] == [property:type] == [property:type:value]
 	// \[property:unique.*?]|\[/property:unique.*?]
 	// \[property:\S[a-z]*?\:\S[a-z]*?\] todos los nodos triples
+	// (?s)\[properties.*?].+?\[/properties] todo en properties
+	// (?s)\[properties.*?] nodo properties
+	// (\S+)=["]?((?:(?!["]?\s+(?:\S+)=|[>"]))+.)["]? llave valor atributos
+	// (\S+)=["']?((?:.(?!["']?\s+(?:\S+)=|[>"']))+.)["']? Original
+	// (\S+)="(.*?)" El que va
 	
+	/*Todo menos un espacio en blanco: + = ["] comillas dobles
+	 * 
+	 * ?:
+	 * Coincide pero No captura 
+	 * (?!
+	 * 
+	 * ["]?\s+(?:\S+)
+	*/
 	public TemplateObject findAndReplace(String wildcard, String replacement) throws IOException
 	{
 		this.content.setContent(this.content.getContent().replaceAll("\\" + wildcard, replacement));
