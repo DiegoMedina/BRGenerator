@@ -1,38 +1,139 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <Model name="Casa">
 	<Properties>
-		<Property>
-			<Name>metros</Name>
-			
-			<Required><![CDATA['Please fill in a Metros']]></Required>
-			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your email']]]></Validate>
-			<Enum><![CDATA[['user', 'admin']]]></Enum>
-			<Trim>true</Trim>
-			
-			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]></Match>
-			<Unique><![CDATA['testing error message']]></Unique>
+		<Property name="direccion" label="Direccion">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Direccion']]>
+				</Att>
+				<Att name="Type">
+				String
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Direccion']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid Direccion']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error Direccion']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Direccion']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
 		</Property>
-		<Property>
-			<Name>color</Name>
-			<Type>String</Type>
-			<Required><![CDATA['Please fill in a color']]></Required>
-			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your color']]]></Validate>
-			<Enum><![CDATA[['user', 'admin']]]></Enum>
-			
-			<Default>'Valor por default'</Default>
-			
-			<Unique><![CDATA['testing error message']]></Unique>
+		<Property name="metros" label="Metros">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Metros']]>
+				</Att>
+				<Att name="Type">
+				int
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Metros']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid Metros']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message Metros']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Metros']]>
+				</Att>
+				<Att name="HtmlType">
+				Checkbox
+				</Att>
+			</Atts>
 		</Property>
-		<Property>
-			<Name>direccion</Name>
-			<Type>String</Type>
-			<Required><![CDATA['Please fill in a direccion']]></Required>
-			<Validate><![CDATA[[validateLocalStrategyProperty, 'Please fill in your direccion']]]></Validate>
-			<Enum><![CDATA[['user', 'admin']]]></Enum>
-			<Trim>true</Trim>
-			<Default>'Valor por default'</Default>
-			<Match><![CDATA[[/.+\@.+\..+/, 'Please fill a valid direccion']]]></Match>
-			
+		<Property name="antiguedad" label="Antiguedad">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Antiguedad']]>
+				</Att>
+				<Att name="Type">
+				Boolean
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Antiguedad']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email address']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Antiguedad']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="precio" label="Precio">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Precio']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email Precio']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Precio']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="duenos" label="Dueños">
+			<Atts>
+				<Att name="Type">
+				Persona
+				</Att>
+				<Att name="Relation">
+				ManyToMany
+				</Att>
+			</Atts>
 		</Property>
 	</Properties>
 </Model>

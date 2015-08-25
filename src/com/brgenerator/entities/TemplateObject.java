@@ -1,5 +1,6 @@
 package com.brgenerator.entities;
 
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -66,6 +67,11 @@ public class TemplateObject
 		}
 		
 		return false;
+	}
+	
+	public List<TemplateObjectAtt> getAttributes()
+	{
+		
 	}
 	
 	public String getAttr()

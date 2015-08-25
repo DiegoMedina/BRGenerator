@@ -178,8 +178,15 @@ public class TemplateManager {
 		
 		
 		
-		//Obtengo los tipos de tag model en el archivo
+		//Obtengo las properties
 		List<TemplateObject> tagProperties = ta.getElementsProperties();
+		
+		for (int i = 0; i < tagProperties.size(); i++) 
+		{
+			List<TemplateObjectAtt> atts = tagProperties.get(i).getElementsProperties();
+			
+		}
+		
 		
 		// por cada bloque de properties
 		for (int i = 0; i < tagProperties.size(); i++) 
@@ -202,7 +209,7 @@ public class TemplateManager {
 					{
 						case "type":
 							
-							if(modelo.getProperties().getProperty().get(j).getType() == null)
+							if(modelo.getProperties().getProperty().get(0).getAtts().getAtt()..get(j).getType() == null)
 							{
 								//Obtengo el nodo entero desde su apertura hasta su cierre
 								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "type");

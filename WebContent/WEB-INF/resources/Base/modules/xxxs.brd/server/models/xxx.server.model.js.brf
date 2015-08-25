@@ -11,16 +11,18 @@ var mongoose = require('mongoose'),
  */
 var [model:name]Schema = new Schema({
 	[properties]
-	[property:name:value]: {
-		[property:type]type: [property:type:value][cuote:0][/property:type]
-		[property:default]default: [property:default:value][cuote:0][/property:default]
-		[property:required]required: [property:required:value][cuote:0][/property:required]
-		[property:trim]trim: [property:trim:value][cuote:0][/property:trim]
-		[property:match]match: [property:match:value][cuote:0][/property:match]
-		[property:type]type: [property:type:value][cuote:0][/property:type]
-		[property:unique]unique: [property:unique:value][cuote:0][/property:unique]
-		[property:type]type: [property:type:value][cuote:0][/property:type]
+	[property]
+	[property:name]: {
+		[att:type]type: [att:type:value][cuote:0][/att:type]
+		[att:default]default: [att:default:value][cuote:0][/att:default]
+		[att:required]required: [att:required:value][cuote:0][/att:required]
+		[att:trim]trim: [att:trim:value][cuote:0][/att:trim]
+		[att:match]match: [att:match:value][cuote:0][/att:match]
+		[att:type]type: [att:type:value][cuote:0][/att:type]
+		[att:unique]unique: [att:unique:value][cuote:0][/att:unique]
+		[att:type]type: [att:type:value][cuote:0][/att:type]
 		}[cuote:1]
+	[/property]
 	[/properties]
 });
 

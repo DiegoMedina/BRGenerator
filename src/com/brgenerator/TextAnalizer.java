@@ -13,6 +13,7 @@ import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 import com.brgenerator.entities.TemplateObject;
+import com.brgenerator.entities.TemplateObjectAtt;
 
 public class TextAnalizer 
 {
@@ -28,7 +29,8 @@ public class TextAnalizer
 	
 	private String pTAG_MODELS = "(\\[model\\S*?])";
 	
-	private String pELEMENT_PROPERTIES = "\\[properties].+?\\[/properties]";
+	private String pELEMENT_PROPERTIES = "\\[properties.*?].+?\\[/properties]";
+	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
 	private String pTAG_PROP_ELEMENTS = "\\[property:\\S*?](.*?)\\[/property:\\S*?]";
 	//private String pTAG_ELEMENTS = "\\[property:.+/property:\\S*?]";
 	private String pTAG_DIST_ELEM = "(\\[property:\\S[a-z]*?\\]|\\[property:\\S[a-z]*?\\:\\S[a-z]*?\\])(?![\\s\\S]*\\1)";
@@ -146,6 +148,20 @@ public class TextAnalizer
 	    }
 	    
 	    return tagValues;
+	}
+	
+	public List<TemplateObjectAtt> getAttributes(TemplateObject to) 
+	{
+		final Matcher matcher = patern.matcher(content.getContent());
+	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+	    
+	    while (matcher.find()) 
+	    {
+	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+	        tos.add(to);
+	    }
+	    
+	    return tos;
 	}
 	
 	public static List<TemplateObject> getTagsProperty(TemplateObject content, String type) 

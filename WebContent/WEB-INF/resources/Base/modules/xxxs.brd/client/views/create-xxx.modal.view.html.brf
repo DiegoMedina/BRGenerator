@@ -22,9 +22,9 @@
                     [properties begin="0" end="4"]
                     [property]
                 	<div class="form-group">
-                        <label class="control-label" for="[att:name:value:lower]">[att:label:value]</label>
+                        <label class="control-label" for="[property:name:lower]">[property:label]</label>
                         <div class="controls">
-                            <input type="[att:input:value]" data-ng-model="ccCtrl.[att:name:value:lower]" id="[att:name:value:lower]" class="form-control">
+                            <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name:lower]" class="form-control">
                         </div>
                     </div>
                     [/property]
@@ -35,17 +35,17 @@
                 <div class="row">
 	                [property pos="0"]
 	            	<div class="form-group">
-	                    <label class="control-label" for="[att:name:value:lower]">[att:name:value]</label>
+	                    <label class="control-label" for="[property:name]">[property:label]</label>
 	                    <div class="controls">
-	                        <input type="text" data-ng-model="ccCtrl.[att:name:value:lower]" id="[att:name:value:lower]" class="form-control">
+	                        <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name]" id="[property:name]" class="form-control">
 	                    </div>
 	                </div>
 	                [/property]
 	                [property pos="1"]
-                	<div class="form-group">
-	                    <label class="control-label" for="[att:name:value:lower]">[att:name:value]</label>
+	                <div class="form-group">
+	                    <label class="control-label" for="[property:name]">[property:label]</label>
 	                    <div class="controls">
-	                        <input type="text" data-ng-model="ccCtrl.[att:name:value:lower]" id="[att:name:value:lower]" class="form-control">
+	                        <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name]" id="[property:name]" class="form-control">
 	                    </div>
 	                </div>
 	                [/property]
