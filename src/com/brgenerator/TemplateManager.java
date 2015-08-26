@@ -6,9 +6,12 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
 import java.util.List;
+
 import com.brgenerator.TemplateManager;
 import com.brgenerator.entities.Model;
 import com.brgenerator.entities.TemplateObject;
+import com.brgenerator.entities.TemplateObjectAtt;
+import com.brgenerator.entities.TemplateObjectNode;
 
 
 public class TemplateManager {
@@ -176,15 +179,49 @@ public class TemplateManager {
 			ta.findAndReplace(tagModels.get(i), value);
 		}
 		
-		
-		
 		//Obtengo las properties
 		List<TemplateObject> tagProperties = ta.getElementsProperties();
 		
 		for (int i = 0; i < tagProperties.size(); i++) 
 		{
-			List<TemplateObjectAtt> atts = tagProperties.get(i).getElementsProperties();
+			TemplateObjectNode ton = tagProperties.get(i).getNode(TemplateObjectNode.TypeNode.PROPERTIES);
+			TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
+			TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
+			TemplateObjectAtt toaLoop = ton.getAttrByType(TemplateObjectAtt.TypeAtt.LOOP);
 			
+			int end = (modelo.getProperties().getProperty().size()-1);
+			int begin = 0;
+			int loop = 1;
+			
+			if(toaEnd != null)
+			{
+				int value = Integer.parseInt(toaEnd.getValue());
+				
+				if((modelo.getProperties().getProperty().size()-1) >= value)
+				{
+					end = value;
+				}
+			}
+			if(toaBegin != null)
+			{
+				int value = Integer.parseInt(toaBegin.getValue());
+				
+				if((modelo.getProperties().getProperty().size()-1) >= value)
+				{
+					begin = value;
+				}
+			}
+			if(toaLoop != null)
+			{
+				loop = Integer.parseInt(toaLoop.getValue());
+			}
+			
+			
+			for(int j = begin; j < end; j++)
+			{
+				
+			}
+
 		}
 		
 		

@@ -29,7 +29,7 @@ public class TextAnalizer
 	
 	private String pTAG_MODELS = "(\\[model\\S*?])";
 	
-	private String pELEMENT_PROPERTIES = "\\[properties.*?].+?\\[/properties]";
+	
 	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
 	private String pTAG_PROP_ELEMENTS = "\\[property:\\S*?](.*?)\\[/property:\\S*?]";
 	//private String pTAG_ELEMENTS = "\\[property:.+/property:\\S*?]";
@@ -40,6 +40,8 @@ public class TextAnalizer
 	//private Pattern TAG_ELEMENTS = Pattern.compile(pTAG_ELEMENTS);
 	private Pattern TAG_MODELS = Pattern.compile(pTAG_MODELS);
 	private Pattern TAG_DIST_ELEM = Pattern.compile(pTAG_DIST_ELEM);
+	
+	private String pELEMENT_PROPERTIES = "\\[properties.*?].+?\\[/properties]";
 	private Pattern ELEMENT_PROPERTIES = Pattern.compile(pELEMENT_PROPERTIES,Pattern.DOTALL);
 	
 	

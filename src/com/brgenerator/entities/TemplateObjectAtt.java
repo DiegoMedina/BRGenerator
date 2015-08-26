@@ -7,6 +7,10 @@ public class TemplateObjectAtt
 	public String getKey() {
 		return key;
 	}
+	
+	public enum TypeAtt {
+	    BEGIN, END, LOOP, POS
+	}
 
 	public void setKey(String key) {
 		this.key = key;

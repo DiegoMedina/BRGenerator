@@ -14,6 +14,9 @@ public class TemplateObject
 	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
 	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
 	
+	private String pPROPERTIES = "\\[properties.*?]";
+	private Pattern PROPERTIES = Pattern.compile(pPROPERTIES);
+	
 	public TemplateObject(String content, int firstIndex, int lastIndex) 
 	{
 		this.setContent(content);
@@ -73,32 +76,51 @@ public class TemplateObject
 		return false;
 	}
 	
-	public List<TemplateObjectAtt> getAttributes()
+	public List<TemplateObjectAtt> getAttributes(String nodo)
 	{
-		final Matcher matcher = ATTRIBUTES.matcher(this.content);
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+		final Matcher matcher = ATTRIBUTES.matcher(nodo);
+	    List<TemplateObjectAtt> toa = new ArrayList<TemplateObjectAtt>();
 	    
 	    while (matcher.find()) 
 	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-	        tos.add(to);
+	    	TemplateObjectAtt to = new TemplateObjectAtt(matcher.group(0), matcher.group(1));
+	    	toa.add(to);
 	    }
 	    
-	    return tos;
+	    return toa;
 	}
 	
-	public String getTag()
+	public TemplateObjectNode getNode(TemplateObjectNode.TypeNode tipo)
 	{
-		final Matcher matcher = ATTRIBUTES.matcher(this.content);
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
-	    
-	    while (matcher.find()) 
-	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-	        tos.add(to);
-	    }
-	    
-	    return tos;
+		
+		switch (tipo) 
+		{
+			case PROPERTIES:
+				
+				final Matcher matcher = PROPERTIES.matcher(this.content);
+			    TemplateObjectNode ton = new TemplateObjectNode();
+				
+			    while (matcher.find()) 
+			    {
+			    	ton.setName("Properties");
+			    	ton.setAttrs(this.getAttributes(matcher.group()));
+			    	return ton;
+			    }
+			    
+			break;
+			case PROPERTY:
+				
+			break;
+			case ATTR:
+				
+			break;
+			case MODEL:
+			break;
+			default:
+			break;
+		}
+		
+	    return null;
 	}
 	
 	public String getAttr()
