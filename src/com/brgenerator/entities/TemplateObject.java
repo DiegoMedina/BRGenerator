@@ -1,5 +1,6 @@
 package com.brgenerator.entities;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -9,6 +10,9 @@ public class TemplateObject
 	private String content = "";
 	private int firstIndex;
 	private int lastIndex;
+	
+	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
+	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
 	
 	public TemplateObject(String content, int firstIndex, int lastIndex) 
 	{
@@ -71,7 +75,30 @@ public class TemplateObject
 	
 	public List<TemplateObjectAtt> getAttributes()
 	{
-		
+		final Matcher matcher = ATTRIBUTES.matcher(this.content);
+	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+	    
+	    while (matcher.find()) 
+	    {
+	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+	        tos.add(to);
+	    }
+	    
+	    return tos;
+	}
+	
+	public String getTag()
+	{
+		final Matcher matcher = ATTRIBUTES.matcher(this.content);
+	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+	    
+	    while (matcher.find()) 
+	    {
+	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+	        tos.add(to);
+	    }
+	    
+	    return tos;
 	}
 	
 	public String getAttr()

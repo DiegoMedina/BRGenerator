@@ -150,19 +150,6 @@ public class TextAnalizer
 	    return tagValues;
 	}
 	
-	public List<TemplateObjectAtt> getAttributes(TemplateObject to) 
-	{
-		final Matcher matcher = patern.matcher(content.getContent());
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
-	    
-	    while (matcher.find()) 
-	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-	        tos.add(to);
-	    }
-	    
-	    return tos;
-	}
 	
 	public static List<TemplateObject> getTagsProperty(TemplateObject content, String type) 
 	{
