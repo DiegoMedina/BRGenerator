@@ -44,6 +44,9 @@ public class TextAnalizer
 	private String pELEMENT_PROPERTIES = "\\[properties.*?].+?\\[/properties]";
 	private Pattern ELEMENT_PROPERTIES = Pattern.compile(pELEMENT_PROPERTIES,Pattern.DOTALL);
 	
+	private String pELEMENT_PROPERTY = "\\[property.*?].+?\\[/property]";
+	private Pattern ELEMENT_PROPERTY = Pattern.compile(pELEMENT_PROPERTY,Pattern.DOTALL);
+	
 	
 	// \[property:(\S[a-z]*?)\] valeeeeeeeeeee devuelve solo el nombre del att
 	// \[property:\S[a-z]*?\] nodo att completo

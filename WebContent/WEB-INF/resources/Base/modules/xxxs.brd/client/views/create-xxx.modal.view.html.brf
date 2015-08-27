@@ -40,7 +40,7 @@
 	                        <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name]" id="[property:name]" class="form-control">
 	                    </div>
 	                </div>
-	                [/property]
+	                [/property] 
 	                [property pos="1"]
 	                <div class="form-group">
 	                    <label class="control-label" for="[property:name]">[property:label]</label>

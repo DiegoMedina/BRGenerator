@@ -219,6 +219,9 @@ public class TemplateManager {
 			
 			for(int j = begin; j < end; j++)
 			{
+				List<TemplateObject> tagsProperty = tagProperties.get(i).getChildsByType(TemplateObjectNode.TypeNode.PROPERTY);
+				
+				
 				
 			}
 
