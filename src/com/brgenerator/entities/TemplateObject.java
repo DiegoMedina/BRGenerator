@@ -17,19 +17,6 @@ public class TemplateObject
 	private String pPROPERTIES = "\\[properties.*?]";
 	private Pattern PROPERTIES = Pattern.compile(pPROPERTIES);
 	
-	private String pELEMENT_PROPERTIES = "\\[properties.*?].+?\\[/properties]";
-	private Pattern ELEMENT_PROPERTIES = Pattern.compile(pELEMENT_PROPERTIES,Pattern.DOTALL);
-	
-	private String pELEMENT_PROPERTY = "\\[property.*?].+?\\[/property]";
-	private Pattern ELEMENT_PROPERTY = Pattern.compile(pELEMENT_PROPERTY,Pattern.DOTALL);
-	
-	private String pELEMENT_ATT = "\\[att.*?].+?\\[/att]";
-	private Pattern ELEMENT_ATT = Pattern.compile(pELEMENT_PROPERTY,Pattern.DOTALL);
-	
-	private String pELEMENT_MODEL = "\\[model.*?].+?\\[/model]";
-	private Pattern ELEMENT_MODEL = Pattern.compile(pELEMENT_PROPERTY,Pattern.DOTALL);
-	
-	
 	public TemplateObject(String content, int firstIndex, int lastIndex) 
 	{
 		this.setContent(content);
@@ -105,15 +92,13 @@ public class TemplateObject
 	
 	public TemplateObjectNode getNode(TemplateObjectNode.TypeNode tipo)
 	{
-		final Matcher matcher;
-		TemplateObjectNode ton;
 		
 		switch (tipo) 
 		{
 			case PROPERTIES:
 				
-				matcher = PROPERTIES.matcher(this.content);
-				ton = new TemplateObjectNode();
+				final Matcher matcher = PROPERTIES.matcher(this.content);
+			    TemplateObjectNode ton = new TemplateObjectNode();
 				
 			    while (matcher.find()) 
 			    {
@@ -125,106 +110,14 @@ public class TemplateObject
 			break;
 			case PROPERTY:
 				
-				matcher = PROPERTIES.matcher(this.content);
-				ton = new TemplateObjectNode();
-				
-			    while (matcher.find()) 
-			    {
-			    	ton.setName("Properties");
-			    	ton.setAttrs(this.getAttributes(matcher.group()));
-			    	return ton;
-			    }
-				
 			break;
 			case ATTR:
 				
-				matcher = PROPERTIES.matcher(this.content);
-			    ton = new TemplateObjectNode();
-				
-			    while (matcher.find()) 
-			    {
-			    	ton.setName("Properties");
-			    	ton.setAttrs(this.getAttributes(matcher.group()));
-			    	return ton;
-			    }
-				
 			break;
 			case MODEL:
-				
-				matcher = PROPERTIES.matcher(this.content);
-			    ton = new TemplateObjectNode();
-				
-			    while (matcher.find()) 
-			    {
-			    	ton.setName("Properties");
-			    	ton.setAttrs(this.getAttributes(matcher.group()));
-			    	return ton;
-			    }
-				
 			break;
-		}
-		
-	    return null;
-	}
-	
-	public List<TemplateObject> getChildsByType(TemplateObjectNode.TypeNode tipo)
-	{
-		final Matcher matcher;
-		List<TemplateObject> tos;
-		
-		switch (tipo) 
-		{
-			case PROPERTIES:
-				
-				matcher = ELEMENT_PROPERTIES.matcher(this.content);
-				tos = new ArrayList<TemplateObject>();;
-				    
-				while (matcher.find()) 
-				{
-				    TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-				    tos.add(to);
-				}
-				
-				return tos;
-
-			case PROPERTY:
-				
-				matcher = ELEMENT_PROPERTY.matcher(this.content);
-				tos = new ArrayList<TemplateObject>();
-				    
-				while (matcher.find()) 
-				{
-				    TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-				    tos.add(to);
-				}
-				
-				return tos;
-				
-			case ATTR:
-				
-				matcher = ELEMENT_ATT.matcher(this.content);
-				tos = new ArrayList<TemplateObject>();
-				    
-				while (matcher.find()) 
-				{
-				    TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-				    tos.add(to);
-				}
-				
-				return tos;
-				
-			case MODEL:
-				
-				matcher = ELEMENT_MODEL.matcher(this.content);
-				tos = new ArrayList<TemplateObject>();
-				    
-				while (matcher.find()) 
-				{
-				    TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-				    tos.add(to);
-				}
-				
-				return tos;
+			default:
+			break;
 		}
 		
 	    return null;

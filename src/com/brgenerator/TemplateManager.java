@@ -216,30 +216,10 @@ public class TemplateManager {
 				loop = Integer.parseInt(toaLoop.getValue());
 			}
 			
+			
 			for(int j = begin; j < end; j++)
 			{
 				
-				List<TemplateObject> tagsProperty = tagProperties.get(i).getChildsByType(TemplateObjectNode.TypeNode.PROPERTY);
-				
-				for (int k = 0; k < files.length; k++) 
-				{
-					TemplateObjectNode tonProperty = tagsProperty.get(k).getNode(TemplateObjectNode.TypeNode.PROPERTY);
-					TemplateObjectAtt toaPos = ton.getAttrByType(TemplateObjectAtt.TypeAtt.POS);
-					
-					if(toaPos == null)
-					{
-						for (int l = 0; l < modelo.getProperties().getProperty().size(); l++) 
-						{
-							
-						}
-					}
-					else
-					{
-						
-					}
-					
-					
-				}
 			}
 
 		}

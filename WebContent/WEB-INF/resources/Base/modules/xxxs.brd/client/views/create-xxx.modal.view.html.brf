@@ -6,7 +6,7 @@
     <div class="modal-body">
         <form name="create[model:name]Form">
             <fieldset>
-                <div class="row">
+            	<div class="row">
                     <div class="form-group">
                         <div data-ng-show="error" class="text-center text-danger">
                             <div class="alert alert-danger" role="alert">
@@ -19,38 +19,20 @@
                            ng-class="{'text-primary': ccCtrl.referred, 'text-pink': !ccCtrl.referred}"></i>
                     </div>
                     <div class="col-sm-6">
-                    [properties begin="0" end="4"]
-                    [property]
-                	<div class="form-group">
-                        <label class="control-label" for="[property:name:lower]">[property:label]</label>
-                        <div class="controls">
-                            <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name:lower]" class="form-control">
-                        </div>
-                    </div>
-                    [/property]
-                	[/properties]
-                    </div>
+	                    [properties loops="4"]
+		                    <div class="row">
+			                    [property]
+				                	<div class="form-group">
+				                        <label class="control-label" for="[property:name]">[property:label]</label>
+				                        <div class="controls">
+				                            <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+				                        </div>
+				                    </div>
+			                    [/property]
+		                     </div>
+	                     [/properties]
+                	 </div>
                 </div>
-                [properties begin="5" loops="4"]
-                <div class="row">
-	                [property pos="0"]
-	            	<div class="form-group">
-	                    <label class="control-label" for="[property:name]">[property:label]</label>
-	                    <div class="controls">
-	                        <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name]" id="[property:name]" class="form-control">
-	                    </div>
-	                </div>
-	                [/property] 
-	                [property pos="1"]
-	                <div class="form-group">
-	                    <label class="control-label" for="[property:name]">[property:label]</label>
-	                    <div class="controls">
-	                        <input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name]" id="[property:name]" class="form-control">
-	                    </div>
-	                </div>
-	                [/property]
-                </div>
-                [/properties]
             </fieldset>
         </form>
     </div>
