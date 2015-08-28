@@ -187,11 +187,11 @@ public class TemplateManager {
 			TemplateObjectNode ton = tagProperties.get(i).getNode(TemplateObjectNode.TypeNode.PROPERTIES);
 			TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
 			TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
-			TemplateObjectAtt toaLoop = ton.getAttrByType(TemplateObjectAtt.TypeAtt.LOOP);
+			
 			
 			int end = (modelo.getProperties().getProperty().size()-1);
 			int begin = 0;
-			int loop = 1;
+			
 			
 			if(toaEnd != null)
 			{
@@ -211,14 +211,23 @@ public class TemplateManager {
 					begin = value;
 				}
 			}
-			if(toaLoop != null)
-			{
-				loop = Integer.parseInt(toaLoop.getValue());
-			}
 			
+			
+			List<TemplateObject> propertys = tagProperties.get(i).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+			
+			int loops = modelo.getProperties().getProperty().size() > propertys.size() ? 
 			
 			for(int j = begin; j < end; j++)
 			{
+				
+				
+				for (int k = 0; k < propertys.size(); k++) 
+				{
+					TemplateObjectNode tonProperty = propertys.get(k).getNode(TemplateObjectNode.TypeNode.PROPERTY);
+					TemplateObjectAtt toaPos = tonProperty.getAttrByType(TemplateObjectAtt.TypeAtt.POS);
+					
+					
+				}
 				
 			}
 
@@ -246,7 +255,7 @@ public class TemplateManager {
 					{
 						case "type":
 							
-							if(modelo.getProperties().getProperty().get(0).getAtts().getAtt()..get(j).getType() == null)
+							if(modelo.getProperties().getProperty().get(0).getAtts().getAtt().get(j).getType() == null)
 							{
 								//Obtengo el nodo entero desde su apertura hasta su cierre
 								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "type");
