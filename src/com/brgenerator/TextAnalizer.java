@@ -14,6 +14,7 @@ import java.util.regex.Pattern;
 
 import com.brgenerator.entities.TemplateObject;
 import com.brgenerator.entities.TemplateObjectAtt;
+import com.brgenerator.entities.TemplateObject.Type;
 
 public class TextAnalizer 
 {
@@ -24,7 +25,7 @@ public class TextAnalizer
 	{
 		Path path = Paths.get(origen.getAbsolutePath());
 		Charset charset = StandardCharsets.UTF_8;
-		this.content = new TemplateObject(new String(Files.readAllBytes(path), charset), 0,0);
+		this.content = new TemplateObject(new String(Files.readAllBytes(path), charset), 0,0, TemplateObject.Type.TEXT);
 	}
 	
 	private String pTAG_MODELS = "(\\[model\\S*?])";
@@ -153,57 +154,57 @@ public class TextAnalizer
 	}
 	
 	
-	public static List<TemplateObject> getTagsProperty(TemplateObject content, String type) 
-	{
-	    String regx = "\\[property:"+type+"].+?\\[/property:"+type+"]";
-		Pattern patern = Pattern.compile(regx,Pattern.DOTALL);
-		
-	    final Matcher matcher = patern.matcher(content.getContent());
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
-	    
-	    while (matcher.find()) 
-	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-	        tos.add(to);
-	    }
-	    
-	    return tos;
-	    
-	}
+//	public static List<TemplateObject> getTagsProperty(TemplateObject content, String type) 
+//	{
+//	    String regx = "\\[property:"+type+"].+?\\[/property:"+type+"]";
+//		Pattern patern = Pattern.compile(regx,Pattern.DOTALL);
+//		
+//	    final Matcher matcher = patern.matcher(content.getContent());
+//	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+//	    
+//	    while (matcher.find()) 
+//	    {
+//	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+//	        tos.add(to);
+//	    }
+//	    
+//	    return tos;
+//	    
+//	}
 	
-	public static List<TemplateObject> getAllTagsPropertyByType(TemplateObject content, String type) 
-	{
-	    String regx = "\\[property:"+type+".*?]|\\[/property:"+type+".*?]";
-		Pattern patern = Pattern.compile(regx);
-		
-	    final Matcher matcher = patern.matcher(content.getContent());
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
-	    
-	    while (matcher.find()) 
-	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
-	        tos.add(to);
-	    }
-	    
-	    return tos;
-	    
-	}
+//	public static List<TemplateObject> getAllTagsPropertyByType(TemplateObject content, String type) 
+//	{
+//	    String regx = "\\[property:"+type+".*?]|\\[/property:"+type+".*?]";
+//		Pattern patern = Pattern.compile(regx);
+//		
+//	    final Matcher matcher = patern.matcher(content.getContent());
+//	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+//	    
+//	    while (matcher.find()) 
+//	    {
+//	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+//	        tos.add(to);
+//	    }
+//	    
+//	    return tos;
+//	    
+//	}
 	
-	public List<TemplateObject> getDistinctTagProperty(TemplateObject  properties) 
-	{
-	    
-		final Matcher matcher = TAG_DIST_ELEM.matcher(properties.getContent());
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
-	    
-	    while (matcher.find()) 
-	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),0,0);
-	        if(!tos.contains(to))
-	        tos.add(to);
-	    }
-	    
-	    return tos;
-	}
+//	public List<TemplateObject> getDistinctTagProperty(TemplateObject  properties) 
+//	{
+//	    
+//		final Matcher matcher = TAG_DIST_ELEM.matcher(properties.getContent());
+//	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+//	    
+//	    while (matcher.find()) 
+//	    {
+//	        TemplateObject to = new TemplateObject(matcher.group(),0,0);
+//	        if(!tos.contains(to))
+//	        tos.add(to);
+//	    }
+//	    
+//	    return tos;
+//	}
 	
 	public List<String> getContentTagsProperty() 
 	{
@@ -222,28 +223,28 @@ public class TextAnalizer
 	    
 	    while (matcher.find()) 
 	    {
-	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+	        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), TemplateObject.Type.PROPERTIES);
 	        tos.add(to);
 	    }
 	    
 	    return tos;
 	}
 	
-	public static List<TemplateObject> getContentTagsProperties(TemplateObject properties) 
-	{
-		String pCONTENT_PROPERTIES = "\\[properties](.*?)\\[/properties]";
-		Pattern CONTENT_PROPERTIES = Pattern.compile(pCONTENT_PROPERTIES,Pattern.DOTALL);
-		final Matcher matcher = CONTENT_PROPERTIES.matcher(properties.getContent());
-	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
-	    
-	    while (matcher.find()) 
-	    {
-	        TemplateObject to = new TemplateObject(matcher.group(1),matcher.start(1),matcher.end(1));
-	        tos.add(to);
-	    }
-	    
-	    return tos;
-	}
+//	public static List<TemplateObject> getContentTagsProperties(TemplateObject properties) 
+//	{
+//		String pCONTENT_PROPERTIES = "\\[properties](.*?)\\[/properties]";
+//		Pattern CONTENT_PROPERTIES = Pattern.compile(pCONTENT_PROPERTIES,Pattern.DOTALL);
+//		final Matcher matcher = CONTENT_PROPERTIES.matcher(properties.getContent());
+//	    List<TemplateObject> tos = new ArrayList<TemplateObject>();;
+//	    
+//	    while (matcher.find()) 
+//	    {
+//	        TemplateObject to = new TemplateObject(matcher.group(1),matcher.start(1),matcher.end(1));
+//	        tos.add(to);
+//	    }
+//	    
+//	    return tos;
+//	}
 	
 	public static TemplateObject setCuotes(TemplateObject content, int order) 
 	{

@@ -1,15 +1,30 @@
 package com.brgenerator.entities;
 
+import java.io.File;
+import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import com.brgenerator.entities.TemplateObjectNode.TypeNode;
 
 public class TemplateObject 
 {
 	private String content = "";
 	private int firstIndex;
 	private int lastIndex;
+	private Type type;
+	private String text = "";
+	
+	public enum Type {
+	    PROPERTIES, PROPERTY, ATTR, MODEL, TEXT
+	}
 	
 	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
 	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
@@ -32,19 +47,71 @@ public class TemplateObject
 	private String pELEMENT_MODEL = "\\[model.*?].+?\\[/model]";
 	private Pattern ELEMENT_MODEL = Pattern.compile(pELEMENT_MODEL,Pattern.DOTALL);
 	
-	public TemplateObject(String content, int firstIndex, int lastIndex) 
+	//CONTENT
+	
+	private String pCONTENT_ELEMENT = "\\[.*?](.+?)\\[/.*?]";
+	private Pattern CONTENT_ELEMENT = Pattern.compile(pCONTENT_ELEMENT,Pattern.DOTALL);
+	
+	
+	public TemplateObject(String text, int firstIndex, int lastIndex, Type type) 
 	{
-		this.setContent(content);
+		this.setText(text);
 		this.setFirstIndex(firstIndex);
 		this.setLastIndex(lastIndex);
+		this.setType(type);
+		this.setContent(text);
+	}
+	
+	public TemplateObject(File origen) throws IOException
+	{
+		Path path = Paths.get(origen.getAbsolutePath());
+		Charset charset = StandardCharsets.UTF_8;
+		String texto = new String(Files.readAllBytes(path), charset);
+		this.setText(texto);
+		this.setContent(texto);
+		this.setFirstIndex(0);
+		this.setLastIndex(texto.length()-1);
+		this.setType(Type.TEXT);
+	}
+	
+	public String getText() {
+		return text;
+	}
+
+	public void setText(String text) {
+		this.text = text;
+	}
+
+	public Type getType() {
+		return this.type;
+	}
+	
+	public void setType(Type type) {
+		this.type = type;
 	}
 	
 	public String getContent() {
 		return content;
 	}
 	
-	public void setContent(String content) {
-		this.content = content;
+	public void setContent(String text) 
+	{
+		if(this.type == Type.TEXT)
+		{
+			this.content = text;
+		}
+		else
+		{
+			final Matcher matcher;
+				
+			matcher = CONTENT_ELEMENT.matcher(text);
+	    
+		    while (matcher.find()) 
+		    {
+		        this.content = matcher.group(1);
+		    }
+
+		}
 	}
 	
 	public void appendContent(String content) {
@@ -65,18 +132,6 @@ public class TemplateObject
 	
 	public void setLastIndex(int lastIndex) {
 		this.lastIndex = lastIndex;
-	}
-	
-	public String getType()
-	{
-		String tagContent = this.content.substring(1, this.content.length()-1);
-		String[] values = tagContent.split(":");
-		if(values.length >= 0)
-		{
-			return values[0];
-		}
-		
-		return "";
 	}
 	
 	public Boolean isElement()
@@ -118,7 +173,7 @@ public class TemplateObject
 			    
 			    while (matcher.find()) 
 			    {
-			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), Type.PROPERTIES);
 			        tos.add(to);
 			    }
 			    
@@ -130,7 +185,7 @@ public class TemplateObject
 			    
 			    while (matcher.find()) 
 			    {
-			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), Type.PROPERTY);
 			        tos.add(to);
 			    }
 			    
@@ -142,7 +197,7 @@ public class TemplateObject
 			    
 			    while (matcher.find()) 
 			    {
-			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), Type.ATTR);
 			        tos.add(to);
 			    }
 			    
@@ -154,7 +209,7 @@ public class TemplateObject
 			    
 			    while (matcher.find()) 
 			    {
-			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0));
+			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), Type.MODEL);
 			        tos.add(to);
 			    }
 			    

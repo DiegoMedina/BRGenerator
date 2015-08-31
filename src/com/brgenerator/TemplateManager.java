@@ -5,6 +5,7 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
+import java.util.HashMap;
 import java.util.List;
 
 import com.brgenerator.TemplateManager;
@@ -187,16 +188,18 @@ public class TemplateManager {
 			TemplateObjectNode ton = tagProperties.get(i).getNode(TemplateObjectNode.TypeNode.PROPERTIES);
 			TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
 			TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
-			
-			
+						
 			int end = (modelo.getProperties().getProperty().size()-1);
 			int begin = 0;
 			
 			
+			
 			if(toaEnd != null)
 			{
+				//5
 				int value = Integer.parseInt(toaEnd.getValue());
 				
+				//4
 				if((modelo.getProperties().getProperty().size()-1) >= value)
 				{
 					end = value;
@@ -212,322 +215,355 @@ public class TemplateManager {
 				}
 			}
 			
+			// Ya tengo seteado el begin y el end
+			
+			//Ejemplos 
+			// begin = 6 | end = 6 = 1
+			// begin = 6 | end = 10 = 4
+			
+			int qPropRecorrer = (end - begin) == 0 ? 1 : (end - begin) > 0 ? end - begin : 0;
+			
+			
+			int posicion = begin;
 			
 			List<TemplateObject> propertys = tagProperties.get(i).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
 			
-			int loops = modelo.getProperties().getProperty().size() > propertys.size() ? 
-			
-			for(int j = begin; j < end; j++)
+			for (int j = 0; j < propertys.size(); j++) 
 			{
+				TemplateObjectNode tonProperty = propertys.get(j).getNode(TemplateObjectNode.TypeNode.PROPERTY);
+				TemplateObjectAtt toaPos = tonProperty.getAttrByType(TemplateObjectAtt.TypeAtt.POS);
+				List<TemplateObject> attrs = propertys.get(j).getChildElements(TemplateObjectNode.TypeNode.ATTR);
 				
-				
-				for (int k = 0; k < propertys.size(); k++) 
+				if(toaPos != null)
 				{
-					TemplateObjectNode tonProperty = propertys.get(k).getNode(TemplateObjectNode.TypeNode.PROPERTY);
-					TemplateObjectAtt toaPos = tonProperty.getAttrByType(TemplateObjectAtt.TypeAtt.POS);
-					
-					
+					int propElem = begin + Integer.parseInt(toaPos.getValue());
+					//Reemplazar valores de atts segun la posicion indicada
 				}
-				
-			}
-
-		}
-		
-		
-		// por cada bloque de properties
-		for (int i = 0; i < tagProperties.size(); i++) 
-		{
-			TemplateObject tagPropertyFinal = new TemplateObject("",tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
-			
-			// Por cada prodiedad del modelo (Ej: Nombre y apellido, Altura, Edad)
-			for (int j = 0; j < modelo.getProperties().getProperty().size(); j++) 
-			{
-				//TemplateObject tagPropertyResult = new TemplateObject(tagProperties.get(i).getContent(),tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
-				TemplateObject tagPropertyResult = TextAnalizer.getContentTagsProperties(tagProperties.get(i)).get(0);
-				
-				// Obtengo todos los attributos de cada propiedad (Ej: Descripcion, Unique, Trim)
-				List<TemplateObject> tagPropertys = ta.getDistinctTagProperty(tagPropertyResult);
-				
-				for (int k = 0; k < tagPropertys.size(); k++) 
+				else
 				{
-					//Chequeo que la propiedad los posea
-					switch (tagPropertys.get(k).getAttr()) 
+					
+					//Iterar por todos los properties en el rango begin --> end
+					if(propertys.size()> 1)
 					{
-						case "type":
-							
-							if(modelo.getProperties().getProperty().get(0).getAtts().getAtt().get(j).getType() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "type");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-//									String resultado = TextAnalizer.deleteTemplateObject(tagPropertyResult, attrElements.get(l));
-//									tagPropertyResult.setContent(resultado);
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "type");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-						break;
-						case "name":
-							
-							if(modelo.getProperties().getProperty().get(j).getName() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "name");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "name");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "default":
-							
-							if(modelo.getProperties().getProperty().get(j).getDefault() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "default");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "default");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "match":
-							
-							if(modelo.getProperties().getProperty().get(j).getMatch() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "match");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "match");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "relation":
-							
-							if(modelo.getProperties().getProperty().get(j).getRelation() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "relation");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "relation");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "enum":
-							
-							if(modelo.getProperties().getProperty().get(j).getEnum() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "enum");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "enum");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "required":
-							
-							if(modelo.getProperties().getProperty().get(j).getRequired() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "required");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "required");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "trim":
-							
-							if(modelo.getProperties().getProperty().get(j).getTrim() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "trim");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "trim");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "unique":
-							
-							if(modelo.getProperties().getProperty().get(j).getUnique() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "unique");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "unique");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						case "validate":
-							
-							if(modelo.getProperties().getProperty().get(j).getValidate() == null)
-							{
-								//Obtengo el nodo entero desde su apertura hasta su cierre
-								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "validate");
-								
-								for (int l = 0; l < attrElements.size(); l++) 
-								{
-									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							else
-							{
-								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "validate");
-								
-								for (int l = 0; l < allTagPropertys.size(); l++) 
-								{
-									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-								}
-							}
-							
-							break;
-						default:
-							break;
+						// Vuelco info segun posicion
+						
+						
+						//Reemplazar atributos de property
+						List<TemplateObject> p = propertys.get(j).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+						
+						
+						//Reemplazar valores de atts en cada "posicion"
+						
+						
+						
+						posicion++;
+					}
 				}
 				
+				//Reemplazar en la property que corresponda
 			}
-
-				tagPropertyResult = TextAnalizer.setCuotes(tagPropertyResult,0);
-				tagPropertyFinal.appendContent(tagPropertyResult.getContent());
-		}
 			
-			tagPropertyFinal = TextAnalizer.setCuotes(tagPropertyFinal,1);
-			ta.replace(tagPropertyFinal);
+			//Reemplazar en la properties que corresponda
+			
+			
+			
 		}
+		
+		
+//		// por cada bloque de properties
+//		for (int i = 0; i < tagProperties.size(); i++) 
+//		{
+//			TemplateObject tagPropertyFinal = new TemplateObject("",tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
+//			
+//			// Por cada prodiedad del modelo (Ej: Nombre y apellido, Altura, Edad)
+//			for (int j = 0; j < modelo.getProperties().getProperty().size(); j++) 
+//			{
+//				//TemplateObject tagPropertyResult = new TemplateObject(tagProperties.get(i).getContent(),tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
+//				TemplateObject tagPropertyResult = TextAnalizer.getContentTagsProperties(tagProperties.get(i)).get(0);
+//				
+//				// Obtengo todos los attributos de cada propiedad (Ej: Descripcion, Unique, Trim)
+//				List<TemplateObject> tagPropertys = ta.getDistinctTagProperty(tagPropertyResult);
+//				
+//				for (int k = 0; k < tagPropertys.size(); k++) 
+//				{
+//					//Chequeo que la propiedad los posea
+//					switch (tagPropertys.get(k).getAttr()) 
+//					{
+//						case "type":
+//							
+//							if(modelo.getProperties().getProperty().get(0).getAtts().getAtt().get(j).getType() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "type");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+////									String resultado = TextAnalizer.deleteTemplateObject(tagPropertyResult, attrElements.get(l));
+////									tagPropertyResult.setContent(resultado);
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "type");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//						break;
+//						case "name":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getName() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "name");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "name");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "default":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getDefault() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "default");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "default");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "match":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getMatch() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "match");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "match");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "relation":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getRelation() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "relation");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "relation");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "enum":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getEnum() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "enum");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "enum");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "required":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getRequired() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "required");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "required");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "trim":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getTrim() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "trim");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "trim");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "unique":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getUnique() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "unique");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "unique");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						case "validate":
+//							
+//							if(modelo.getProperties().getProperty().get(j).getValidate() == null)
+//							{
+//								//Obtengo el nodo entero desde su apertura hasta su cierre
+//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "validate");
+//								
+//								for (int l = 0; l < attrElements.size(); l++) 
+//								{
+//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							else
+//							{
+//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "validate");
+//								
+//								for (int l = 0; l < allTagPropertys.size(); l++) 
+//								{
+//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
+//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
+//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
+//								}
+//							}
+//							
+//							break;
+//						default:
+//							break;
+//				}
+//				
+//			}
+//
+//				tagPropertyResult = TextAnalizer.setCuotes(tagPropertyResult,0);
+//				tagPropertyFinal.appendContent(tagPropertyResult.getContent());
+//		}
+//			
+//			tagPropertyFinal = TextAnalizer.setCuotes(tagPropertyFinal,1);
+//			ta.replace(tagPropertyFinal);
+//		}
 		
 		return ta.content.getContent();
 	}

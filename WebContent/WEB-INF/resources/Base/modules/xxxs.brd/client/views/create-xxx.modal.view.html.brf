@@ -19,12 +19,12 @@
                            ng-class="{'text-primary': ccCtrl.referred, 'text-pink': !ccCtrl.referred}"></i>
                     </div>
                     <div class="col-sm-6">
-	                    [properties begin="0" end="4"]
+	                    [properties begin='0' end='4']
 						[property]
 						<div class="form-group">
-							<label class="control-label" for="[property:name]">[property:label]</label>
+							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
 							</div>
 						</div>
 						[/property]
@@ -36,17 +36,17 @@
                     <div class="col-sm-6 col-sm-push-6">
 						<div class="form-group">
 						[property]
-							<label class="control-label" for="[property:name]">[property:label]</label>
+							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
 							</div>
 						[/property]						
 						</div>
 						<div class="form-group">
 						[property]
-							<label class="control-label" for="[property:name]">[property:label]</label>
+							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
 							</div>
 						[/property]
 						</div>
@@ -54,17 +54,17 @@
                     <div class="col-sm-6 col-sm-pull-6 ">
 						<div class="form-group">
 						[property]
-							<label class="control-label" for="[property:name]">[property:label]</label>
+							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
 							</div>
 						[/property]
 						</div>
 						<div class="form-group">
 						[property]
-							<label class="control-label" for="[property:name]">[property:label]</label>
+							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att:htmlType:value]" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
 							</div>
 						[/property]
 						</div>
