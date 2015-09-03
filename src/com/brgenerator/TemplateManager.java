@@ -10,9 +10,12 @@ import java.util.List;
 
 import com.brgenerator.TemplateManager;
 import com.brgenerator.entities.Model;
+import com.brgenerator.entities.Model.Properties;
 import com.brgenerator.entities.TemplateObject;
 import com.brgenerator.entities.TemplateObjectAtt;
 import com.brgenerator.entities.TemplateObjectNode;
+import com.brgenerator.entities.TemplateObjectAtt.TypeAtt;
+import com.brgenerator.entities.TemplateObjectNode.TypeNode;
 
 
 public class TemplateManager {
@@ -171,13 +174,24 @@ public class TemplateManager {
 	{
 		TextAnalizer ta = new TextAnalizer(origen);
 		
+		TemplateObject to = new TemplateObject(origen);
+		
 		//Obtengo los tipos de tag model en el archivo
-		List<String> tagModels = ta.getDistinctTagModels();
+		//List<String> tagModels = ta.getDistinctTagModels();
+		
+		List<TemplateObject> tagModels = to.getChildElements(TemplateObjectNode.TypeNode.MODEL);
 		
 		for (int i = 0; i < tagModels.size(); i++) 
 		{
-			String value = this.getTagValue(tagModels.get(i), modelo, null);
-			ta.findAndReplace(tagModels.get(i), value);
+			TemplateObjectNode tonModel = tagModels.get(i).getNode(TypeNode.MODEL);
+			TemplateObjectAtt tonAttValue = tonModel.getAttrByType(TypeAtt.VALUE);
+			TemplateObjectAtt tonAttMode = tonModel.getAttrByType(TypeAtt.MODE);
+			TemplateObjectAtt tonAttCase = tonModel.getAttrByType(TypeAtt.CASE);
+			
+			
+			
+			//String value = this.getTagValue(tagModels.get(i), modelo, null);
+			//ta.findAndReplace(tagModels.get(i), value);
 		}
 		
 		//Obtengo las properties
@@ -191,9 +205,7 @@ public class TemplateManager {
 						
 			int end = (modelo.getProperties().getProperty().size()-1);
 			int begin = 0;
-			
-			
-			
+
 			if(toaEnd != null)
 			{
 				//5
@@ -222,51 +234,56 @@ public class TemplateManager {
 			// begin = 6 | end = 10 = 4
 			
 			int qPropRecorrer = (end - begin) == 0 ? 1 : (end - begin) > 0 ? end - begin : 0;
-			
-			
 			int posicion = begin;
 			
 			List<TemplateObject> propertys = tagProperties.get(i).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
-			
-			for (int j = 0; j < propertys.size(); j++) 
+
+			if(propertys.size() == 1)
 			{
-				TemplateObjectNode tonProperty = propertys.get(j).getNode(TemplateObjectNode.TypeNode.PROPERTY);
-				TemplateObjectAtt toaPos = tonProperty.getAttrByType(TemplateObjectAtt.TypeAtt.POS);
-				List<TemplateObject> attrs = propertys.get(j).getChildElements(TemplateObjectNode.TypeNode.ATTR);
 				
-				if(toaPos != null)
+				for (int j = 0; j < modelo.getProperties().getProperty().size(); j++) 
 				{
-					int propElem = begin + Integer.parseInt(toaPos.getValue());
-					//Reemplazar valores de atts segun la posicion indicada
-				}
-				else
-				{
+					Properties.Property propiedad = modelo.getProperties().getProperty().get(j);
 					
-					//Iterar por todos los properties en el rango begin --> end
-					if(propertys.size()> 1)
+					List<TemplateObject> propertysChilds = propertys.get(0).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+					
+					for (int k = 0; k < propertysChilds.size(); k++) 
 					{
-						// Vuelco info segun posicion
+						//Obtengo nodo
+						TemplateObjectNode tonpc = propertysChilds.get(k).getNode(TemplateObjectNode.TypeNode.PROPERTY);
+						//Obtengo att value
+						TemplateObjectAtt tonpcAtt = tonpc.getAttrByType(TemplateObjectAtt.TypeAtt.VALUE);
+						String valor = "";
 						
+						switch (tonpcAtt.getKey()) {
+						case "name":
+							valor = propiedad.getName();
+							break;
+						case "label":
+							valor = propiedad.getLabel();
+							break;
+						default:
+							break;
+						}
 						
-						//Reemplazar atributos de property
-						List<TemplateObject> p = propertys.get(j).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+						//REEMPLAZAR NODO POR "valor"
 						
-						
-						//Reemplazar valores de atts en cada "posicion"
-						
-						
-						
-						posicion++;
 					}
+					
 				}
 				
-				//Reemplazar en la property que corresponda
+				//Obtener nodos property y reemplazar segun value
+				
+				
+				//Obtener nodos att y reemplazar segun value
+				
 			}
-			
-			//Reemplazar en la properties que corresponda
-			
-			
-			
+			else
+			{
+				
+				
+			}
+
 		}
 		
 		
@@ -568,114 +585,114 @@ public class TemplateManager {
 		return ta.content.getContent();
 	}
 	
-	public String getTagValue(String tag, Model model, Model.Properties.Property property)
-	{
-		Inflector inf = new Inflector();
-		tag = tag.substring(1, tag.length()-1);
-		String[] values = tag.split(":");
-		String tagAux = "";
-		
-		switch (values[0]) 
-		{
-			case "model":
-				
-				for (int i = 0; i < values.length; i++) 
-				{
-					switch (values[i]) 
-					{
-						case "name":
-							tagAux = model.getName();
-							break;
-						case "lower":
-							tagAux = tagAux.toLowerCase();
-							break;
-						case "plural":
-							tagAux = inf.pluralize(tagAux);
-							break;
-						default:
-							break;
-					}
-				}
-				
-				break;
-				
-			case "property":
-				
-				if(values.length <=2)
-				{
-					return "";
-				}
-				else
-				{
-					for (int i = 2; i < values.length; i++) 
-					{
-						switch (values[i]) 
-						{
-								case "value":
-									
-									switch (values[i-1]) 
-									{
-										case "name":
-											tagAux = property.getName();
-											break;
-										case "type":
-											tagAux = property.getType().toString();
-											break;
-										case "default":
-											tagAux = property.getDefault().getValue();
-											break;
-										case "match":
-											tagAux = property.getMatch().getValue();
-											break;
-										case "relation":
-											tagAux = property.getRelation().getValue();
-											break;
-										case "enum":
-											tagAux = property.getEnum().getValue();
-											break;
-										case "required":
-											tagAux = property.getRequired().getValue();
-											break;
-										case "trim":
-											tagAux = property.getTrim().getValue().toString();
-											break;
-										case "unique":
-											tagAux = property.getUnique().getValue();
-											break;
-										case "validate":
-											tagAux = property.getValidate().getValue();
-											break;
-										case "lower":
-											tagAux = tagAux.toLowerCase();
-											break;
-										case "plural":
-											tagAux = inf.pluralize(tagAux);
-											break;
-										default:
-											break;
-									}
-									
-							case "lower":
-								tagAux = tagAux.toLowerCase();
-								break;
-							case "plural":
-								tagAux = inf.pluralize(tagAux);
-								break;
-							default:
-								break;
-						}
-					}	
-				}
-				
-				break;
-				
-			default:
-				break;
-		}
-		
-		
-		return tagAux;
-		
-	}
+//	public String getTagValue(String tag, Model model, Model.Properties.Property property)
+//	{
+//		Inflector inf = new Inflector();
+//		tag = tag.substring(1, tag.length()-1);
+//		String[] values = tag.split(":");
+//		String tagAux = "";
+//		
+//		switch (values[0]) 
+//		{
+//			case "model":
+//				
+//				for (int i = 0; i < values.length; i++) 
+//				{
+//					switch (values[i]) 
+//					{
+//						case "name":
+//							tagAux = model.getName();
+//							break;
+//						case "lower":
+//							tagAux = tagAux.toLowerCase();
+//							break;
+//						case "plural":
+//							tagAux = inf.pluralize(tagAux);
+//							break;
+//						default:
+//							break;
+//					}
+//				}
+//				
+//				break;
+//				
+//			case "property":
+//				
+//				if(values.length <=2)
+//				{
+//					return "";
+//				}
+//				else
+//				{
+//					for (int i = 2; i < values.length; i++) 
+//					{
+//						switch (values[i]) 
+//						{
+//								case "value":
+//									
+//									switch (values[i-1]) 
+//									{
+//										case "name":
+//											tagAux = property.getName();
+//											break;
+//										case "type":
+//											tagAux = property.getType().toString();
+//											break;
+//										case "default":
+//											tagAux = property.getDefault().getValue();
+//											break;
+//										case "match":
+//											tagAux = property.getMatch().getValue();
+//											break;
+//										case "relation":
+//											tagAux = property.getRelation().getValue();
+//											break;
+//										case "enum":
+//											tagAux = property.getEnum().getValue();
+//											break;
+//										case "required":
+//											tagAux = property.getRequired().getValue();
+//											break;
+//										case "trim":
+//											tagAux = property.getTrim().getValue().toString();
+//											break;
+//										case "unique":
+//											tagAux = property.getUnique().getValue();
+//											break;
+//										case "validate":
+//											tagAux = property.getValidate().getValue();
+//											break;
+//										case "lower":
+//											tagAux = tagAux.toLowerCase();
+//											break;
+//										case "plural":
+//											tagAux = inf.pluralize(tagAux);
+//											break;
+//										default:
+//											break;
+//									}
+//									
+//							case "lower":
+//								tagAux = tagAux.toLowerCase();
+//								break;
+//							case "plural":
+//								tagAux = inf.pluralize(tagAux);
+//								break;
+//							default:
+//								break;
+//						}
+//					}	
+//				}
+//				
+//				break;
+//				
+//			default:
+//				break;
+//		}
+//		
+//		
+//		return tagAux;
+//		
+//	}
 
 }

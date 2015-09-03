@@ -1,10 +1,10 @@
-<section data-ng-controller="[model:name:plural]CreateController as ccCtrl">
+<section data-ng-controller="[model value='name' mode='plural'/]CreateController as ccCtrl">
 
     <div class="modal-header">
-        <h3 class="modal-title">New [model:name]</h3>
+        <h3 class="modal-title">New [model value='name'/]</h3>
     </div>
     <div class="modal-body">
-        <form name="create[model:name]Form">
+        <form name="create[model value='name'/]Form">
             <fieldset>
                 <div class="row">
                     <div class="form-group">
@@ -15,7 +15,7 @@
                         </div>
                     </div>
 					<div class="col-sm-6 text-center">
-                        <i class="glyphicon glyphicon-user [model:name:lower]-profile"
+                        <i class="glyphicon glyphicon-user [model value='name' case='lower'/]-profile"
                            ng-class="{'text-primary': ccCtrl.referred, 'text-pink': !ccCtrl.referred}"></i>
                     </div>
                     <div class="col-sm-6">
@@ -75,7 +75,7 @@
         </form>
     </div>
     <div class="modal-footer">
-        <button class="btn btn-success btn-lg" ng-click="ccCtrl.create();ok(create[model:name]Form.$valid)" ng-disabled="create[model:name]Form.$invalid">Save & Close</button>
+        <button class="btn btn-success btn-lg" ng-click="ccCtrl.create();ok(create[model value='name'/]Form.$valid)" ng-disabled="create[model value='name'/]Form.$invalid">Save & Close</button>
         <button class="btn btn-warning btn-lg" ng-click="cancel()">Cancel</button>
     </div>
 

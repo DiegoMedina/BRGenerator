@@ -21,16 +21,22 @@ public class TemplateObject
 	private int lastIndex;
 	private Type type;
 	private String text = "";
+	private List<TemplateObjectNode> nodes;
 	
 	public enum Type {
 	    PROPERTIES, PROPERTY, ATTR, MODEL, TEXT
 	}
 	
-	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
-	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
+	
 	
 	private String pPROPERTIES = "\\[properties.*?]";
 	private Pattern PROPERTIES = Pattern.compile(pPROPERTIES);
+	
+	private String pATT = "\\[att.*?]";
+	private Pattern ATT = Pattern.compile(pATT);
+	
+	private String pMODEL = "\\[model.*?]";
+	private Pattern MODEL = Pattern.compile(pMODEL);
 	
 	private String pPROPERTY = "\\[property.*?]";
 	private Pattern PROPERTY = Pattern.compile(pPROPERTY);
@@ -38,18 +44,20 @@ public class TemplateObject
 	private String pELEMENT_PROPERTIES = "\\[properties.*?].+?\\[/properties]";
 	private Pattern ELEMENT_PROPERTIES = Pattern.compile(pELEMENT_PROPERTIES,Pattern.DOTALL);
 	
-	private String pELEMENT_PROPERTY = "\\[property.*?].+?\\[/property]";
+	//private String pELEMENT_PROPERTY = "\\[property.*?].+?\\[/property]";
+	private String pELEMENT_PROPERTY = "\\[property.*?].+?\\[/property]|\\[property.*?/]";
+	
 	private Pattern ELEMENT_PROPERTY = Pattern.compile(pELEMENT_PROPERTY,Pattern.DOTALL);
 	
 	private String pELEMENT_ATT = "\\[att.*?].+?\\[/att]";
 	private Pattern ELEMENT_ATT = Pattern.compile(pELEMENT_ATT,Pattern.DOTALL);
 	
-	private String pELEMENT_MODEL = "\\[model.*?].+?\\[/model]";
+	private String pELEMENT_MODEL = "\\[model.*?].+?\\[/model]|\\[model.*?/]";
 	private Pattern ELEMENT_MODEL = Pattern.compile(pELEMENT_MODEL,Pattern.DOTALL);
 	
 	//CONTENT
 	
-	private String pCONTENT_ELEMENT = "\\[.*?](.+?)\\[/.*?]";
+	private String pCONTENT_ELEMENT = "\\[.*?](.+?)\\[/.*?]|\\[(.*?)]";
 	private Pattern CONTENT_ELEMENT = Pattern.compile(pCONTENT_ELEMENT,Pattern.DOTALL);
 	
 	
@@ -60,6 +68,7 @@ public class TemplateObject
 		this.setLastIndex(lastIndex);
 		this.setType(type);
 		this.setContent(text);
+		this.getNodes();
 	}
 	
 	public TemplateObject(File origen) throws IOException
@@ -72,6 +81,7 @@ public class TemplateObject
 		this.setFirstIndex(0);
 		this.setLastIndex(texto.length()-1);
 		this.setType(Type.TEXT);
+		this.getNodes();
 	}
 	
 	public String getText() {
@@ -146,19 +156,7 @@ public class TemplateObject
 		return false;
 	}
 	
-	public List<TemplateObjectAtt> getAttributes(String nodo)
-	{
-		final Matcher matcher = ATTRIBUTES.matcher(nodo);
-	    List<TemplateObjectAtt> toa = new ArrayList<TemplateObjectAtt>();
-	    
-	    while (matcher.find()) 
-	    {
-	    	TemplateObjectAtt to = new TemplateObjectAtt(matcher.group(0), matcher.group(1));
-	    	toa.add(to);
-	    }
-	    
-	    return toa;
-	}
+	
 	
 	public List<TemplateObject> getChildElements(TemplateObjectNode.TypeNode tipo)
 	{
@@ -191,7 +189,7 @@ public class TemplateObject
 			    
 			    return tos;
 				
-			case ATTR:
+			case ATT:
 				
 				matcher = ELEMENT_ATT.matcher(this.content);
 			    
@@ -219,48 +217,43 @@ public class TemplateObject
 	    return null;
 	}
 	
-	public TemplateObjectNode getNode(TemplateObjectNode.TypeNode tipo)
+	public List<TemplateObjectNode> getNodes()
 	{
+		Matcher matcher;
 		
-		final Matcher matcher;
-		TemplateObjectNode ton = new TemplateObjectNode();
-		
-		switch (tipo) 
-		{
-			case PROPERTIES:
-				
-				matcher = PROPERTIES.matcher(this.content);
+		matcher = PROPERTIES.matcher(this.text);
 
-			    while (matcher.find()) 
-			    {
-			    	ton.setName("Properties");
-			    	ton.setAttrs(this.getAttributes(matcher.group()));
-			    	return ton;
-			    }
-			    
-			break;
-			case PROPERTY:
-				
-				matcher = PROPERTY.matcher(this.content);
-				
-			    while (matcher.find()) 
-			    {
-			    	ton.setName("Property");
-			    	ton.setAttrs(this.getAttributes(matcher.group()));
-			    	return ton;
-			    }
-				
-			break;
-			case ATTR:
-				
-			break;
-			case MODEL:
-			break;
-			default:
-			break;
-		}
+		while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTIES);
+	    	this.nodes.add(ton);	    	
+	    }
+	    
+	    matcher = PROPERTY.matcher(this.text);
 		
-	    return null;
+	    while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTY);
+	    	this.nodes.add(ton);	    	
+	    }
+	    
+	    matcher = ATT.matcher(this.text);
+		
+	    while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.ATT);
+	    	this.nodes.add(ton);	    	
+	    }
+		
+	    matcher = MODEL.matcher(this.text);
+		
+	    while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.MODEL);
+	    	this.nodes.add(ton);	    	
+	    }
+		
+	    return this.nodes;
 	}
 	
 	public String getAttr()
@@ -287,6 +280,12 @@ public class TemplateObject
 	    
 	    return "";
 		
+	}
+	
+	public TemplateObject replaceContentBy(String value)
+	{
+		this.content = value;
+		return this;
 	}
 	
 }

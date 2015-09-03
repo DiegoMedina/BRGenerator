@@ -9,7 +9,7 @@ public class TemplateObjectAtt
 	}
 	
 	public enum TypeAtt {
-	    BEGIN, END, LOOP, POS
+	    BEGIN, END, LOOP, POS, VALUE, MODE, CASE
 	}
 
 	public void setKey(String key) {
