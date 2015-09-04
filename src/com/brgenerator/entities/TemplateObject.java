@@ -23,6 +23,10 @@ public class TemplateObject
 	private String text = "";
 	private List<TemplateObjectNode> nodes;
 	
+	public void setNodes(List<TemplateObjectNode> nodes) {
+		this.nodes = nodes;
+	}
+
 	public enum Type {
 	    PROPERTIES, PROPERTY, ATTR, MODEL, TEXT
 	}
@@ -124,10 +128,6 @@ public class TemplateObject
 		}
 	}
 	
-	public void appendContent(String content) {
-		this.content = (this.content.concat(content));
-	}
-	
 	public int getFirstIndex() {
 		return firstIndex;
 	}
@@ -144,19 +144,133 @@ public class TemplateObject
 		this.lastIndex = lastIndex;
 	}
 	
-	public Boolean isElement()
+	
+	
+	public List<TemplateObjectNode> getNodes()
 	{
-		String tagContent = this.content.substring(1, this.content.length()-1);
-		String[] values = tagContent.split(":");
-		if(values.length == 2)
-		{
-			return true;
-		}
-		
-		return false;
+	    return this.nodes;
 	}
 	
+	public List<TemplateObjectNode> getNodesByType(TemplateObjectNode.TypeNode type)
+	{
+		Matcher matcher;
+		List<TemplateObjectNode> tons = new ArrayList<TemplateObjectNode>();
+	    
+		switch (type) 
+		{
+			case PROPERTIES:
+				
+				matcher = PROPERTIES.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	tons.add(ton);
+			    }
+				
+				break;
+			case PROPERTY:
+				
+				matcher = PROPERTY.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	tons.add(ton);
+			    }
+				break;
+			case ATT:
+				
+				matcher = ATT.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	tons.add(ton);
+			    }
+			    
+				break;   
+			case MODEL:
+				
+				matcher = MODEL.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	tons.add(ton);
+			    }
+				break;
+		}		
+		
+	    
+	    return tons;
+		
+	}
 	
+	public void setNodes()
+	{
+		Matcher matcher;
+		
+		matcher = PROPERTIES.matcher(this.text);
+
+		while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTIES);
+	    	this.nodes.add(ton);	    	
+	    }
+	    
+	    matcher = PROPERTY.matcher(this.text);
+		
+	    while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTY);
+	    	this.nodes.add(ton);	    	
+	    }
+	    
+	    matcher = ATT.matcher(this.text);
+		
+	    while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.ATT);
+	    	this.nodes.add(ton);	    	
+	    }
+		
+	    matcher = MODEL.matcher(this.text);
+		
+	    while (matcher.find()) 
+	    {
+	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.MODEL);
+	    	this.nodes.add(ton);	    	
+	    }
+	}
+	
+	public String getAttr()
+	{
+		String pTYPE = "\\[\\S[a-z]*?:(\\S[a-z]*?)\\]|\\[\\S[a-z]*?:(\\S[a-z]*?)\\:\\S[a-z]*?\\]";
+		Pattern TYPE = Pattern.compile(pTYPE);		
+		Matcher matcher = TYPE.matcher(this.content);
+
+	    while (matcher.find()) 
+	    {
+	    	if(matcher.group(1) != null && matcher.group(1)!= "")
+	    	{
+	    		return matcher.group(1);
+	    	}
+	    	else if(matcher.group(2) != null && matcher.group(2)!= "")
+	    	{
+	    		return matcher.group(2);
+	    	}
+	    	else
+	    	{
+	    		return "";
+	    	}
+	    }
+	    
+	    return "";
+		
+	}
+	
+	public TemplateObject replaceContentBy(String value)
+	{
+		this.content = value;
+		return this;
+	}
 	
 	public List<TemplateObject> getChildElements(TemplateObjectNode.TypeNode tipo)
 	{
@@ -215,77 +329,6 @@ public class TemplateObject
 		}
 		
 	    return null;
-	}
-	
-	public List<TemplateObjectNode> getNodes()
-	{
-		Matcher matcher;
-		
-		matcher = PROPERTIES.matcher(this.text);
-
-		while (matcher.find()) 
-	    {
-	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTIES);
-	    	this.nodes.add(ton);	    	
-	    }
-	    
-	    matcher = PROPERTY.matcher(this.text);
-		
-	    while (matcher.find()) 
-	    {
-	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTY);
-	    	this.nodes.add(ton);	    	
-	    }
-	    
-	    matcher = ATT.matcher(this.text);
-		
-	    while (matcher.find()) 
-	    {
-	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.ATT);
-	    	this.nodes.add(ton);	    	
-	    }
-		
-	    matcher = MODEL.matcher(this.text);
-		
-	    while (matcher.find()) 
-	    {
-	    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), TypeNode.MODEL);
-	    	this.nodes.add(ton);	    	
-	    }
-		
-	    return this.nodes;
-	}
-	
-	public String getAttr()
-	{
-		String pTYPE = "\\[\\S[a-z]*?:(\\S[a-z]*?)\\]|\\[\\S[a-z]*?:(\\S[a-z]*?)\\:\\S[a-z]*?\\]";
-		Pattern TYPE = Pattern.compile(pTYPE);		
-		Matcher matcher = TYPE.matcher(this.content);
-
-	    while (matcher.find()) 
-	    {
-	    	if(matcher.group(1) != null && matcher.group(1)!= "")
-	    	{
-	    		return matcher.group(1);
-	    	}
-	    	else if(matcher.group(2) != null && matcher.group(2)!= "")
-	    	{
-	    		return matcher.group(2);
-	    	}
-	    	else
-	    	{
-	    		return "";
-	    	}
-	    }
-	    
-	    return "";
-		
-	}
-	
-	public TemplateObject replaceContentBy(String value)
-	{
-		this.content = value;
-		return this;
 	}
 	
 }

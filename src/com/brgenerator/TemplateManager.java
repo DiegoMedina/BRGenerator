@@ -172,24 +172,20 @@ public class TemplateManager {
 	
 	public String build(File origen, Model modelo ) throws IOException
 	{
-		TextAnalizer ta = new TextAnalizer(origen);
 		
 		TemplateObject to = new TemplateObject(origen);
 		
 		//Obtengo los tipos de tag model en el archivo
 		//List<String> tagModels = ta.getDistinctTagModels();
 		
-		List<TemplateObject> tagModels = to.getChildElements(TemplateObjectNode.TypeNode.MODEL);
+		List<TemplateObjectNode> tagModels = to.getNodesByType(TypeNode.MODEL);
 		
 		for (int i = 0; i < tagModels.size(); i++) 
-		{
-			TemplateObjectNode tonModel = tagModels.get(i).getNode(TypeNode.MODEL);
-			TemplateObjectAtt tonAttValue = tonModel.getAttrByType(TypeAtt.VALUE);
-			TemplateObjectAtt tonAttMode = tonModel.getAttrByType(TypeAtt.MODE);
-			TemplateObjectAtt tonAttCase = tonModel.getAttrByType(TypeAtt.CASE);
-			
-			
-			
+		{		
+			TemplateObjectAtt tonAttValue = tagModels.get(i).getAttrByType(TypeAtt.VALUE);
+			TemplateObjectAtt tonAttMode = tagModels.get(i).getAttrByType(TypeAtt.MODE);
+			TemplateObjectAtt tonAttCase = tagModels.get(i).getAttrByType(TypeAtt.CASE);
+						
 			//String value = this.getTagValue(tagModels.get(i), modelo, null);
 			//ta.findAndReplace(tagModels.get(i), value);
 		}
