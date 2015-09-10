@@ -12,7 +12,34 @@ import com.brgenerator.entities.TemplateObjectAtt.TypeAtt;
 public class TemplateObjectNode
 {
 	private TypeNode type;
+	public int getFirstIndex() {
+		return firstIndex;
+	}
+
+	public void setFirstIndex(int firstIndex) {
+		this.firstIndex = firstIndex;
+	}
+
+	public int getLastIndex() {
+		return lastIndex;
+	}
+
+	public void setLastIndex(int lastIndex) {
+		this.lastIndex = lastIndex;
+	}
+	
+	private String content;
 	private List<TemplateObjectAtt> attrs;
+	public String getContent() {
+		return content;
+	}
+
+	public void setContent(String content) {
+		this.content = content;
+	}
+
+	private int firstIndex;
+	private int lastIndex;
 	
 	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
 	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
@@ -30,6 +57,15 @@ public class TemplateObjectNode
 		super();
 		this.type = type;
 		this.attrs = this.getAttributes(node);
+		this.content = node;
+	}
+	
+	public TemplateObjectNode(String node, TypeNode type, int firstIndex, int lastIndex) 
+	{
+		super();
+		this.type = type;
+		this.attrs = this.getAttributes(node);
+		this.content = node;
 	}
 
 	public TypeNode getType() {

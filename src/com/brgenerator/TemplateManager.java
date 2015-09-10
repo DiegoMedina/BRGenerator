@@ -175,17 +175,19 @@ public class TemplateManager {
 		
 		TemplateObject to = new TemplateObject(origen);
 		
-		//Obtengo los tipos de tag model en el archivo
-		//List<String> tagModels = ta.getDistinctTagModels();
-		
 		List<TemplateObjectNode> tagModels = to.getNodesByType(TypeNode.MODEL);
 		
-		for (int i = 0; i < tagModels.size(); i++) 
+		while (!to.getNodesByType(TypeNode.MODEL).isEmpty()) 
+		{
+			TemplateObjectNode nodo = to.getNodesByType(TypeNode.MODEL).get(0);
+			String valor = this.getValue(TypeNode.MODEL, nodo);
+			nodo.setContent(valor);
+			to.replace(nodo);
+		}
+		
+		for (int i = 0; i < tagModels.size(); i++)
 		{		
-			TemplateObjectAtt tonAttValue = tagModels.get(i).getAttrByType(TypeAtt.VALUE);
-			TemplateObjectAtt tonAttMode = tagModels.get(i).getAttrByType(TypeAtt.MODE);
-			TemplateObjectAtt tonAttCase = tagModels.get(i).getAttrByType(TypeAtt.CASE);
-						
+			
 			//String value = this.getTagValue(tagModels.get(i), modelo, null);
 			//ta.findAndReplace(tagModels.get(i), value);
 		}
@@ -581,114 +583,40 @@ public class TemplateManager {
 		return ta.content.getContent();
 	}
 	
-//	public String getTagValue(String tag, Model model, Model.Properties.Property property)
-//	{
-//		Inflector inf = new Inflector();
-//		tag = tag.substring(1, tag.length()-1);
-//		String[] values = tag.split(":");
-//		String tagAux = "";
-//		
-//		switch (values[0]) 
-//		{
-//			case "model":
-//				
-//				for (int i = 0; i < values.length; i++) 
-//				{
-//					switch (values[i]) 
-//					{
-//						case "name":
-//							tagAux = model.getName();
-//							break;
-//						case "lower":
-//							tagAux = tagAux.toLowerCase();
-//							break;
-//						case "plural":
-//							tagAux = inf.pluralize(tagAux);
-//							break;
-//						default:
-//							break;
-//					}
-//				}
-//				
-//				break;
-//				
-//			case "property":
-//				
-//				if(values.length <=2)
-//				{
-//					return "";
-//				}
-//				else
-//				{
-//					for (int i = 2; i < values.length; i++) 
-//					{
-//						switch (values[i]) 
-//						{
-//								case "value":
-//									
-//									switch (values[i-1]) 
-//									{
-//										case "name":
-//											tagAux = property.getName();
-//											break;
-//										case "type":
-//											tagAux = property.getType().toString();
-//											break;
-//										case "default":
-//											tagAux = property.getDefault().getValue();
-//											break;
-//										case "match":
-//											tagAux = property.getMatch().getValue();
-//											break;
-//										case "relation":
-//											tagAux = property.getRelation().getValue();
-//											break;
-//										case "enum":
-//											tagAux = property.getEnum().getValue();
-//											break;
-//										case "required":
-//											tagAux = property.getRequired().getValue();
-//											break;
-//										case "trim":
-//											tagAux = property.getTrim().getValue().toString();
-//											break;
-//										case "unique":
-//											tagAux = property.getUnique().getValue();
-//											break;
-//										case "validate":
-//											tagAux = property.getValidate().getValue();
-//											break;
-//										case "lower":
-//											tagAux = tagAux.toLowerCase();
-//											break;
-//										case "plural":
-//											tagAux = inf.pluralize(tagAux);
-//											break;
-//										default:
-//											break;
-//									}
-//									
-//							case "lower":
-//								tagAux = tagAux.toLowerCase();
-//								break;
-//							case "plural":
-//								tagAux = inf.pluralize(tagAux);
-//								break;
-//							default:
-//								break;
-//						}
-//					}	
-//				}
-//				
-//				break;
-//				
-//			default:
-//				break;
-//		}
-//		
-//		
-//		return tagAux;
-//		
-//	}
+	public String getValue(TemplateObjectNode.TypeNode nodeType, TemplateObjectNode nodo)
+	{
+		Inflector inf = new Inflector();
+		String result = "";
+		
+		switch (nodeType) 
+		{
+		case MODEL:
+				
+			TemplateObjectAtt tonAttValue = nodo.getAttrByType(TypeAtt.VALUE);
+			TemplateObjectAtt tonAttMode = nodo.getAttrByType(TypeAtt.MODE);
+			TemplateObjectAtt tonAttCase = nodo.getAttrByType(TypeAtt.CASE);
+			
+			if(tonAttValue != null)
+			{
+				result = tonAttValue.getValue();
+				
+				if(tonAttMode != null)
+				{
+					result = tonAttMode.getValue() == "plural"?  inf.pluralize(result):result;
+				}
+				if(tonAttCase != null)
+				{
+					result = tonAttCase.getValue() == "lower"?  result.toLowerCase():result;
+				}
+			}
+			break;
+
+		default:
+			break;
+		}
+
+		return result;
+		
+	}
 
 }

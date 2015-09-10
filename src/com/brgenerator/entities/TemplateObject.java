@@ -163,7 +163,7 @@ public class TemplateObject
 				matcher = PROPERTIES.matcher(this.content);
 				while (matcher.find()) 
 			    {
-			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type, matcher.start(0), matcher.end(0));
 			    	tons.add(ton);
 			    }
 				
@@ -173,7 +173,7 @@ public class TemplateObject
 				matcher = PROPERTY.matcher(this.content);
 				while (matcher.find()) 
 			    {
-			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type, matcher.start(0), matcher.end(0));
 			    	tons.add(ton);
 			    }
 				break;
@@ -182,7 +182,7 @@ public class TemplateObject
 				matcher = ATT.matcher(this.content);
 				while (matcher.find()) 
 			    {
-			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type, matcher.start(0), matcher.end(0));
 			    	tons.add(ton);
 			    }
 			    
@@ -192,7 +192,7 @@ public class TemplateObject
 				matcher = MODEL.matcher(this.content);
 				while (matcher.find()) 
 			    {
-			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type);
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type, matcher.start(0), matcher.end(0));
 			    	tons.add(ton);
 			    }
 				break;
@@ -269,6 +269,20 @@ public class TemplateObject
 	public TemplateObject replaceContentBy(String value)
 	{
 		this.content = value;
+		return this;
+	}
+	
+	public TemplateObject replace(TemplateObject element)
+	{
+		String resultado = this.content.substring(0, element.getFirstIndex()) + element.getContent() + this.content.substring(element.getLastIndex(), this.content.length()); 
+		this.setContent(resultado);
+		return this;
+	}
+	
+	public TemplateObject replace(TemplateObjectNode element)
+	{
+		String resultado = this.content.substring(0, element.getFirstIndex()) + element.getContent() + this.content.substring(element.getLastIndex(), this.content.length()); 
+		this.setContent(resultado);
 		return this;
 	}
 	
