@@ -13,7 +13,7 @@ var [model:name]Schema = new Schema({
 	[properties]
 	[property]
 	[property:name]: {
-		[att:type]type: [att:type:value][cuote:0][/att:type]
+		[att]type: [att value='type'/][cuote][/att]
 		[att:default]default: [att:default:value][cuote:0][/att:default]
 		[att:required]required: [att:required:value][cuote:0][/att:required]
 		[att:trim]trim: [att:trim:value][cuote:0][/att:trim]

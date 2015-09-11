@@ -28,7 +28,7 @@ public class TemplateObject
 	}
 
 	public enum Type {
-	    PROPERTIES, PROPERTY, ATTR, MODEL, TEXT
+	    PROPERTIES, PROPERTY, ATT, MODEL, TEXT
 	}
 	
 	
@@ -64,6 +64,16 @@ public class TemplateObject
 	private String pCONTENT_ELEMENT = "\\[.*?](.+?)\\[/.*?]|\\[(.*?)]";
 	private Pattern CONTENT_ELEMENT = Pattern.compile(pCONTENT_ELEMENT,Pattern.DOTALL);
 	
+	
+	public TemplateObject(TemplateObject to) 
+	{
+		this.setText(to.text);
+		this.setFirstIndex(to.firstIndex);
+		this.setLastIndex(to.lastIndex);
+		this.setType(to.type);
+		this.setContent(to.text);
+		this.getNodes();
+	}
 	
 	public TemplateObject(String text, int firstIndex, int lastIndex, Type type) 
 	{
@@ -149,6 +159,60 @@ public class TemplateObject
 	public List<TemplateObjectNode> getNodes()
 	{
 	    return this.nodes;
+	}
+	
+	public TemplateObjectNode getNode()
+	{
+		Matcher matcher;
+		TemplateObjectNode ton;
+	    
+		switch (this.type) 
+		{
+			case PROPERTIES:
+				
+				matcher = PROPERTIES.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTIES, matcher.start(0), matcher.end(0));
+			    	return ton;
+			    }
+				
+				break;
+			case PROPERTY:
+				
+				matcher = PROPERTY.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTY, matcher.start(0), matcher.end(0));
+			    	return ton;
+			    }
+				break;
+			case ATT:
+				
+				matcher = ATT.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.ATT, matcher.start(0), matcher.end(0));
+			    	return ton;
+			    }
+			    
+				break;   
+			case MODEL:
+				
+				matcher = MODEL.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.MODEL, matcher.start(0), matcher.end(0));
+			    	return ton;
+			    }
+				break;
+		default:
+			break;
+		}		
+		
+	    
+	    return null;
+		
 	}
 	
 	public List<TemplateObjectNode> getNodesByType(TemplateObjectNode.TypeNode type)
@@ -323,7 +387,7 @@ public class TemplateObject
 			    
 			    while (matcher.find()) 
 			    {
-			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), Type.ATTR);
+			        TemplateObject to = new TemplateObject(matcher.group(),matcher.start(0),matcher.end(0), Type.ATT);
 			        tos.add(to);
 			    }
 			    

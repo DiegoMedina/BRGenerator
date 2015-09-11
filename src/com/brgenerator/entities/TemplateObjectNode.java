@@ -5,7 +5,6 @@ import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import com.brgenerator.entities.TemplateObject.Type;
 import com.brgenerator.entities.TemplateObjectAtt.TypeAtt;
 
 

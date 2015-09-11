@@ -24,7 +24,7 @@
 						<div class="form-group">
 							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
+								<input type="[att show='value' name='htmlType'/]" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
 							</div>
 						</div>
 						[/property]
@@ -54,9 +54,9 @@
                     <div class="col-sm-6 col-sm-pull-6 ">
 						<div class="form-group">
 						[property]
-							<label class="control-label" for="[property value='name']">[property value='label']</label>
+							<label class="control-label" for="[property value='name'/]">[property value='label'/]</label>
 							<div class="controls">
-								<input type="[att value='htmlType']" data-ng-model="ccCtrl.[property:name:lower]" id="[property:name]" class="form-control">
+								<input type="[att value='htmlType'/]" data-ng-model="ccCtrl.[property:name:lower/]" id="[property:name/]" class="form-control">
 							</div>
 						[/property]
 						</div>
