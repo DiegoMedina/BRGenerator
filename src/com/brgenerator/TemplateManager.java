@@ -171,11 +171,8 @@ public class TemplateManager {
 		}
 	}
 	
-	public String build(File origen, Model modelo ) throws IOException
+	public TemplateObject buildModel(TemplateObject to, Model modelo)
 	{
-		
-		TemplateObject to = new TemplateObject(origen);
-		
 		List<TemplateObjectNode> tagModels = to.getNodesByType(TypeNode.MODEL);
 		
 		while (!to.getNodesByType(TypeNode.MODEL).isEmpty()) 
@@ -186,6 +183,11 @@ public class TemplateManager {
 			to.replace(nodo);
 		}
 		
+		return to;
+	}
+	
+	public TemplateObject buildProperties(TemplateObject to, Model modelo)
+	{
 		
 		//Obtengo las properties
 		List<TemplateObject> tagProperties = to.getChildElements(TemplateObjectNode.TypeNode.PROPERTIES);
@@ -227,53 +229,95 @@ public class TemplateManager {
 				}
 			}
 			
-			List<TemplateObject> tagPropertys = tagProperties.get(i).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+			tagProperties.get(i).replace(buildProperty(tagProperties.get(i), modelo));
 			
-			// SI TIENE UN SOLO ELEMENTO PROPERTY ITERO POR CADA PROPIEDAD/CAMPO EN EL RANGO INDICADO
-			if(tagPropertys.size() == 1)
+		}
+		
+		return to;
+	}
+	
+	public TemplateObject buildProperty(TemplateObject to, Model modelo)
+	{
+		
+		List<TemplateObject> tagPropertys = .getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+		
+		// SI TIENE UN SOLO ELEMENTO PROPERTY ITERO POR CADA PROPIEDAD/CAMPO EN EL RANGO INDICADO
+		if(tagPropertys.size() == 1)
+		{
+			//LISTADO DE PROPERTYS RESULTADO
+			List<TemplateObject> propertysRes;
+							
+			for (int j = begin; j <= end; j++) 
 			{
-				//LISTADO DE PROPERTYS RESULTADO
-				List<TemplateObject> propertysRes;
-								
-				for (int j = begin; j <= end; j++) 
+				//CREO UN NUEVO TAG PROPERTY
+				TemplateObject propertysAux = new TemplateObject(tagPropertys.get(0));
+				
+				//OBTENGO ELEMENTOS HIJOS DE TIPO ATT
+				List<TemplateObject> tagAtts = tagPropertys.get(0).getChildElements(TemplateObjectNode.TypeNode.ATT);
+				
+				//SI TENGO ELEMENTOS TAG
+				if(tagAtts.size() > 0)
 				{
-					//CREO UN NUEVO TAG PROPERTY
-					TemplateObject propertysAux = new TemplateObject(tagPropertys.get(0));
-					
-					//OBTENGO ELEMENTOS HIJOS DE TIPO ATT
-					List<TemplateObject> tagAtts = tagPropertys.get(0).getChildElements(TemplateObjectNode.TypeNode.ATT);
-					
-					//SI TENGO ELEMENTOS TAG
-					if(tagAtts.size() > 0)
+					// SI TIENE UN SOLO ELEMENTO <ATT></ATT> ITERO POR CADA ATT EN EL RANGO INDICADO
+					if(tagAtts.size() == 1)
 					{
-						//LISTADO DE ATTS RESULTADO
-						List<TemplateObject> attsRes;
+						//DEBO EJECUTAR RUTINA QUE ITERE POR TODOS LOS ATRIBUTOS DE LA PROPERTY
+
+						TemplateObjectNode ton = tagAtts.get(i).getNode();
+						TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
+						TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
+									
+						//VALOR POR DEFAULT PARA END EL TOTAL DE LA CANTIDAD DE PROPIEDADES/CAMPOS DEL MODELO
+						int end = (modelo.getProperties().getProperty().size()-1);
+						//VALOR POR DEFAULT PARA EL COMIENZO 0
+						int begin = 0;
+
 						
-						// ITERO POR CADA ELEMENTO TAG
-						for (int k = 0; k < tagAtts.size(); k++) 
-						{	
-							//CREO UN NUEVO TAG ATT
-							TemplateObject attAux = new TemplateObject(tagAtts.get(k));
+						if(toaEnd != null)
+						{
+							//VALUE = VALOR DE END EN NODO PROPERTIES DEL TEMPLATE
+							int value = Integer.parseInt(toaEnd.getValue());
 							
-							//MIENTRAS ENCUENTRE NODOS TAG DENTRO REEMPLAZO
-							while (!tagAtts.get(k).getNodesByType(TypeNode.ATT).isEmpty()) 
+							//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO
+							if((modelo.getProperties().getProperty().size()-1) >= value)
 							{
-								TemplateObjectNode nodo = tagAtts.get(k).getNodesByType(TypeNode.ATT).get(0);
-								String valor = this.getValue(TypeNode.ATT, nodo, modelo.getProperties().getProperty().get(j));
-								nodo.setContent(valor);
-								to.replace(nodo);
+								// END = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
+								end = value;
 							}
+						}
+						if(toaBegin != null)
+						{
+							//VALUE = VALOR DE BEGIN EN NODO PROPERTIES DEL TEMPLATE
+							int value = Integer.parseInt(toaBegin.getValue());
 							
-							// YA REEMPLACE TODOS LOS NODOS TAG
-							// AGREGO ATT A ATTS
-							attsRes.add(attAux);
+							//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO Y MAYOR QUE 0
+							if((value <= modelo.getProperties().getProperty().size()-1) && value > 0)
+							{
+								// BEGIN = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
+								begin = value;
+							}
 						}
 						
-						
+						for (int l = 0; l < modelo.getProperties().getProperty().get(j).getAtts().getAtt().size(); l++) 
+						{
+							modelo.getProperties().getProperty().get(j).getAtts().getAtt().get(l);
+						}
 					}
-					else 
-					{
-						while (!tagPropertys.get(j).getNodesByType(TypeNode.ATT).isEmpty()) 
+					
+					//
+					
+					
+					//LISTADO DE ATTS RESULTADO
+					List<TemplateObject> attsRes;
+					
+					// ITERO POR CADA ELEMENTO TAG
+					for (int k = 0; k < tagAtts.size(); k++) 
+					{	
+						//CREO UN NUEVO TAG ATT
+						TemplateObject attAux = new TemplateObject(tagAtts.get(k));
+						
+						//MIENTRAS ENCUENTRE NODOS TAG DENTRO REEMPLAZO
+						while (!tagAtts.get(k).getNodesByType(TypeNode.ATT).isEmpty()) 
 						{
 							TemplateObjectNode nodo = tagAtts.get(k).getNodesByType(TypeNode.ATT).get(0);
 							String valor = this.getValue(TypeNode.ATT, nodo, modelo.getProperties().getProperty().get(j));
@@ -281,383 +325,52 @@ public class TemplateManager {
 							to.replace(nodo);
 						}
 						
+						// YA REEMPLACE TODOS LOS NODOS TAG
+						// AGREGO ATT A ATTS
+						attsRes.add(attAux);
 					}
 					
-				}
-			}
-			else
-			{
-				
-			}
-			
-			int qIteraciones = 0;
-			
-			for (int j = begin; j <= end; j++) 
-			{
-				//OBTENGO TODAS LAS PROPERTYS DENTRO DEL NODO
-				
-				
-				//OBTENGO LA PROPIEDAD/CAMPO QUE CORRESPONDE DEL MODELO 
-				Property propy = modelo.getProperties().getProperty().get(j);
-				
-				for (int k = 0; k < tagPropertys.size(); k++) 
-				{
 					
 				}
-				
-				qIteraciones++;
-			}
-			
-			int qPropRecorrer = (end - begin) == 0 ? 1 : (end - begin) > 0 ? end - begin : 0;
-			int posicion = begin;
-			
-			
-
-			if(propertys.size() == 1)
-			{
-				
-				for (int j = 0; j < modelo.getProperties().getProperty().size(); j++) 
+				else 
 				{
-					Properties.Property propiedad = modelo.getProperties().getProperty().get(j);
-					
-					List<TemplateObject> propertysChilds = propertys.get(0).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
-					
-					for (int k = 0; k < propertysChilds.size(); k++) 
+					while (!tagPropertys.get(j).getNodesByType(TypeNode.ATT).isEmpty()) 
 					{
-						//Obtengo nodo
-						TemplateObjectNode tonpc = propertysChilds.get(k).getNode(TemplateObjectNode.TypeNode.PROPERTY);
-						//Obtengo att value
-						TemplateObjectAtt tonpcAtt = tonpc.getAttrByType(TemplateObjectAtt.TypeAtt.VALUE);
-						String valor = "";
-						
-						switch (tonpcAtt.getKey()) {
-						case "name":
-							valor = propiedad.getName();
-							break;
-						case "label":
-							valor = propiedad.getLabel();
-							break;
-						default:
-							break;
-						}
-						
-						//REEMPLAZAR NODO POR "valor"
-						
+						TemplateObjectNode nodo = tagAtts.get(k).getNodesByType(TypeNode.ATT).get(0);
+						String valor = this.getValue(TypeNode.ATT, nodo, modelo.getProperties().getProperty().get(j));
+						nodo.setContent(valor);
+						to.replace(nodo);
 					}
 					
 				}
 				
-				//Obtener nodos property y reemplazar segun value
-				
-				
-				//Obtener nodos att y reemplazar segun value
-				
 			}
-			else
-			{
-				
-				
-			}
-
+		}
+		else
+		{
+			
 		}
 		
+		return to;
+	}
+	
+	public TemplateObject buildAtt(TemplateObject to, Model modelo)
+	{
+		return to;
+	}
+	
+	public String build(File origen, Model modelo ) throws IOException
+	{
 		
-//		// por cada bloque de properties
-//		for (int i = 0; i < tagProperties.size(); i++) 
-//		{
-//			TemplateObject tagPropertyFinal = new TemplateObject("",tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
-//			
-//			// Por cada prodiedad del modelo (Ej: Nombre y apellido, Altura, Edad)
-//			for (int j = 0; j < modelo.getProperties().getProperty().size(); j++) 
-//			{
-//				//TemplateObject tagPropertyResult = new TemplateObject(tagProperties.get(i).getContent(),tagProperties.get(i).getFirstIndex(),tagProperties.get(i).getLastIndex());
-//				TemplateObject tagPropertyResult = TextAnalizer.getContentTagsProperties(tagProperties.get(i)).get(0);
-//				
-//				// Obtengo todos los attributos de cada propiedad (Ej: Descripcion, Unique, Trim)
-//				List<TemplateObject> tagPropertys = ta.getDistinctTagProperty(tagPropertyResult);
-//				
-//				for (int k = 0; k < tagPropertys.size(); k++) 
-//				{
-//					//Chequeo que la propiedad los posea
-//					switch (tagPropertys.get(k).getAttr()) 
-//					{
-//						case "type":
-//							
-//							if(modelo.getProperties().getProperty().get(0).getAtts().getAtt().get(j).getType() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "type");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-////									String resultado = TextAnalizer.deleteTemplateObject(tagPropertyResult, attrElements.get(l));
-////									tagPropertyResult.setContent(resultado);
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "type");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//						break;
-//						case "name":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getName() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "name");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "name");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "default":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getDefault() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "default");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "default");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "match":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getMatch() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "match");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "match");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "relation":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getRelation() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "relation");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "relation");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "enum":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getEnum() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "enum");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "enum");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "required":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getRequired() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "required");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "required");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "trim":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getTrim() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "trim");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "trim");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "unique":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getUnique() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "unique");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "unique");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						case "validate":
-//							
-//							if(modelo.getProperties().getProperty().get(j).getValidate() == null)
-//							{
-//								//Obtengo el nodo entero desde su apertura hasta su cierre
-//								List<TemplateObject> attrElements = TextAnalizer.getTagsProperty(tagPropertyResult, "validate");
-//								
-//								for (int l = 0; l < attrElements.size(); l++) 
-//								{
-//									tagPropertyResult = TextAnalizer.remove(tagPropertyResult, attrElements.get(l).getContent());
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							else
-//							{
-//								List<TemplateObject> allTagPropertys = TextAnalizer.getAllTagsPropertyByType(tagPropertyResult, "validate");
-//								
-//								for (int l = 0; l < allTagPropertys.size(); l++) 
-//								{
-//									String valor = this.getTagValue(allTagPropertys.get(l).getContent(), null, modelo.getProperties().getProperty().get(j));
-//									tagPropertyResult = TextAnalizer.findAndReplace(tagPropertyResult, allTagPropertys.get(l).getContent(), valor);
-//									System.out.println("Method build tagProperties.getContent(i):\n "+tagPropertyResult.getContent());
-//								}
-//							}
-//							
-//							break;
-//						default:
-//							break;
-//				}
-//				
-//			}
-//
-//				tagPropertyResult = TextAnalizer.setCuotes(tagPropertyResult,0);
-//				tagPropertyFinal.appendContent(tagPropertyResult.getContent());
-//		}
-//			
-//			tagPropertyFinal = TextAnalizer.setCuotes(tagPropertyFinal,1);
-//			ta.replace(tagPropertyFinal);
-//		}
+		TemplateObject to = new TemplateObject(origen);
 		
-		return ta.content.getContent();
+		// CONSTRUYO MODEL
+		to = buildModel(to, modelo);
+		
+		to = buildProperties(to, modelo);
+		
+		
+		return to.getContent();
 	}
 	
 	public String getValue(TemplateObjectNode.TypeNode nodeType, TemplateObjectNode nodo, Object entity)

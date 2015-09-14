@@ -24,7 +24,7 @@
 						<div class="form-group">
 							<label class="control-label" for="[property value='name']">[property value='label']</label>
 							<div class="controls">
-								<input type="[att show='value' name='htmlType'/]" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
+								<input type="[att value='htmlType'/]" data-ng-model="ccCtrl.[property value='name']" id="[property value='name']" class="form-control">
 							</div>
 						</div>
 						[/property]
