@@ -7,16 +7,16 @@ var mongoose = require('mongoose'),
 	Schema = mongoose.Schema;
 
 /**
- * [model:name] Schema
+ * [model value='name'/] Schema
  */
 var [model:name]Schema = new Schema({
 	[properties]
 	[property]
-	[property value='name']: {
+	[property value='name'/]: {
 		[att][att value='name'/]: [att value='type'/][cuote][/att]
 		}[cuote]
 	[/property]
 	[/properties]
 });
 
-mongoose.model('[model:name]', [model:name]Schema);
+mongoose.model('[model value='name'/]', [model value='name'/]Schema);

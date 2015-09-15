@@ -5,14 +5,12 @@ import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.OutputStreamWriter;
-import java.util.HashMap;
 import java.util.List;
 
 import com.brgenerator.TemplateManager;
 import com.brgenerator.entities.Model;
-import com.brgenerator.entities.Model.Properties;
-import com.brgenerator.entities.Model.Properties.Property;
 import com.brgenerator.entities.TemplateObject;
+import com.brgenerator.entities.TemplateObject.Type;
 import com.brgenerator.entities.TemplateObjectAtt;
 import com.brgenerator.entities.TemplateObjectNode;
 import com.brgenerator.entities.TemplateObjectAtt.TypeAtt;
@@ -173,7 +171,6 @@ public class TemplateManager {
 	
 	public TemplateObject buildModel(TemplateObject to, Model modelo)
 	{
-		List<TemplateObjectNode> tagModels = to.getNodesByType(TypeNode.MODEL);
 		
 		while (!to.getNodesByType(TypeNode.MODEL).isEmpty()) 
 		{
@@ -188,7 +185,6 @@ public class TemplateManager {
 	
 	public TemplateObject buildProperties(TemplateObject to, Model modelo)
 	{
-		
 		//Obtengo las properties
 		List<TemplateObject> tagProperties = to.getChildElements(TemplateObjectNode.TypeNode.PROPERTIES);
 		
@@ -229,8 +225,34 @@ public class TemplateManager {
 				}
 			}
 			
-			tagProperties.get(i).replace(buildProperty(tagProperties.get(i), modelo));
 			
+			List<TemplateObject> tagPropertys = tagProperties.get(i).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+			
+			if(tagPropertys.size() > 0)
+			{
+				if(tagPropertys.size() == 1)
+				{
+					for (int j = begin; j <= end; j++) 
+					{
+						//OBTENGO ELEMENTOS HIJOS DE TIPO ATT
+						List<TemplateObject> tagAtts = tagPropertys.get(0).getChildElements(TemplateObjectNode.TypeNode.ATT);
+						
+						if(tagAtts.size() > 0)
+						{
+							for (int k = 0; k < tagAtts.size(); k++) 
+							{
+								TemplateObject toatt = tagAtts.get(k);
+								//toatt = <ATT>alaslallsals</ATT>
+								toatt = buildAtt(toatt, modelo.getProperties().getProperty().get(j).getAtts());
+								tagAtts.get(k).replace(toatt);
+							}
+							
+						}
+						
+					}
+					
+				}
+			}
 		}
 		
 		return to;
@@ -239,123 +261,72 @@ public class TemplateManager {
 	public TemplateObject buildProperty(TemplateObject to, Model modelo)
 	{
 		
-		List<TemplateObject> tagPropertys = .getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+		
 		
 		// SI TIENE UN SOLO ELEMENTO PROPERTY ITERO POR CADA PROPIEDAD/CAMPO EN EL RANGO INDICADO
-		if(tagPropertys.size() == 1)
-		{
-			//LISTADO DE PROPERTYS RESULTADO
-			List<TemplateObject> propertysRes;
-							
-			for (int j = begin; j <= end; j++) 
-			{
-				//CREO UN NUEVO TAG PROPERTY
-				TemplateObject propertysAux = new TemplateObject(tagPropertys.get(0));
-				
-				//OBTENGO ELEMENTOS HIJOS DE TIPO ATT
-				List<TemplateObject> tagAtts = tagPropertys.get(0).getChildElements(TemplateObjectNode.TypeNode.ATT);
-				
-				//SI TENGO ELEMENTOS TAG
-				if(tagAtts.size() > 0)
-				{
-					// SI TIENE UN SOLO ELEMENTO <ATT></ATT> ITERO POR CADA ATT EN EL RANGO INDICADO
-					if(tagAtts.size() == 1)
-					{
-						//DEBO EJECUTAR RUTINA QUE ITERE POR TODOS LOS ATRIBUTOS DE LA PROPERTY
-
-						TemplateObjectNode ton = tagAtts.get(i).getNode();
-						TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
-						TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
-									
-						//VALOR POR DEFAULT PARA END EL TOTAL DE LA CANTIDAD DE PROPIEDADES/CAMPOS DEL MODELO
-						int end = (modelo.getProperties().getProperty().size()-1);
-						//VALOR POR DEFAULT PARA EL COMIENZO 0
-						int begin = 0;
-
-						
-						if(toaEnd != null)
-						{
-							//VALUE = VALOR DE END EN NODO PROPERTIES DEL TEMPLATE
-							int value = Integer.parseInt(toaEnd.getValue());
-							
-							//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO
-							if((modelo.getProperties().getProperty().size()-1) >= value)
-							{
-								// END = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
-								end = value;
-							}
-						}
-						if(toaBegin != null)
-						{
-							//VALUE = VALOR DE BEGIN EN NODO PROPERTIES DEL TEMPLATE
-							int value = Integer.parseInt(toaBegin.getValue());
-							
-							//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO Y MAYOR QUE 0
-							if((value <= modelo.getProperties().getProperty().size()-1) && value > 0)
-							{
-								// BEGIN = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
-								begin = value;
-							}
-						}
-						
-						for (int l = 0; l < modelo.getProperties().getProperty().get(j).getAtts().getAtt().size(); l++) 
-						{
-							modelo.getProperties().getProperty().get(j).getAtts().getAtt().get(l);
-						}
-					}
-					
-					//
-					
-					
-					//LISTADO DE ATTS RESULTADO
-					List<TemplateObject> attsRes;
-					
-					// ITERO POR CADA ELEMENTO TAG
-					for (int k = 0; k < tagAtts.size(); k++) 
-					{	
-						//CREO UN NUEVO TAG ATT
-						TemplateObject attAux = new TemplateObject(tagAtts.get(k));
-						
-						//MIENTRAS ENCUENTRE NODOS TAG DENTRO REEMPLAZO
-						while (!tagAtts.get(k).getNodesByType(TypeNode.ATT).isEmpty()) 
-						{
-							TemplateObjectNode nodo = tagAtts.get(k).getNodesByType(TypeNode.ATT).get(0);
-							String valor = this.getValue(TypeNode.ATT, nodo, modelo.getProperties().getProperty().get(j));
-							nodo.setContent(valor);
-							to.replace(nodo);
-						}
-						
-						// YA REEMPLACE TODOS LOS NODOS TAG
-						// AGREGO ATT A ATTS
-						attsRes.add(attAux);
-					}
-					
-					
-				}
-				else 
-				{
-					while (!tagPropertys.get(j).getNodesByType(TypeNode.ATT).isEmpty()) 
-					{
-						TemplateObjectNode nodo = tagAtts.get(k).getNodesByType(TypeNode.ATT).get(0);
-						String valor = this.getValue(TypeNode.ATT, nodo, modelo.getProperties().getProperty().get(j));
-						nodo.setContent(valor);
-						to.replace(nodo);
-					}
-					
-				}
-				
-			}
-		}
-		else
-		{
-			
-		}
+		
 		
 		return to;
 	}
 	
-	public TemplateObject buildAtt(TemplateObject to, Model modelo)
+	public TemplateObject buildAtt(TemplateObject to, Model.Properties.Property.Atts atributos)
 	{
+		
+		TemplateObjectNode ton = to.getNode();
+		TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
+		TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
+					
+		//VALOR POR DEFAULT PARA END EL TOTAL DE LA CANTIDAD DE PROPIEDADES/CAMPOS DEL MODELO
+		int end = atributos.getAtt().size() -1;
+		//VALOR POR DEFAULT PARA EL COMIENZO 0
+		int begin = 0;
+
+		
+		if(toaEnd != null)
+		{
+			//VALUE = VALOR DE END EN NODO PROPERTIES DEL TEMPLATE
+			int value = Integer.parseInt(toaEnd.getValue());
+			
+			//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO
+			if((atributos.getAtt().size() -1) >= value)
+			{
+				// END = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
+				end = value;
+			}
+		}
+		if(toaBegin != null)
+		{
+			//VALUE = VALOR DE BEGIN EN NODO PROPERTIES DEL TEMPLATE
+			int value = Integer.parseInt(toaBegin.getValue());
+			
+			//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO Y MAYOR QUE 0
+			if((value <= atributos.getAtt().size() -1) && value > 0)
+			{
+				// BEGIN = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
+				begin = value;
+			}
+		}
+		
+		TemplateObject attFinal = new TemplateObject("", 0, 0, Type.ATT);
+		
+		for (int i = begin; i <= end; i++) 
+		{	
+			TemplateObject attNuevo = new TemplateObject(to);
+			
+			//MIENTRAS ENCUENTRE NODOS TAG DENTRO REEMPLAZO
+			while (!attNuevo.getNodesByType(TypeNode.ATT).isEmpty()) 
+			{
+				TemplateObjectNode nodo = attNuevo.getNodesByType(TypeNode.ATT).get(0);
+				String valor = this.getValue(TypeNode.ATT, nodo, atributos.getAtt().get(i));
+				nodo.setContent(valor);
+				attNuevo.replace(nodo);
+			}
+			
+			attFinal.append(attNuevo);
+		}
+		
+		to.setContent(attFinal.getContent());
+		
 		return to;
 	}
 	

@@ -90,11 +90,12 @@ public class TemplateObject
 		Path path = Paths.get(origen.getAbsolutePath());
 		Charset charset = StandardCharsets.UTF_8;
 		String texto = new String(Files.readAllBytes(path), charset);
+		this.setType(Type.TEXT);
 		this.setText(texto);
 		this.setContent(texto);
 		this.setFirstIndex(0);
 		this.setLastIndex(texto.length()-1);
-		this.setType(Type.TEXT);
+		
 		this.getNodes();
 	}
 	
@@ -339,6 +340,13 @@ public class TemplateObject
 	public TemplateObject replace(TemplateObject element)
 	{
 		String resultado = this.content.substring(0, element.getFirstIndex()) + element.getContent() + this.content.substring(element.getLastIndex(), this.content.length()); 
+		this.setContent(resultado);
+		return this;
+	}
+	
+	public TemplateObject append(TemplateObject element)
+	{
+		String resultado = this.content + element.content; 
 		this.setContent(resultado);
 		return this;
 	}
