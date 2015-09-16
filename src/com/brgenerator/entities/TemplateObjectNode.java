@@ -40,7 +40,7 @@ public class TemplateObjectNode
 	private int firstIndex;
 	private int lastIndex;
 	
-	private String pATTRIBUTES = "(\\S+)=\"(.*?)\"";
+	private String pATTRIBUTES = "(\\S+)=\'(.*?)'";
 	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
 	
 	public enum TypeNode {
@@ -63,6 +63,8 @@ public class TemplateObjectNode
 	{
 		super();
 		this.type = type;
+		this.setFirstIndex(firstIndex);
+		this.setLastIndex(lastIndex);
 		this.attrs = this.getAttributes(node);
 		this.content = node;
 	}
@@ -83,7 +85,10 @@ public class TemplateObjectNode
 	{
 		for (int i = 0; i < this.getAttrs().size(); i++) 
 		{
-			if(this.getAttrs().get(i).getKey().toLowerCase() == tipo.toString().toLowerCase())
+			String key = this.getAttrs().get(i).getKey().toLowerCase().trim();
+			String tipoAux = tipo.toString().toLowerCase().trim();
+			
+			if(key.equals(tipoAux))
 			{
 				return this.getAttrs().get(i);
 			}
@@ -99,7 +104,7 @@ public class TemplateObjectNode
 	    
 	    while (matcher.find()) 
 	    {
-	    	TemplateObjectAtt to = new TemplateObjectAtt(matcher.group(0), matcher.group(1));
+	    	TemplateObjectAtt to = new TemplateObjectAtt(matcher.group(1), matcher.group(2));
 	    	toa.add(to);
 	    }
 	    

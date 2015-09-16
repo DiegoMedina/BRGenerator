@@ -338,7 +338,7 @@ public class TemplateManager {
 		// CONSTRUYO MODEL
 		to = buildModel(to, modelo);
 		
-		to = buildProperties(to, modelo);
+//		to = buildProperties(to, modelo);
 		
 		
 		return to.getContent();
@@ -375,11 +375,11 @@ public class TemplateManager {
 					
 					if(tonAttMode != null)
 					{
-						result = tonAttMode.getValue() == "plural"?  inf.pluralize(result):result;
+						result = tonAttMode.getValue().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
 					}
 					if(tonAttCase != null)
 					{
-						result = tonAttCase.getValue() == "lower"?  result.toLowerCase():result;
+						result = tonAttCase.getValue().equalsIgnoreCase("lower")?  result.toLowerCase():result;
 					}
 				}
 				
