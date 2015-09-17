@@ -240,17 +240,13 @@ public class TemplateManager {
 					{
 						TemplateObject propertyAux = new TemplateObject(tagPropertys.get(0));
 						
-						while (!propertyAux.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
-						{
-							TemplateObjectNode nodo = propertyAux.getNodesByType(TypeNode.PROPERTY).get(0);
-							String valor = this.getValue(TypeNode.PROPERTY, nodo, modelo.getProperties().getProperty().get(j));
-							nodo.setContent(valor);
-							propertyAux.replace(nodo);
-						}
+						propertyAux = this.buildProperty(propertyAux, modelo.getProperties().getProperty().get(j));
 						
 						propertyAll.append(propertyAux);
 						
 					}
+					
+					propertyAll = buildCuotes(propertyAll);
 					
 					tagProperties.replace(propertyAll);
 					
@@ -270,20 +266,13 @@ public class TemplateManager {
 						//CREO UNA COPIA DEL PROPERTIES CONTENEDORA A LA QUE LE REEMPLAZARE LOS NODOS PROPERTYES
 						TemplateObject tagPropertiesAux = new TemplateObject(tagProperties);
 						
-						
 						while (!tagPropertiesAux.getChildElements(TemplateObjectNode.TypeNode.PROPERTY).isEmpty()) 
 						{
 							if(posicion <= end)
 							{
 								TemplateObject propertyAux = new TemplateObject(tagPropertiesAux.getChildElements(TemplateObjectNode.TypeNode.PROPERTY).get(0));
 								
-								while (!propertyAux.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
-								{
-									TemplateObjectNode nodo = propertyAux.getNodesByType(TypeNode.PROPERTY).get(0);
-									String valor = this.getValue(TypeNode.PROPERTY, nodo, modelo.getProperties().getProperty().get(posicion));
-									nodo.setContent(valor);
-									propertyAux.replace(nodo);
-								}
+								propertyAux = this.buildProperty(propertyAux, modelo.getProperties().getProperty().get(posicion));
 								
 								tagPropertiesAux.replace(propertyAux);
 								
@@ -296,115 +285,84 @@ public class TemplateManager {
 							}
 						}
 						
-						
-//						for (int i = 0; i < tagPropertysAux.size(); i++) 
-//						{
-//							if(posicion <= end)
-//							{
-//								TemplateObject propertyAux = new TemplateObject(tagPropertysAux.get(i));
-//								
-//								while (!propertyAux.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
-//								{
-//									TemplateObjectNode nodo = propertyAux.getNodesByType(TypeNode.PROPERTY).get(0);
-//									String valor = this.getValue(TypeNode.PROPERTY, nodo, modelo.getProperties().getProperty().get(posicion));
-//									nodo.setContent(valor);
-//									propertyAux.replace(nodo);
-//								}
-//								
-//								tagPropertiesAux.replace(propertyAux);
-//								
-//								posicion++;
-//							}
-//							else
-//							{
-////								TemplateObject propertyAux = new TemplateObject("NADA",tagPropertysAux.get(i).getFirstIndex(),tagPropertysAux.get(i).getLastIndex(),Type.PROPERTY);
-////								tagPropertiesAux.replace(propertyAux);
-//							}
-//						}
-						
 						tagPropertiesAll.append(tagPropertiesAux);
 					}
 					
+					tagPropertiesAll = buildCuotes(tagPropertiesAll);
+					
 					to.replace(tagPropertiesAll);
 				}
-			}
-												
-			
-			
+			}	
 		}
-		
 		
 		return to;
 	}
 	
-	public TemplateObject buildProperty(TemplateObject to, Model modelo)
+	public TemplateObject buildProperty(TemplateObject to, Property property)
 	{
+		while (!to.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
+		{
+			TemplateObjectNode nodo = to.getNodesByType(TypeNode.PROPERTY).get(0);
+			String valor = this.getValue(TypeNode.PROPERTY, nodo, property);
+			nodo.setContent(valor);
+			to.replace(nodo);
+		}
 		
+		List<TemplateObject> tagAtts = to.getChildElements(TemplateObjectNode.TypeNode.ATT);
 		
+		if(tagAtts.size() > 0)
+		{
+			if(tagAtts.size() == 1)
+			{
+				TemplateObject attAll = new TemplateObject("", tagAtts.get(0).getFirstIndex(), tagAtts.get(0).getLastIndex(), Type.ATT);
+				
+				for (int i = 0; i < property.getAtts().getAtt().size(); i++) 
+				{
+					TemplateObject attAux = new TemplateObject(tagAtts.get(0));
+					attAux = this.buildAtt(attAux, property.getAtts().getAtt().get(i));
+					attAll.append(attAux);
+				}
+				
+				attAll = buildCuotes(attAll);
+				
+				to.replace(attAll);
+				
+			}
+		}
 		
-		// SI TIENE UN SOLO ELEMENTO PROPERTY ITERO POR CADA PROPIEDAD/CAMPO EN EL RANGO INDICADO
-		
+		while (!to.getNodesByType(TypeNode.ATT).isEmpty()) 
+		{
+			TemplateObjectNode nodo = to.getNodesByType(TypeNode.ATT).get(0);
+			String valor = this.getValue(TypeNode.ATT, nodo, property);
+			nodo.setContent(valor);
+			to.replace(nodo);
+		}
+	
+		return to;
+	}
+	
+	public TemplateObject buildCuotes(TemplateObject to)
+	{
+		while (!to.getNodesByType(TypeNode.CUOTE).isEmpty()) 
+		{
+			TemplateObjectNode nodo = to.getNodesByType(TypeNode.CUOTE).get(0);
+			String valor = this.getValue(TypeNode.CUOTE, nodo, (to.getNodesByType(TypeNode.CUOTE).size()==1?"":","));
+			nodo.setContent(valor);
+			to.replace(nodo);
+		}
 		
 		return to;
 	}
 	
-	public TemplateObject buildAtt(TemplateObject to, Model.Properties.Property.Atts atributos)
+	public TemplateObject buildAtt(TemplateObject to, Model.Properties.Property.Atts.Att atributo)
 	{
-		
-		TemplateObjectNode ton = to.getNode();
-		TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
-		TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
-					
-		//VALOR POR DEFAULT PARA END EL TOTAL DE LA CANTIDAD DE PROPIEDADES/CAMPOS DEL MODELO
-		int end = atributos.getAtt().size() -1;
-		//VALOR POR DEFAULT PARA EL COMIENZO 0
-		int begin = 0;
-
-		
-		if(toaEnd != null)
+		while (!to.getNodesByType(TypeNode.ATT).isEmpty()) 
 		{
-			//VALUE = VALOR DE END EN NODO PROPERTIES DEL TEMPLATE
-			int value = Integer.parseInt(toaEnd.getValue());
-			
-			//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO
-			if((atributos.getAtt().size() -1) >= value)
-			{
-				// END = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
-				end = value;
-			}
+			TemplateObjectNode nodo = to.getNodesByType(TypeNode.ATT).get(0);
+			String valor = this.getValue(TypeNode.ATT, nodo, atributo);
+			nodo.setContent(valor);
+			to.replace(nodo);
 		}
-		if(toaBegin != null)
-		{
-			//VALUE = VALOR DE BEGIN EN NODO PROPERTIES DEL TEMPLATE
-			int value = Integer.parseInt(toaBegin.getValue());
-			
-			//SI EL VALOR DEL NODO ES MENOR QUE EL TOTAL DE PROPIEDADES/CAMPOS EN EL MODELO Y MAYOR QUE 0
-			if((value <= atributos.getAtt().size() -1) && value > 0)
-			{
-				// BEGIN = VALOR EN EL NODO PROPERTIES DEL TEMPLATE
-				begin = value;
-			}
-		}
-		
-		TemplateObject attFinal = new TemplateObject("", 0, 0, Type.ATT);
-		
-		for (int i = begin; i <= end; i++) 
-		{	
-			TemplateObject attNuevo = new TemplateObject(to);
-			
-			//MIENTRAS ENCUENTRE NODOS TAG DENTRO REEMPLAZO
-			while (!attNuevo.getNodesByType(TypeNode.ATT).isEmpty()) 
-			{
-				TemplateObjectNode nodo = attNuevo.getNodesByType(TypeNode.ATT).get(0);
-				String valor = this.getValue(TypeNode.ATT, nodo, atributos.getAtt().get(i));
-				nodo.setContent(valor);
-				attNuevo.replace(nodo);
-			}
-			
-			attFinal.append(attNuevo);
-		}
-		
-		to.setContent(attFinal.getContent());
 		
 		return to;
 	}
@@ -446,7 +404,7 @@ public class TemplateManager {
 					switch (tonAttValue.getValue()) 
 					{
 						case "name":
-							result = modelo.getName();
+							result = modelo.getName().trim();
 							break;
 						default:
 							break;
@@ -454,11 +412,11 @@ public class TemplateManager {
 					
 					if(tonAttMode != null)
 					{
-						result = tonAttMode.getValue().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
+						result = tonAttMode.getValue().trim().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
 					}
 					if(tonAttCase != null)
 					{
-						result = tonAttCase.getValue().equalsIgnoreCase("lower")?  result.toLowerCase():result;
+						result = tonAttCase.getValue().trim().equalsIgnoreCase("lower")?  result.toLowerCase():result;
 					}
 				}
 				
@@ -475,10 +433,10 @@ public class TemplateManager {
 					switch (tonAttValue.getValue()) 
 					{
 						case "name":
-							result = propiedad.getName();
+							result = propiedad.getName().trim();
 							break;
 						case "label":
-							result = propiedad.getLabel();
+							result = propiedad.getLabel().trim();
 							break;
 						default:
 							break;
@@ -486,41 +444,67 @@ public class TemplateManager {
 					
 					if(tonAttMode != null)
 					{
-						result = tonAttMode.getValue().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
+						result = tonAttMode.getValue().trim().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
 					}
 					if(tonAttCase != null)
 					{
-						result = tonAttCase.getValue().equalsIgnoreCase("lower")?  result.toLowerCase():result;
+						result = tonAttCase.getValue().trim().equalsIgnoreCase("lower")?  result.toLowerCase():result;
 					}
 				}
 				
 			break;
 			case ATT:
-				
-				Model.Properties.Property property = (Model.Properties.Property)entity;
+				 
 				tonAttValue = nodo.getAttrByType(TypeAtt.VALUE);
 				tonAttMode = nodo.getAttrByType(TypeAtt.MODE);
 				tonAttCase = nodo.getAttrByType(TypeAtt.CASE);
 				
 				if(tonAttValue != null)
 				{
-					for (int i = 0; i < property.getAtts().getAtt().size(); i++) 
+					
+					if (entity instanceof Model.Properties.Property.Atts.Att) 
 					{
-						if(property.getAtts().getAtt().get(i).getName() == tonAttValue.getValue())
+						Model.Properties.Property.Atts.Att attribute = (Model.Properties.Property.Atts.Att)entity;
+						
+						switch (tonAttValue.getValue()) 
 						{
-							result = property.getAtts().getAtt().get(i).getValue();
+							case "name":
+								result = attribute.getName().trim();
+								break;
+							case "value":
+								result = attribute.getValue().trim();
+								break;
+							default:
+								break;
+						}
+					}
+					else if (entity instanceof Model.Properties.Property) 
+					{
+						Model.Properties.Property property = (Model.Properties.Property)entity;
+						
+						for (int i = 0; i < property.getAtts().getAtt().size(); i++) 
+						{
+							if(property.getAtts().getAtt().get(i).getName().trim().equalsIgnoreCase(tonAttValue.getValue().trim()))
+							{
+								result = property.getAtts().getAtt().get(i).getValue().trim();
+							}
 						}
 					}
 					
 					if(tonAttMode != null)
 					{
-						result = tonAttMode.getValue() == "plural"?  inf.pluralize(result):result;
+						result = tonAttMode.getValue().trim().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
 					}
 					if(tonAttCase != null)
 					{
-						result = tonAttCase.getValue() == "lower"?  result.toLowerCase():result;
+						result = tonAttCase.getValue().trim().equalsIgnoreCase("lower")?  result.toLowerCase():result;
 					}
 				}
+			break;
+			case CUOTE: 
+			{
+				result = (String)entity;
+			}
 			break;
 			default:
 				break;

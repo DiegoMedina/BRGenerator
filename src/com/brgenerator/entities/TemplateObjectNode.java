@@ -44,7 +44,7 @@ public class TemplateObjectNode
 	private Pattern ATTRIBUTES = Pattern.compile(pATTRIBUTES);
 	
 	public enum TypeNode {
-	    PROPERTIES, PROPERTY, ATT, MODEL
+	    PROPERTIES, PROPERTY, ATT, MODEL, CUOTE
 	}
 	
 	public TemplateObjectNode() {

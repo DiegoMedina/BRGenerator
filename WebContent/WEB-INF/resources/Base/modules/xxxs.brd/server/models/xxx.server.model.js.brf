@@ -13,7 +13,9 @@ var [model:name]Schema = new Schema({
 	[properties]
 	[property]
 	[property value='name'/]: {
-		[att][att value='name'/]: [att value='type'/][cuote][/att]
+		[att]
+		[att value='name'/]: [att value='value'/][cuote]
+		[/att]
 		}[cuote]
 	[/property]
 	[/properties]

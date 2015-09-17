@@ -42,6 +42,9 @@ public class TemplateObject
 	private String pMODEL = "\\[model.*?]";
 	private Pattern MODEL = Pattern.compile(pMODEL);
 	
+	private String pCUOTE = "\\[cuote.*?]";
+	private Pattern CUOTE = Pattern.compile(pCUOTE);
+	
 	private String pPROPERTY = "\\[property.*?]";
 	private Pattern PROPERTY = Pattern.compile(pPROPERTY);
 	
@@ -256,6 +259,15 @@ public class TemplateObject
 			case MODEL:
 				
 				matcher = MODEL.matcher(this.content);
+				while (matcher.find()) 
+			    {
+			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type, matcher.start(0), matcher.end(0));
+			    	tons.add(ton);
+			    }
+				break;
+			case CUOTE:
+				
+				matcher = CUOTE.matcher(this.content);
 				while (matcher.find()) 
 			    {
 			    	TemplateObjectNode ton = new TemplateObjectNode(matcher.group(), type, matcher.start(0), matcher.end(0));
