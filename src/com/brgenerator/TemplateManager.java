@@ -9,6 +9,7 @@ import java.util.List;
 
 import com.brgenerator.TemplateManager;
 import com.brgenerator.entities.Model;
+import com.brgenerator.entities.Model.Properties.Property;
 import com.brgenerator.entities.TemplateObject;
 import com.brgenerator.entities.TemplateObject.Type;
 import com.brgenerator.entities.TemplateObjectAtt;
@@ -185,12 +186,13 @@ public class TemplateManager {
 	
 	public TemplateObject buildProperties(TemplateObject to, Model modelo)
 	{
-		//Obtengo las properties
-		List<TemplateObject> tagProperties = to.getChildElements(TemplateObjectNode.TypeNode.PROPERTIES);
 		
-		for (int i = 0; i < tagProperties.size(); i++) 
+		while (!to.getChildElements(TemplateObjectNode.TypeNode.PROPERTIES).isEmpty()) 
 		{
-			TemplateObjectNode ton = tagProperties.get(i).getNode();
+			
+			TemplateObject tagProperties = to.getChildElements(TemplateObjectNode.TypeNode.PROPERTIES).get(0);
+			
+			TemplateObjectNode ton = tagProperties.getNode();
 			TemplateObjectAtt toaBegin = ton.getAttrByType(TemplateObjectAtt.TypeAtt.BEGIN);
 			TemplateObjectAtt toaEnd = ton.getAttrByType(TemplateObjectAtt.TypeAtt.END);
 						
@@ -226,34 +228,111 @@ public class TemplateManager {
 			}
 			
 			
-			List<TemplateObject> tagPropertys = tagProperties.get(i).getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
+			List<TemplateObject> tagPropertys = tagProperties.getChildElements(TemplateObjectNode.TypeNode.PROPERTY);
 			
 			if(tagPropertys.size() > 0)
 			{
 				if(tagPropertys.size() == 1)
 				{
+					TemplateObject propertyAll = new TemplateObject("", tagPropertys.get(0).getFirstIndex(), tagPropertys.get(0).getLastIndex(), Type.PROPERTY);
+					
 					for (int j = begin; j <= end; j++) 
 					{
-						//OBTENGO ELEMENTOS HIJOS DE TIPO ATT
-						List<TemplateObject> tagAtts = tagPropertys.get(0).getChildElements(TemplateObjectNode.TypeNode.ATT);
+						TemplateObject propertyAux = new TemplateObject(tagPropertys.get(0));
 						
-						if(tagAtts.size() > 0)
+						while (!propertyAux.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
 						{
-							for (int k = 0; k < tagAtts.size(); k++) 
-							{
-								TemplateObject toatt = tagAtts.get(k);
-								//toatt = <ATT>alaslallsals</ATT>
-								toatt = buildAtt(toatt, modelo.getProperties().getProperty().get(j).getAtts());
-								tagAtts.get(k).replace(toatt);
-							}
-							
+							TemplateObjectNode nodo = propertyAux.getNodesByType(TypeNode.PROPERTY).get(0);
+							String valor = this.getValue(TypeNode.PROPERTY, nodo, modelo.getProperties().getProperty().get(j));
+							nodo.setContent(valor);
+							propertyAux.replace(nodo);
 						}
+						
+						propertyAll.append(propertyAux);
 						
 					}
 					
+					tagProperties.replace(propertyAll);
+					
+					to.replace(tagProperties);
+					
+				}
+				else if(tagPropertys.size() > 1)
+				{
+					
+					//CREO UNA COPIA DEL PROPERTIES CONTENEDORA A LA QUE LE HARE UN APPEND AL FINAL DE CADA WHILE
+					TemplateObject tagPropertiesAll = new TemplateObject("", tagProperties.getFirstIndex(),tagProperties.getLastIndex(),Type.PROPERTIES);
+					
+					int posicion = begin;
+					
+					while (posicion <= end) 
+					{
+						//CREO UNA COPIA DEL PROPERTIES CONTENEDORA A LA QUE LE REEMPLAZARE LOS NODOS PROPERTYES
+						TemplateObject tagPropertiesAux = new TemplateObject(tagProperties);
+						
+						
+						while (!tagPropertiesAux.getChildElements(TemplateObjectNode.TypeNode.PROPERTY).isEmpty()) 
+						{
+							if(posicion <= end)
+							{
+								TemplateObject propertyAux = new TemplateObject(tagPropertiesAux.getChildElements(TemplateObjectNode.TypeNode.PROPERTY).get(0));
+								
+								while (!propertyAux.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
+								{
+									TemplateObjectNode nodo = propertyAux.getNodesByType(TypeNode.PROPERTY).get(0);
+									String valor = this.getValue(TypeNode.PROPERTY, nodo, modelo.getProperties().getProperty().get(posicion));
+									nodo.setContent(valor);
+									propertyAux.replace(nodo);
+								}
+								
+								tagPropertiesAux.replace(propertyAux);
+								
+								posicion++;
+							}
+							else
+							{
+								TemplateObject propertyAux = new TemplateObject("",tagPropertiesAux.getChildElements(TemplateObjectNode.TypeNode.PROPERTY).get(0).getFirstIndex(),tagPropertiesAux.getChildElements(TemplateObjectNode.TypeNode.PROPERTY).get(0).getLastIndex(),Type.TEXT);
+								tagPropertiesAux.replace(propertyAux);
+							}
+						}
+						
+						
+//						for (int i = 0; i < tagPropertysAux.size(); i++) 
+//						{
+//							if(posicion <= end)
+//							{
+//								TemplateObject propertyAux = new TemplateObject(tagPropertysAux.get(i));
+//								
+//								while (!propertyAux.getNodesByType(TypeNode.PROPERTY).isEmpty()) 
+//								{
+//									TemplateObjectNode nodo = propertyAux.getNodesByType(TypeNode.PROPERTY).get(0);
+//									String valor = this.getValue(TypeNode.PROPERTY, nodo, modelo.getProperties().getProperty().get(posicion));
+//									nodo.setContent(valor);
+//									propertyAux.replace(nodo);
+//								}
+//								
+//								tagPropertiesAux.replace(propertyAux);
+//								
+//								posicion++;
+//							}
+//							else
+//							{
+////								TemplateObject propertyAux = new TemplateObject("NADA",tagPropertysAux.get(i).getFirstIndex(),tagPropertysAux.get(i).getLastIndex(),Type.PROPERTY);
+////								tagPropertiesAux.replace(propertyAux);
+//							}
+//						}
+						
+						tagPropertiesAll.append(tagPropertiesAux);
+					}
+					
+					to.replace(tagPropertiesAll);
 				}
 			}
+												
+			
+			
 		}
+		
 		
 		return to;
 	}
@@ -338,7 +417,7 @@ public class TemplateManager {
 		// CONSTRUYO MODEL
 		to = buildModel(to, modelo);
 		
-//		to = buildProperties(to, modelo);
+		to = buildProperties(to, modelo);
 		
 		
 		return to.getContent();
@@ -368,6 +447,38 @@ public class TemplateManager {
 					{
 						case "name":
 							result = modelo.getName();
+							break;
+						default:
+							break;
+					}
+					
+					if(tonAttMode != null)
+					{
+						result = tonAttMode.getValue().equalsIgnoreCase("plural")?  inf.pluralize(result):result;
+					}
+					if(tonAttCase != null)
+					{
+						result = tonAttCase.getValue().equalsIgnoreCase("lower")?  result.toLowerCase():result;
+					}
+				}
+				
+			break;
+			case PROPERTY:
+				
+				Property propiedad = (Property)entity;
+				tonAttValue = nodo.getAttrByType(TypeAtt.VALUE);
+				tonAttMode = nodo.getAttrByType(TypeAtt.MODE);
+				tonAttCase = nodo.getAttrByType(TypeAtt.CASE);
+				
+				if(tonAttValue != null)
+				{
+					switch (tonAttValue.getValue()) 
+					{
+						case "name":
+							result = propiedad.getName();
+							break;
+						case "label":
+							result = propiedad.getLabel();
 							break;
 						default:
 							break;

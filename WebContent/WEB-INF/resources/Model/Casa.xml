@@ -125,6 +125,211 @@
 				</Att>
 			</Atts>
 		</Property>
+		<Property name="rostro" label="Rostro">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Precio']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email Precio']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Precio']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="brazo" label="Brazo">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Precio']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email Precio']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Precio']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="hongo" label="Hongo">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Precio']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email Precio']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Precio']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="selva" label="Selva">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Precio']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email Precio']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Precio']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="nandu" label="Nandu">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+				<Att name="Validate">
+				<![CDATA[[validateLocalStrategyProperty, 'Please fill in your Precio']]]>
+				</Att>
+				<Att name="Enum">
+				<![CDATA[['user', 'admin']]]>
+				</Att>
+				<Att name="Trim">
+				true
+				</Att>
+				<Att name="Match">
+				<![CDATA[[/.+\@.+\..+/, 'Please fill a valid email Precio']]]>
+				</Att>
+				<Att name="Unique">
+				<![CDATA['testing error message']]>
+				</Att>
+				<Att name="Default">
+				<![CDATA['Valor por Precio']]>
+				</Att>
+				<Att name="HtmlType">
+				Text
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="ojo" label="Ojo">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="pera" label="Pera">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="silueta" label="Silueta">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="pepe" label="Pepe">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+			</Atts>
+		</Property>
+		<Property name="raul" label="Raul">
+			<Atts>
+				<Att name="Required">
+				<![CDATA['Please fill in a Precio']]>
+				</Att>
+				<Att name="Type">
+				Decimal
+				</Att>
+			</Atts>
+		</Property>
 		<Property name="duenos" label="Dueños">
 			<Atts>
 				<Att name="Type">

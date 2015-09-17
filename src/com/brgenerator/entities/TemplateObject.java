@@ -60,8 +60,9 @@ public class TemplateObject
 	private Pattern ELEMENT_MODEL = Pattern.compile(pELEMENT_MODEL,Pattern.DOTALL);
 	
 	//CONTENT
-	
-	private String pCONTENT_ELEMENT = "\\[.*?](.+?)\\[/.*?]|\\[(.*?)]";
+	//(?s)
+	//private String pCONTENT_ELEMENT = "\\[.*?](.+?)\\[/.*?]|\\[(.*?)]";
+	private String pCONTENT_ELEMENT = "\\[.+?](.*)\\[/.*?]|\\[(.*?)]";
 	private Pattern CONTENT_ELEMENT = Pattern.compile(pCONTENT_ELEMENT,Pattern.DOTALL);
 	
 	
@@ -171,7 +172,7 @@ public class TemplateObject
 		{
 			case PROPERTIES:
 				
-				matcher = PROPERTIES.matcher(this.content);
+				matcher = PROPERTIES.matcher(this.text);
 				while (matcher.find()) 
 			    {
 			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTIES, matcher.start(0), matcher.end(0));
@@ -181,7 +182,7 @@ public class TemplateObject
 				break;
 			case PROPERTY:
 				
-				matcher = PROPERTY.matcher(this.content);
+				matcher = PROPERTY.matcher(this.text);
 				while (matcher.find()) 
 			    {
 			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.PROPERTY, matcher.start(0), matcher.end(0));
@@ -190,7 +191,7 @@ public class TemplateObject
 				break;
 			case ATT:
 				
-				matcher = ATT.matcher(this.content);
+				matcher = ATT.matcher(this.text);
 				while (matcher.find()) 
 			    {
 			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.ATT, matcher.start(0), matcher.end(0));
@@ -200,7 +201,7 @@ public class TemplateObject
 				break;   
 			case MODEL:
 				
-				matcher = MODEL.matcher(this.content);
+				matcher = MODEL.matcher(this.text);
 				while (matcher.find()) 
 			    {
 			    	ton = new TemplateObjectNode(matcher.group(), TypeNode.MODEL, matcher.start(0), matcher.end(0));
@@ -340,21 +341,21 @@ public class TemplateObject
 	public TemplateObject replace(TemplateObject element)
 	{
 		String resultado = this.content.substring(0, element.getFirstIndex()) + element.getContent() + this.content.substring(element.getLastIndex(), this.content.length()); 
-		this.setContent(resultado);
+		this.content = resultado;
 		return this;
 	}
 	
 	public TemplateObject append(TemplateObject element)
 	{
 		String resultado = this.content + element.content; 
-		this.setContent(resultado);
+		this.content = resultado;
 		return this;
 	}
 	
 	public TemplateObject replace(TemplateObjectNode element)
 	{
 		String resultado = this.content.substring(0, element.getFirstIndex()) + element.getContent() + this.content.substring(element.getLastIndex(), this.content.length()); 
-		this.setContent(resultado);
+		this.content = resultado;
 		return this;
 	}
 	
